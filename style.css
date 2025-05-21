@@ -33,8 +33,10 @@ display: block;
 
 }
 
-input{
-    display: block;
+
+.radioselector{
+    display: flex;
+    
 }
 
 button{

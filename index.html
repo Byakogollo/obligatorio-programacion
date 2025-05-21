@@ -127,11 +127,20 @@
                 <label for="fechamedica">Fecha de vencimiento de ficha medica</label>
                 <input type="date" id="fechamedica">
 
-                <label>Tipo de corredor:</label>
-                <input type="radio" name="corredor" value="1" id="tipocorredor" checked>
-                <label for="tipocorredor">Corredor profesional</label>
-                <input type="radio" name="corredor" value="1" id="tipocorredor">
-                <label for="tipocorredor">Corredor amateur</label>
+                <div class="radioselector">
+                
+                    <label>Tipo de corredor: </label>
+                
+                      <input type="radio" name="corredor" value="1" id="tipocorredor" checked>
+
+                    <label for="tipocorredor">Deportista de elite</label>
+                
+                    <input type="radio" name="corredor" value="1" id="tipocorredor">
+
+                    <label for="tipocorredor">Corredor comun</label>
+                
+                                    
+                </div>
 
                 <button>Agregar Corredor</button>
 
@@ -191,6 +200,8 @@
             <label for="selectorcarrera">Carrera</label>
             <select name="selectorcarrera" id="selectorcarrera"></select>
 
+
+            <div class="radioselector">
             <label>Ordenar por:</label>
 
             <input type="radio" name="ordenador" value="1" id="nombre" checked>
@@ -198,19 +209,42 @@
 
             <input type="radio" name="ordenador" value="1" id="numero">
             <label for="ordenador">Numero</label>
+            </div>
+
+            <table border="1">
+
+                <thead>Inscriptos
+
+                <tr>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                    <th>Cedula</th>
+                    <th>Ficha medica</th>
+                    <th>Numero</th>
+                </tr>        
+                
+            </thead>
+            <tbody>
+                
+            </tbody>
+
+            </table>
 
 </article> <!--FIN CONSULTA INSCRIPCIONES-->
 
 <article class="articulos"> <!--INICIO MAPA-->
             <h3>Visualizar Mapa:</h3>
 
+            <div class="radioselector">
             <label for="mapa">Por Carreras</label>
             <input type="radio" name="mapa" value="1" id="porcarrera" checked>
 
 
             <label for="mapa">Por inscripciones</label>
             <input type="radio" name="mapa" value="1" id="porinscripcion">
-</article> <!--FIN MAPA-->
+</div>
+
+        </article> <!--FIN MAPA-->
 
            
 
