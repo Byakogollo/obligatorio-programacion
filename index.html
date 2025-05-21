@@ -1,39 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
-        </head>
-    <body>
+<html lang="es">
 
-        <h1>Pagina de corredores</h1>
-        <img src="./img/header.jpeg" alt="foto de encabezado">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
 
-    
-        <button>Datos</button>
-        <button>Estadisticas</button>
+<body>
 
-        
-                  <article> <!--INICIO DE DATOS-->
-   <section>
-                      <h2>Datos</h2>
-    
-   
-        
-                       <div id="carreras"> <!--REGISTRO DE CARRERAS-->
-                        
-                  
-                            <h3>Carreras</h3>
+    <h1>Pagina de corredores</h1>
+    <img src="./img/header.jpeg" alt="foto de encabezado">
 
-        
-                            <label for="nombrecorredor">Nombre</label>
-                            <input type="text" name="nombre" id="nombrecorredor">
 
-        
-                            <label for="depto">Departamento</label>
-            
-                                <select name="depto" id="depto">
+    <button>Datos</button>
+    <button>Estadisticas</button>
+
+
+    <article>
+        <!--INICIO DE DATOS-->
+        <section>
+            <h2>Datos</h2>
+
+
+
+            <div id="carreras">
+                <!--REGISTRO DE CARRERAS-->
+
+
+                <h3>Carreras</h3>
+
+
+                <label for="nombrecorredor">Nombre</label>
+                <input type="text" name="nombre" id="nombrecorredor">
+
+
+                <label for="depto">Departamento</label>
+
+                <select name="depto" id="depto">
                                     <option value="null" selected>---</option>
                                     <option value="1">1 Montevideo</option>
                                     <option value="2">2 Canelones</option>
@@ -56,55 +60,59 @@
                                     <option value="19">19 Tacuarembo</option>
                                  </select>
 
-        
-                                      <label for="idfecha">Fecha</label>
-                                      <input type="date" id="idfecha">
+
+                <label for="idfecha">Fecha</label>
+                <input type="date" id="idfecha">
 
 
-                                        <label for="idcupo">Cupo</label>        
-                                        <input type="number" id="idcupo" min="1" max="30">
-        
-                                            <button>Agregar Carreras</button>
-    
-                        </div> <!--FIN REGISTRO CARRERAS-->
+                <label for="idcupo">Cupo</label>
+                <input type="number" id="idcupo" min="1" max="30">
 
-                        <div id="corredores"> <!--REGISTRO DE CORREDORES-->
+                <button>Agregar Carreras</button>
 
-                            <h3>Corredores</h3>
+            </div>
+            <!--FIN REGISTRO CARRERAS-->
 
-                                    <label for="nombrecorredor">Nombre</label>
-                                    <input type="text" id="nombrecorredor">
-        
-                                 <label for="edadcorredor">Edad</label>
-                                <input type="number" id="edadcorredor">
+            <div id="corredores">
+                <!--REGISTRO DE CORREDORES-->
 
-                              <label for="idcorredor">Cedula</label>
-                              <input type="number" id="idcorredor">
-        
-        <label for="fechamedica">Fecha de vencimiento de ficha medica</label>
-        <input type="date" id="fechamedica">
-        
-        <label>Tipo de corredor:</label>
-        <input type="radio" name="corredor" value="1" id="tipocorredor" checked>
-        <label for="tipocorredor">Corredor profesional</label>
-        <input type="radio" name="corredor" value="1" id="tipocorredor">
-        <label for="tipocorredor">Corredor amateur</label>
+                <h3>Corredores</h3>
 
-        <button>Agregar Corredor</button>
+                <label for="nombrecorredor">Nombre</label>
+                <input type="text" id="nombrecorredor">
 
-     </div><!--FIN REGISTRO CORREDORES-->
+                <label for="edadcorredor">Edad</label>
+                <input type="number" id="edadcorredor">
+
+                <label for="idcorredor">Cedula</label>
+                <input type="number" id="idcorredor">
+
+                <label for="fechamedica">Fecha de vencimiento de ficha medica</label>
+                <input type="date" id="fechamedica">
+
+                <label>Tipo de corredor:</label>
+                <input type="radio" name="corredor" value="1" id="tipocorredor" checked>
+                <label for="tipocorredor">Corredor profesional</label>
+                <input type="radio" name="corredor" value="1" id="tipocorredor">
+                <label for="tipocorredor">Corredor amateur</label>
+
+                <button>Agregar Corredor</button>
+
+            </div>
+            <!--FIN REGISTRO CORREDORES-->
 
 
-      <div id="sponsors"> <!--REGISTRO SPONSORS-->
+            <div id="sponsors">
+                <!--REGISTRO SPONSORS-->
 
-        <h3>Sponsors</h3>
+                <h3>Sponsors</h3>
 
-            <label for="nombresponsor">Nombre</label>
-            <input type="text" name="sponsor" id="nombresponsor">
+                <label for="nombresponsor">Nombre</label>
+                <input type="text" name="sponsor" id="nombresponsor">
 
-          
-            <label for="rubrosponsor">Rubro</label>
-            <select name="rubro" id="rubrosponsor">
+
+                <label for="rubrosponsor">Rubro</label>
+                <select name="rubro" id="rubrosponsor">
 
                 <option value="null" selected>---</option>
                 <option value="alimenticio">Alimenticio</option>
@@ -117,98 +125,96 @@
         
             </select>
 
-            <label for="idcarrera">Carreras:</label>
+                <label for="idcarrera">Carreras:</label>
                 <select name="listacarreras" id="idcarrera" multiple></select>
-            
+
                 <button>Agregar/Actualizar Sponsor</button>
 
-     </div> <!--FIN REGISTRO SPONSORS-->
-
-    
-
-
-                 <div id="inscripciones"> <!--INSCRIPCION A CARRERAS-->
-
-                 <h3>Inscripcion</h3>
-                
-                
-                    <label for="selectorcarrera">Carrera</label>
-                    <select name="selectorcarrera" id="selectorcarrera"></select>
-
-                
-                
-                    <label for="selectorcorredor">Corredor</label>
-                    <select name="selectorcorredor" id="idcorredor"></select>
-                    <button>Inscribir</button>
-
-                </div> <!--FIN INSCRIPCION A CARRERAS-->
-
-
-                 </section> <!--FIN DE DATOS-->
-
-
-               <section>
-
-                    <h2>Estadisticas</h2>
-
-                    <h3>Datos Generales</h3>
-
-                    <p>Promedio de inscriptos por carrera: </p>
-                    
-                    <p>Carrera/s con mas incriptos: </p>
-                        <ul>
-                            <li>sin datos</li>
-                        </ul>
-                        
-                        <p>Carrera/s sin inscriptos ordenadas por fechas</p>
-                        <ul>
-                            <li>sin datos</li>
-                        </ul>
-                    <p>Procentaje de corredores de elite: </p>
-
-                    <h3>Consulta inscriptos</h3> <!--CONSULTA INSCRIPCIONES-->
-                        
-                    <label for="selectorcarrera">Carrera</label>
-                    <select name="selectorcarrera" id="selectorcarrera"></select>
-
-                      <label>Ordenar por:</label>
-                  
-                    <input type="radio" name="ordenador" value="1" id="nombre" checked>
-                    <label for="ordenador">Nombre</label>
-                     
-                    <input type="radio" name="ordenador" value="1" id="numero">
-                    <label for="ordenador">Numero</label>
-                        
-
-                    <h3>Visualizar Mapa:</h3>
-            
-                        <label for="mapa">Por Carreras</label>
-                        <input type="radio" name="mapa" value="1" id="porcarrera" checked>
-                        
-                     
-                        <label for="mapa">Por inscripciones</label>
-                        <input type="radio" name="mapa" value="1" id="porinscripcion">
-
-
-                        <footer>
-
-                            <p>Programacion 1 - Obligatorio 1er semestre 2025 - Autores</p>
-
-                            <p>Grupo N1B - Marcos Medina (Numero estudiante: 365070)</p>
-                            <a href="https://www.linkedin.com/in/marcosmcv/">Linkedin</a>
-                            
-                            <p>Grupo N1B - Santiago Diron (Numero estudiante: )</p>  
-                            <a href="https://www.linkedin.com/in/santiago-dir%C3%B3n-a3a977285/">Linkedin</a>
-                             
-
-                        </footer>
-                        
-                        
-                     
+            </div>
+            <!--FIN REGISTRO SPONSORS-->
 
 
 
 
+            <div id="inscripciones">
+                <!--INSCRIPCION A CARRERAS-->
+
+                <h3>Inscripcion</h3>
+
+
+                <label for="selectorcarrera">Carrera</label>
+                <select name="selectorcarrera" id="selectorcarrera"></select>
+
+
+
+                <label for="selectorcorredor">Corredor</label>
+                <select name="selectorcorredor" id="idcorredor"></select>
+                <button>Inscribir</button>
+
+            </div>
+            <!--FIN INSCRIPCION A CARRERAS-->
+
+
+        </section>
+        <!--FIN DE DATOS-->
+
+
+        <section>
+
+            <h2>Estadisticas</h2>
+
+            <h3>Datos Generales</h3>
+
+            <p>Promedio de inscriptos por carrera: </p>
+
+            <p>Carrera/s con mas incriptos: </p>
+            <ul>
+                <li>sin datos</li>
+            </ul>
+
+            <p>Carrera/s sin inscriptos ordenadas por fechas</p>
+            <ul>
+                <li>sin datos</li>
+            </ul>
+            <p>Procentaje de corredores de elite: </p>
+
+            <h3>Consulta inscriptos</h3>
+            <!--CONSULTA INSCRIPCIONES-->
+
+            <label for="selectorcarrera">Carrera</label>
+            <select name="selectorcarrera" id="selectorcarrera"></select>
+
+            <label>Ordenar por:</label>
+
+            <input type="radio" name="ordenador" value="1" id="nombre" checked>
+            <label for="ordenador">Nombre</label>
+
+            <input type="radio" name="ordenador" value="1" id="numero">
+            <label for="ordenador">Numero</label>
+
+
+            <h3>Visualizar Mapa:</h3>
+
+            <label for="mapa">Por Carreras</label>
+            <input type="radio" name="mapa" value="1" id="porcarrera" checked>
+
+
+            <label for="mapa">Por inscripciones</label>
+            <input type="radio" name="mapa" value="1" id="porinscripcion">
+
+
+            <footer>
+
+                <p>Programacion 1 - Obligatorio 1er semestre 2025 - Autores</p>
+
+                <p>Grupo N1B - Marcos Medina (Numero estudiante: 365070)</p>
+                <a href="https://www.linkedin.com/in/marcosmcv/">Linkedin</a>
+
+                <p>Grupo N1B - Santiago Diron (359644: )</p>
+                <a href="https://www.linkedin.com/in/santiago-dir%C3%B3n-a3a977285/">Linkedin</a>
+
+
+            </footer>
 
 
 
@@ -217,10 +223,6 @@
 
 
 
-               </section>
-          
-
-           
 
 
 
@@ -228,6 +230,18 @@
 
 
 
-                </article>
-       </body>
+        </section>
+
+
+
+
+
+
+
+
+
+
+    </article>
+</body>
+
 </html>
