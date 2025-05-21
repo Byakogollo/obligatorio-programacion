@@ -4,30 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+
     <title>Document</title>
 </head>
 
 <body>
 
-    <h1>Pagina de corredores</h1>
-    <img src="./img/header.jpeg" alt="foto de encabezado">
+   <header> 
+      
+        <div id="titulo">
+            <h1>Pagina de corredores</h1>
+            <img src="./img/header.jpeg" alt="foto de encabezado" width="400">
+     
+         </div>
+        
+        
+        <button>Datos</button>
+        <button>Estadisticas</button>
 
+    </header>
 
-    <button>Datos</button>
-    <button>Estadisticas</button>
+   <section id="datos">  <!--INICIO DE DATOS-->
 
-
-    <article>
-        <!--INICIO DE DATOS-->
-        <section>
-            <h2>Datos</h2>
-
-
-
-            <div id="carreras">
-                <!--REGISTRO DE CARRERAS-->
-
-
+    <h2>Datos</h2>
+   
+    <article class="articulos"> <!--REGISTRO DE CARRERAS-->
+       
+               
                 <h3>Carreras</h3>
 
 
@@ -70,41 +75,13 @@
 
                 <button>Agregar Carreras</button>
 
-            </div>
-            <!--FIN REGISTRO CARRERAS-->
+    </article>  <!--FIN REGISTRO CARRERAS-->
+          
 
-            <div id="corredores">
-                <!--REGISTRO DE CORREDORES-->
+    
+            <article class="articulos"> <!--REGISTRO SPONSORS-->
 
-                <h3>Corredores</h3>
-
-                <label for="nombrecorredor">Nombre</label>
-                <input type="text" id="nombrecorredor">
-
-                <label for="edadcorredor">Edad</label>
-                <input type="number" id="edadcorredor">
-
-                <label for="idcorredor">Cedula</label>
-                <input type="number" id="idcorredor">
-
-                <label for="fechamedica">Fecha de vencimiento de ficha medica</label>
-                <input type="date" id="fechamedica">
-
-                <label>Tipo de corredor:</label>
-                <input type="radio" name="corredor" value="1" id="tipocorredor" checked>
-                <label for="tipocorredor">Corredor profesional</label>
-                <input type="radio" name="corredor" value="1" id="tipocorredor">
-                <label for="tipocorredor">Corredor amateur</label>
-
-                <button>Agregar Corredor</button>
-
-            </div>
-            <!--FIN REGISTRO CORREDORES-->
-
-
-            <div id="sponsors">
-                <!--REGISTRO SPONSORS-->
-
+               
                 <h3>Sponsors</h3>
 
                 <label for="nombresponsor">Nombre</label>
@@ -130,14 +107,40 @@
 
                 <button>Agregar/Actualizar Sponsor</button>
 
-            </div>
-            <!--FIN REGISTRO SPONSORS-->
+            </article> <!--FIN REGISTRO SPONSORS-->
 
 
+            <article class="articulos"><!--REGISTRO DE CORREDORES-->
+                
+
+                <h3>Corredores</h3>
+
+                <label for="nombrecorredor">Nombre</label>
+                <input type="text" id="nombrecorredor">
+
+                <label for="edadcorredor">Edad</label>
+                <input type="number" id="edadcorredor">
+
+                <label for="idcorredor">Cedula</label>
+                <input type="number" id="idcorredor">
+
+                <label for="fechamedica">Fecha de vencimiento de ficha medica</label>
+                <input type="date" id="fechamedica">
+
+                <label>Tipo de corredor:</label>
+                <input type="radio" name="corredor" value="1" id="tipocorredor" checked>
+                <label for="tipocorredor">Corredor profesional</label>
+                <input type="radio" name="corredor" value="1" id="tipocorredor">
+                <label for="tipocorredor">Corredor amateur</label>
+
+                <button>Agregar Corredor</button>
+
+            </article> <!--FIN REGISTRO CORREDORES-->
+           
 
 
-            <div id="inscripciones">
-                <!--INSCRIPCION A CARRERAS-->
+            <article class="articulos"> <!--INSCRIPCION A CARRERAS-->
+               
 
                 <h3>Inscripcion</h3>
 
@@ -151,16 +154,17 @@
                 <select name="selectorcorredor" id="idcorredor"></select>
                 <button>Inscribir</button>
 
-            </div>
-            <!--FIN INSCRIPCION A CARRERAS-->
+            </article><!--FIN INSCRIPCION A CARRERAS-->
+            
+   
+    
+</section>  <!--FIN DE SECCION DATOS-->
+      
 
 
-        </section>
-        <!--FIN DE DATOS-->
+        <section> <!--INICIO SECCION ESTADISTICAS -->
 
-
-        <section>
-
+            <article class="articulos"> <!--INICIO DATOS GENERALES-->
             <h2>Estadisticas</h2>
 
             <h3>Datos Generales</h3>
@@ -178,8 +182,11 @@
             </ul>
             <p>Procentaje de corredores de elite: </p>
 
+            </article> <!--FIN DATOS GENERALES-->  
+
+            <article class="articulos">   <!--INICIO CONSULTA INSCRIPCIONES-->
             <h3>Consulta inscriptos</h3>
-            <!--CONSULTA INSCRIPCIONES-->
+          
 
             <label for="selectorcarrera">Carrera</label>
             <select name="selectorcarrera" id="selectorcarrera"></select>
@@ -192,7 +199,9 @@
             <input type="radio" name="ordenador" value="1" id="numero">
             <label for="ordenador">Numero</label>
 
+</article> <!--FIN CONSULTA INSCRIPCIONES-->
 
+<article class="articulos"> <!--INICIO MAPA-->
             <h3>Visualizar Mapa:</h3>
 
             <label for="mapa">Por Carreras</label>
@@ -201,17 +210,22 @@
 
             <label for="mapa">Por inscripciones</label>
             <input type="radio" name="mapa" value="1" id="porinscripcion">
+</article> <!--FIN MAPA-->
+
+           
+
+        </section><!--FIN ESTADISTICAS-->
 
 
-            <footer>
+<footer>
 
                 <p>Programacion 1 - Obligatorio 1er semestre 2025 - Autores</p>
 
-                <p>Grupo N1B - Marcos Medina (Numero estudiante: 365070)</p>
-                <a href="https://www.linkedin.com/in/marcosmcv/">Linkedin</a>
+                <p>Grupo N1B - Marcos Medina (Numero estudiante: 365070) <a href="https://www.linkedin.com/in/marcosmcv/"_blank>Link</a></p>
+                
 
-                <p>Grupo N1B - Santiago Diron (359644: )</p>
-                <a href="https://www.linkedin.com/in/santiago-dir%C3%B3n-a3a977285/">Linkedin</a>
+                <p>Grupo N1B - Santiago Diron (Numero estudiante: 359644) <a href="https://www.linkedin.com/in/santiago-dir%C3%B3n-a3a977285/"_blank>Link</a></p>
+               
 
 
             </footer>
@@ -228,9 +242,6 @@
 
 
 
-
-
-        </section>
 
 
 

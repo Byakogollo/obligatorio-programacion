@@ -1,0 +1,46 @@
+section{
+
+ background-color: #D5F4D4;
+
+}
+ 
+footer{
+    background-color: #F0F4D4;
+}
+footer>p{
+    text-align: center;
+
+}
+
+#titulo{
+       display: flex;
+        align-items: center;
+        flex-direction: column;
+        
+}
+
+
+.articulos{
+
+    background-color: #00FF7F;
+    display: block;
+
+}
+
+label{
+
+display: block;
+
+}
+
+input{
+    display: block;
+}
+
+button{
+    display: block;
+}
+
+header>button{
+    display: inline;
+}
