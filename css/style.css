@@ -1,0 +1,64 @@
+/*Marcos Medina - N1B ID: 365070
+Santiago Diron - N1B ID: 359644-->*/
+
+section{
+
+ background-color: #D5F4D4;
+ padding: 10px;
+ border-radius: 25px;
+ margin: 10px;
+}
+ 
+footer{
+    background-color: #F0F4D4;
+    border-radius: 25px;
+    font-size: small;
+    padding: 10px;
+}
+footer>p{
+    text-align: center;
+
+}
+table, th, td{
+    border: 1px solid;
+    
+}
+#titulo{
+       display: flex;
+        align-items: center;
+        flex-direction: column;
+        
+}
+
+
+.articulos{
+    background-color: #00FF7F;
+    display: block;
+    margin: 10px;
+    border-radius: 25px;
+    padding: 10px;
+}
+
+label{
+
+display: block;
+
+}
+
+.radioselector{
+    display: flex;
+    
+}
+
+button{
+    display: block;
+}
+
+header>button{
+    display: inline;
+}
+
+h2{
+    padding: 10px;
+}
+
