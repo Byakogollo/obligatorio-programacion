@@ -2,11 +2,17 @@
 Santiago Diron - N1B ID: 359644-->*/
 
 section{
-
  background-color: #D5F4D4;
  padding: 10px;
  border-radius: 25px;
  margin: 10px;
+}
+
+#datos{
+    display: block;
+}
+#estadisticas{
+    display: none;
 }
  
 footer{

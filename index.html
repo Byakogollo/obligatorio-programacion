@@ -9,6 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
         <link rel="stylesheet" type="text/css" href="./css/style.css">
+        <script src="./js/app.js"></script>
+        <script src="./js/classes.js"></script>
 
         <title>Gestion Carreras</title>
     </head>
@@ -20,7 +22,6 @@
             <div id="titulo">
                 <h1>Página de corredores</h1>
                 <img src="./img/Corredores_del_uruguay.jpeg" alt="foto de encabezado" width="400">
-        
             </div>
             
             
@@ -29,24 +30,24 @@
 
         </header>
 
-    <section id="datos">  <!--INICIO DE DATOS-->
+    <section id="datos" >  <!--INICIO DE DATOS-->
 
         <h2>Datos</h2>
     
         <article class="articulos"> <!--REGISTRO DE CARRERAS-->
         
                 
-                    <h3>Carreras</h3>
+                <h3>Carreras</h3>
 
                 <form id="registrocarrera">
 
-                    <label for="nomcorredor">Nombre</label>
-                    <input type="text" name="nombre" id="nomcorredor">
+                    <label for="nomcarrera">Nombre</label>
+                    <input type="text" name="nombre" id="nomcarrera">
 
 
                     <label for="depto">Departamento</label>
 
-                    <select name="depto" id="depto">
+                    <select name="depto" id="departamentocarrera">
                                         <option value="null" selected>---</option>
                                         <option value="1">1 Montevideo</option>
                                         <option value="2">2 Canelones</option>
@@ -71,20 +72,21 @@
 
 
                     <label for="idfecha">Fecha</label>
-                    <input type="date" id="idfecha">
+                    <input type="date" name='idfecha' id="fechacarrera">
 
 
-                    <label for="idcupo">Cupo</label>
-                    <input type="number" id="idcupo" min="1" max="30">
+                    <label for="idcupo">Cupos</label>
+                    <input type="number" name='idcupo' id="cuposcarrera" min="1" max="30">
 
                     <br>
-                    <input type="submit" value="Agregar carrera">
+                    <input type="button" value="Agregar carrera" id="agregarcarrera">
+
                 </form>
         </article>  <!--FIN REGISTRO CARRERAS-->
             
 
         
-                <article class="articulos"> <!--REGISTRO SPONSORS-->
+        <article class="articulos"> <!--REGISTRO SPONSORS-->
 
                 
                     <h3>Sponsors</h3>
@@ -97,29 +99,31 @@
 
                     <label for="rubrosponsor">Rubro</label>
                     
-                    <select name="rubro" id="rubrosponsor">
+                        <select name="rubro" id="rubrosponsor">
 
-                    <option value="null" selected>---</option>
-                    <option value="alimenticio">Alimenticio</option>
-                    <option value="bancario">Bancario</option>
-                    <option value="bebidas">Bebidas</option>
-                    <option value="farmaceutico">Farmaceutico</option>
-                    <option value="ropa">Ropa Deportiva</option>
-                    <option value="estatal">Estatal</option>
-                    <option value="general">General Y Otros</option>
+                                <option value="null" selected>---</option>
+                                <option value="alimenticio">Alimenticio</option>
+                                <option value="bancario">Bancario</option>
+                                <option value="bebidas">Bebidas</option>
+                                <option value="farmaceutico">Farmaceutico</option>
+                                <option value="ropa">Ropa Deportiva</option>
+                                <option value="estatal">Estatal</option>
+                                <option value="general">General Y Otros</option>
             
-                </select>
+                        </select>
 
-                    <label for="idcarrera">Carreras:</label>
-                    <select name="listacarreras" id="idcarrera" multiple></select>
+                    <label for="listacarreras">Carreras:</label>
+                    <select name="listacarreras" id="idcarrera" multiple>
+                        
+                    </select>
 
                         <br>
-                        <input type="submit" value="Agregar/Actualizar sponsor">
+                        <input type="button" value="Agregar/Actualizar sponsor" id="agregarsponsor">
                     </form>
-                </article> <!--FIN REGISTRO SPONSORS-->
+        </article> <!--FIN REGISTRO SPONSORS-->
 
 
-                <article class="articulos"><!--REGISTRO DE CORREDORES-->
+        <article class="articulos"><!--REGISTRO DE CORREDORES-->
                     
                     <form id="registrocorredores">
 
@@ -148,13 +152,13 @@
                 
                     </div>
 
-                    <input type="button" value="Agregar corredor">
+                    <input type="button" id='agregarcorredor' value="Agregar corredor">
                         </form>
-                </article> <!--FIN REGISTRO CORREDORES-->
+        </article> <!--FIN REGISTRO CORREDORES-->
             
 
 
-                <article class="articulos"> <!--INSCRIPCION A CARRERAS-->
+        <article class="articulos"> <!--INSCRIPCION A CARRERAS-->
                 
 
                     <h3>Inscripción</h3>
@@ -162,10 +166,14 @@
                     <form id="inscripcioncarrera" method="get">
                    
                     <label for="selectorcarrera">Carrera</label>
-                    <select name="carreras" id="selectorcarrera"></select>
+                    <select name="carreras" id="selectorcarrera">
+                        <option value="null" selected>----</option>
+                    </select>
 
                     <label for="selectorcorredor">Corredor</label>
-                    <select name="corredores" id="selectorcorredor"></select>
+                    <select name="corredores" id="selectorcorredor">
+                        <option value="null" selected>----</option>
+                    </select>
                     
                     <br>
 
@@ -173,7 +181,7 @@
                      
                 </form>
                 
-            </article><!--FIN INSCRIPCION A CARRERAS-->
+        </article><!--FIN INSCRIPCION A CARRERAS-->
                 
     
         
@@ -181,7 +189,7 @@
         
 
 
-            <section> <!--INICIO SECCION ESTADISTICAS -->
+    <section id="estadisticas"> <!--INICIO SECCION ESTADISTICAS -->
     
                 <h2>Estadísticas</h2>
 
@@ -217,7 +225,7 @@
                 <div class="radioselector">
                 <label>Ordenar por:</label>
 
-                <input type="radio" name="ordenador " value="1" id="ordenadornombre" checked>
+                <input type="radio" name="ordenador" value="1" id="ordenadornombre" checked>
                 <label for="ordenadornombre">Nombre</label>
 
                 <input type="radio" name="ordenador" value="1" id="ordenadornumero">
@@ -266,10 +274,10 @@
 
             
 
-            </section><!--FIN ESTADISTICAS-->
+    </section><!--FIN ESTADISTICAS-->
 
 
-                 <footer>
+<footer>
 
                     <p>Programación 1 - Obligatorio 1er semestre 2025 - Autores</p>
 
@@ -280,7 +288,7 @@
                 
 
 
-                </footer>
+</footer>
 
 
 
