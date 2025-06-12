@@ -52,9 +52,10 @@ let sponsor = new Sponsor();
 sponsor.nombre = document.getElementById('nombresponsor').value;
 sponsor.rubro = document.getElementById('rubrosponsor').value;
 sponsor.carrera = document.getElementById('idcarrera').value;
-        
-sponsor.agregarSponsor(sponsor);
-        
+    
+if(!sponsor.SponsorRepetido(sponsor.nombre)){
+    sponsor.agregarSponsor(sponsor);    
+} else {"nombre de sponsor repetido"}
 }
 
 function registroCorredor(){
@@ -69,28 +70,4 @@ function registroCorredor(){
 
     corredor.agregarCorredor(corredor);
     corredor.actualizarListaCorredoresInscripciones();
-
-  
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

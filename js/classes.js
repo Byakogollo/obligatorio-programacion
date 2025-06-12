@@ -48,11 +48,21 @@ class Sponsor {
         this.rubro = rubro;
         this.carrera = carrera;
         this.listasponsors = [];
-    }
+    }              
 
    agregarSponsor(sponsor){
         this.listasponsors.push(sponsor);
         console.log(sponsor.listasponsors);
+    }
+
+    SponsorRepetido(sponsor){
+        let repetido = false;
+        for (let i = 0; i < this.listasponsors.length && !repetido; i++){
+            if(this.listasponsors[i].nombre === sponsor.nombre){
+                repetido = true
+            } 
+        } return repetido
+
     }
 }
 
@@ -93,7 +103,7 @@ class Corredor {
 class Inscripcion {
     constructor(corredor, carrera, fechaInscripcion) {
 
-        this.corredor = corredor;
+        this.corredor = corredor + " con cedula: " + corredor.cedula;
         this.carrera = carrera;
         this.fechaInscripcion = fechaInscripcion;
     }
