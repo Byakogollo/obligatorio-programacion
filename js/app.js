@@ -1,4 +1,6 @@
 window.addEventListener('load', inicio) //cargo todos los elementos
+let sistema = new Sistema();
+
 
 function inicio(){
     document.getElementById('botondatos').addEventListener('click', cambiodatos); //boton datos
@@ -8,6 +10,7 @@ function inicio(){
     document.getElementById('agregarcarrera').addEventListener('click', registrocarrera); //boton registrar carrera
     document.getElementById('agregarsponsor').addEventListener('click', registroSponsor); //boton registrar sponsor
     document.getElementById('agregarcorredor').addEventListener('click', registroCorredor);
+    document.getElementById('Botonregistro').addEventListener('click', inscripcion); //botón registrar isncripción y verificar fecha válida
 
 }
 
@@ -55,7 +58,11 @@ sponsor.carrera = document.getElementById('idcarrera').value;
     
 if(!sponsor.SponsorRepetido(sponsor.nombre)){
     sponsor.agregarSponsor(sponsor);    
-} else {"nombre de sponsor repetido"}
+} else {
+    sponsor.ActualizarSponsor(sponsor.rubro, sponsor.carrera);
+    alert("nombre de sponsor repetido, actualizando los datos del sponsor...");
+}
+
 }
 
 function registroCorredor(){
@@ -70,4 +77,17 @@ function registroCorredor(){
 
     corredor.agregarCorredor(corredor);
     corredor.actualizarListaCorredoresInscripciones();
+}
+
+function inscripcion(){ // inscripción y verificación fecha válida con método esValida
+    let inscripcion = new Inscripcion
+
+    inscripcion.carrera = document.getElementById("selectorcarrera").value;//metodo para que pullee valor
+    inscripcion.corredor = document.getElementById("selectorcorredor").value;
+    inscripcion.fechaInscripcion = this.inscripcion.carrera.fecha;
+
+    if(esValida(inscripcion.fechaInscripcion)) { 
+        alert( "su número es: " + consultaDeInscriptos(inscripcion.carrera)+
+                " nombre:" + this.inscripcion.corredor + calcularEdad(corredor.edad)  )
+    }
 }
