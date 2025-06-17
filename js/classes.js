@@ -25,6 +25,8 @@ class Carrera {
 
 }   
 
+
+
  actualizarListaInscripciones(){
 
     let lista = document.getElementById('selectorcarrera');
@@ -68,6 +70,12 @@ class Sponsor {
         this.sponsor.carrera = carrera;
     }
 
+        
+    }
+
+
+
+
 }
 
 class Corredor {
@@ -81,10 +89,7 @@ class Corredor {
        
     }
 
-     agregarCorredor(corredor){
-        this.listacorredores.push(corredor);
-        console.log(corredor.listacorredores);
-    }
+   
 
 
      actualizarListaCorredoresInscripciones(){
@@ -97,41 +102,12 @@ class Corredor {
     nodo.appendChild(nodoT)
     lista.appendChild(nodo);
 
-}   
-
-    calcularEdad(fechaNacimiento) {
-    let partes = fechaNacimiento.split("/");
-
-    let diaNacimiento = parseInt(partes[0]);
-    let mesNacimiento = parseInt(partes[1]);
-    let anioNacimiento = parseInt(partes[2]);
-
-    let hoy = new Date();
-    let diaHoy = hoy.getDate();
-    let mesHoy = hoy.getMonth() + 1; // los meses van de 0 a 11
-    let anioHoy = hoy.getFullYear();
-
-    let edad = anioHoy - anioNacimiento;
-
-    if (mesHoy < mesNacimiento) {
-        edad = edad - 1;
-    } else {
-        if (mesHoy === mesNacimiento) {
-            if (diaHoy < diaNacimiento) {
-                edad = edad - 1;
-            }
-        }
-    }
-
-    return edad + " años";
-
-    }
-
+    }   
 
 }
 
 class Inscripcion {
-    constructor(corredor, carrera, fechaInscripcion) {
+    constructor(corredor, carrera) {
 
         this.corredor = corredor;
         this.carrera = carrera;
@@ -158,6 +134,10 @@ consultaDeInscriptos(carrera){ //metodo para cantidad de corredores por carrera,
             }
         }
     }
+    }
+
+
+
 
 
 }
@@ -171,7 +151,39 @@ class Sistema {
     }
 
 
+  pushearCarrera(carrera){
+    this.carreras.push(carrera);
+    console.log(this.carreras);
+  }
+
+  pushearCorredores(corredor){
+      
+        this.corredores.push(corredor);
+        console.log(this.corredores);
+    
+  }
+
+  pushearSponsors(sponsor) {
+
+        this.sponsors.push(sponsor);
+        console.log(this.sponsors);
+    
+
+  }
+
+  pushearInscripciones(inscripcion){
+
+    this.inscripciones.push(inscripcion);
+    console.log(this.inscripciones);
+
+  }
+
+  
   
 
-    
+
+
+
+
+
 }
