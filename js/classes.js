@@ -5,14 +5,7 @@ class Carrera {
         this.departamento = departamento;
         this.fecha = fecha;
         this.cupos = cupos;
-        this.listacarreras = [];
     }
-  
-    agregarCarrera(carrera){
-        this.listacarreras.push(carrera);
-        console.log(carrera.listacarreras);
-    }
-
 
      actualizarListaSponsor(){
 
@@ -25,6 +18,8 @@ class Carrera {
     lista.appendChild(nodo);
 
 }   
+
+
 
  actualizarListaInscripciones(){
 
@@ -47,13 +42,12 @@ class Sponsor {
         this.nombre = nombre;
         this.rubro = rubro;
         this.carrera = carrera;
-        this.listasponsors = [];
+        
     }
 
-   agregarSponsor(sponsor){
-        this.listasponsors.push(sponsor);
-        console.log(sponsor.listasponsors);
-    }
+
+
+
 }
 
 class Corredor {
@@ -64,13 +58,9 @@ class Corredor {
         this.cedula = cedula;
         this.fichamedica = fichamedica;
         this.tipocorredor = tipocorredor;
-        this.listacorredores=[];
     }
 
-     agregarCorredor(corredor){
-        this.listacorredores.push(corredor);
-        console.log(corredor.listacorredores);
-    }
+   
 
 
      actualizarListaCorredoresInscripciones(){
@@ -91,12 +81,13 @@ class Corredor {
 }
 
 class Inscripcion {
-    constructor(corredor, carrera, fechaInscripcion) {
+    constructor(corredor, carrera) {
 
         this.corredor = corredor;
         this.carrera = carrera;
-        this.fechaInscripcion = fechaInscripcion;
     }
+
+
 
 
     
@@ -111,7 +102,39 @@ class Sistema {
     }
 
 
+  pushearCarrera(carrera){
+    this.carreras.push(carrera);
+    console.log(this.carreras);
+  }
+
+  pushearCorredores(corredor){
+      
+        this.corredores.push(corredor);
+        console.log(this.corredores);
+    
+  }
+
+  pushearSponsors(sponsor) {
+
+        this.sponsors.push(sponsor);
+        console.log(this.sponsors);
+    
+
+  }
+
+  pushearInscripciones(inscripcion){
+
+    this.inscripciones.push(inscripcion);
+    console.log(this.inscripciones);
+
+  }
+
+  
   
 
-    
+
+
+
+
+
 }

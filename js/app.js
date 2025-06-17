@@ -1,4 +1,5 @@
 window.addEventListener('load', inicio) //cargo todos los elementos
+let syscall = new Sistema ();
 
 function inicio(){
     document.getElementById('botondatos').addEventListener('click', cambiodatos); //boton datos
@@ -7,11 +8,12 @@ function inicio(){
     
     document.getElementById('agregarcarrera').addEventListener('click', registrocarrera); //boton registrar carrera
     document.getElementById('agregarsponsor').addEventListener('click', registroSponsor); //boton registrar sponsor
-    document.getElementById('agregarcorredor').addEventListener('click', registroCorredor);
+    document.getElementById('agregarcorredor').addEventListener('click', registroCorredor); //boton registrar corredor
+    document.getElementById('botonregistro').addEventListener('click', registroInscripcion); //boton registrar inscripcion
 
 }
 
-
+//BOTONES
 
 function cambiodatos(){ //funcion para mostrar datos
 
@@ -25,21 +27,21 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
     document.getElementById('estadisticas').style.display = "block";
 
 }
+//FIN DE BOTONES
 
-
-
-
+//REGISTROS
 
  function registrocarrera(){ //funcion registro carreras
 
     let carrera = new Carrera(); 
+    
+
     carrera.nombre = document.getElementById('nomcarrera').value;
     carrera.departamento = document.getElementById('departamentocarrera').value;
     carrera.fecha = document.getElementById('fechacarrera').value;
     carrera.cupos = document.getElementById('cuposcarrera').value;
     
-
-    carrera.agregarCarrera(carrera);
+    syscall.pushearCarrera(carrera);
     carrera.actualizarListaSponsor(); 
     carrera.actualizarListaInscripciones();
     document.getElementById('registrocarrera').reset();
@@ -53,7 +55,7 @@ sponsor.nombre = document.getElementById('nombresponsor').value;
 sponsor.rubro = document.getElementById('rubrosponsor').value;
 sponsor.carrera = document.getElementById('idcarrera').value;
         
-sponsor.agregarSponsor(sponsor);
+syscall.pushearSponsors(sponsor);
         
 }
 
@@ -67,13 +69,24 @@ function registroCorredor(){
     corredor.fichamedica=document.getElementById('fechamedica').value;
     corredor.tipocorredor=document.getElementsByName('typecorredor').value;
 
-    corredor.agregarCorredor(corredor);
+    syscall.pushearCorredores(corredor);
     corredor.actualizarListaCorredoresInscripciones();
 
   
 }
 
+function registroInscripcion(){
 
+    let inscripcion = new Inscripcion();
+
+    inscripcion.corredor = document.getElementById('selectorcorredor').value;
+    inscripcion.carrera = document.getElementById('selectorcarrera').value;
+
+    syscall.pushearInscripciones(inscripcion);
+
+}
+
+//FIN REGISTROS
 
 
 
