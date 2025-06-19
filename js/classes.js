@@ -53,6 +53,21 @@ class Sponsor {
         this.rubro = rubro;
         this.carrera = carrera;
     }
+
+    SponsorRepetido(sponsor){
+        let repetido = false;
+        for (let i = 0; i < this.listasponsors.length && !repetido; i++){
+            if(this.listasponsors[i].nombre == sponsor.nombre){
+                repetido = true
+            } 
+        } return repetido
+
+    } 
+    ActualizarSponsor(rubro, carrera){
+        this.sponsor.rubro = rubro;
+        this.sponsor.carrera = carrera;
+    }
+
 }
 
 class Corredor {
@@ -78,7 +93,33 @@ class Corredor {
 
 }   
 
+    calcularEdad(fechaNacimiento) {
+    let partes = fechaNacimiento.split("/");
 
+    let diaNacimiento = parseInt(partes[0]);
+    let mesNacimiento = parseInt(partes[1]);
+    let anioNacimiento = parseInt(partes[2]);
+
+    let hoy = new Date();
+    let diaHoy = hoy.getDate();
+    let mesHoy = hoy.getMonth() + 1; // los meses van de 0 a 11
+    let anioHoy = hoy.getFullYear();
+
+    let edad = anioHoy - anioNacimiento;
+
+    if (mesHoy < mesNacimiento) {
+        edad = edad - 1;
+    } else {
+        if (mesHoy === mesNacimiento) {
+            if (diaHoy < diaNacimiento) {
+                edad = edad - 1;
+            }
+        }
+    }
+
+    return edad + " años";
+
+    }
 
 
 }
@@ -101,15 +142,15 @@ inscripcionFechaValida() {
 }
 
 
-    
+
 }
 
 class Sistema {
     constructor() {
-        this.carreras = [];
-        this.corredores = [];
-        this.sponsors = [];
-        this.inscripciones = [];
+        this.listaCarreras = [];
+        this.listaCorredores = [];
+        this.listaSponsors = [];
+        this.listaInscripciones = [];
     }
 
     pushearCarrera(carrera){
