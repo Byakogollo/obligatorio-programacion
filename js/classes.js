@@ -38,16 +38,21 @@ class Carrera {
 
 class Sponsor {
     constructor(nombre, rubro, carrera) {
-
         this.nombre = nombre;
         this.rubro = rubro;
         this.carrera = carrera;
-        
     }
 
+    // Verifica si el sponsor ya existe en la lista de sponsors del sistema
+    static sponsorRepetido(sponsor, sponsorsList) {
+        return sponsorsList.some(s => s.nombre === sponsor.nombre);
+    }
 
-
-
+    // Actualiza los datos del sponsor actual
+    actualizarSponsor(rubro, carrera) {
+        this.rubro = rubro;
+        this.carrera = carrera;
+    }
 }
 
 class Corredor {
@@ -59,8 +64,6 @@ class Corredor {
         this.fichamedica = fichamedica;
         this.tipocorredor = tipocorredor;
     }
-
-   
 
 
      actualizarListaCorredoresInscripciones(){
@@ -87,7 +90,15 @@ class Inscripcion {
         this.carrera = carrera;
     }
 
+inscripcionFechaValida() {
+    let esValida = false;
 
+    if (this.carrera.fecha <= this.corredor.fichamedica) {
+        esValida = true;
+
+    }
+        return esValida;
+}
 
 
     
@@ -101,40 +112,32 @@ class Sistema {
         this.inscripciones = [];
     }
 
+    pushearCarrera(carrera){
+        this.carreras.push(carrera);
+        console.log(this.carreras);
+    }
 
-  pushearCarrera(carrera){
-    this.carreras.push(carrera);
-    console.log(this.carreras);
-  }
-
-  pushearCorredores(corredor){
-      
+    pushearCorredores(corredor){
         this.corredores.push(corredor);
         console.log(this.corredores);
-    
-  }
+    }
 
-  pushearSponsors(sponsor) {
-
+    pushearSponsors(sponsor) {
         this.sponsors.push(sponsor);
         console.log(this.sponsors);
-    
+    }
 
-  }
+    pushearInscripciones(inscripcion){
+        this.inscripciones.push(inscripcion);
+        console.log(this.inscripciones);
+    }
 
-  pushearInscripciones(inscripcion){
-
-    this.inscripciones.push(inscripcion);
-    console.log(this.inscripciones);
-
-  }
-
-  
-  
-
-
-
-
-
-
+    calcularPromedioInscriptos() {
+        if (this.carreras.length === 0) {
+            return 0;
+        }
+        let totalInscriptos = this.inscripciones.length;
+        let totalCarreras = this.carreras.length;
+        return totalInscriptos / totalCarreras;
+    }
 }
