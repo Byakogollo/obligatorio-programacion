@@ -33,9 +33,8 @@ toString(){
     let lista = document.getElementById('selectorcarrera');
 
     let nodo = document.createElement('option');
-    let nodoT = document.createTextNode(this.nombre);
-
-    nodo.appendChild(nodoT)
+    nodo.value = this.nombre; // El value es el nombre
+    nodo.textContent = this.nombre;
     lista.appendChild(nodo);
 
     }
@@ -94,9 +93,8 @@ class Corredor {
     let lista = document.getElementById('selectorcorredor');
 
     let nodo = document.createElement('option');
-    let nodoT = document.createTextNode('Nombre: '+this.nombre+' Cedula: '+this.cedula);
-
-    nodo.appendChild(nodoT)
+    nodo.value = this.cedula; // El value es la cédula
+    nodo.textContent = 'Nombre: ' + this.nombre + ' Cedula: ' + this.cedula;
     lista.appendChild(nodo);
 
 }   

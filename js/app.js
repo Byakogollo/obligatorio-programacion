@@ -122,8 +122,6 @@ function registroCorredor(){
         }
 }
 
-    
-
   
 }
 
@@ -131,36 +129,63 @@ function registroInscripcion() {
     let cedulaCorredor = document.getElementById('selectorcorredor').value;
     let nombreCarrera = document.getElementById('selectorcarrera').value;
 
-    let corredor = syscall.listacorredores.find(c => c.cedula == cedulaCorredor);
-    let carrera = syscall.listacarreras.find(c => c.nombre == nombreCarrera);
+    // Buscar corredor
+    let corredor = null;
+    for (let i = 0; i < syscall.listacorredores.length; i++) {
+        if (syscall.listacorredores[i].cedula == cedulaCorredor) {
+            corredor = syscall.listacorredores[i];
+            break;
+        }
+    }
+    // Buscar carrera
+    let carrera = null;
+    for (let i = 0; i < syscall.listacarreras.length; i++) {
+        if (syscall.listacarreras[i].nombre == nombreCarrera) {
+            carrera = syscall.listacarreras[i];
+            break;
+        }
+    }
 
+    let datosValidos = true;
     if (!corredor || !carrera) {
         alert('Debes seleccionar un corredor y una carrera válidos.');
-        return;
+        datosValidos = false;
     }
 
     // Validar que no esté ya inscripto usando el método de Sistema
-    if (syscall.corredorYaInscripto(corredor, carrera)) {
+    if (datosValidos && syscall.corredorYaInscripto(corredor, carrera)) {
         alert('El corredor ya está inscripto en esa carrera.');
-        return;
+        datosValidos = false;
     }
 
     // Validar ficha médica
-    let inscripcion = new Inscripcion(corredor, carrera);
-    if (!inscripcion.inscripcionFechaValida()) {
-        alert('La ficha médica no está vigente para la fecha de la carrera.');
-        return;
+    let inscripcion = null;
+    if (datosValidos) {
+        inscripcion = new Inscripcion(corredor, carrera);
+        if (!inscripcion.inscripcionFechaValida()) {
+            alert('La ficha médica no está vigente para la fecha de la carrera.');
+            datosValidos = false;
+        }
     }
 
     // Validar cupo
-    let inscriptosEnCarrera = syscall.listainscripciones.filter(insc => insc.carrera.nombre == carrera.nombre).length;
-    if (inscriptosEnCarrera >= carrera.cupos) {
-        alert('No hay cupos disponibles en la carrera.');
-        return;
+    if (datosValidos) {
+        let inscriptosEnCarrera = 0;
+        for (let i = 0; i < syscall.listainscripciones.length; i++) {
+            if (syscall.listainscripciones[i].carrera.nombre == carrera.nombre) {
+                inscriptosEnCarrera++;
+            }
+        }
+        if (inscriptosEnCarrera >= carrera.cupos) {
+            alert('No hay cupos disponibles en la carrera.');
+            datosValidos = false;
+        }
     }
 
-    syscall.pushearInscripciones(inscripcion);
-    // Aquí puedes agregar el reset del formulario o cualquier otra acción
+    if (datosValidos) {
+        syscall.pushearInscripciones(inscripcion);
+        descargarInscripcionPDF(inscripcion);
+    }
 }
 
 function descargarInscripcionPDF(inscripcion) {
@@ -171,8 +196,7 @@ function descargarInscripcionPDF(inscripcion) {
     doc.text(`Departamento: ${inscripcion.carrera.departamento}`, 10, 40);
     doc.text(`Fecha de la carrera: ${inscripcion.carrera.fecha}`, 10, 50);
     doc.text(`Cupo: ${inscripcion.carrera.cupos}`, 10, 60);
-    // Puedes agregar más datos según lo que necesites
-    doc.save("inscripcion.pdf");
+    doc.save("inscripcion" + inscripcion.corredor.nombre + ".pdf");
 }
 
 //FIN REGISTROS
