@@ -36,7 +36,6 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
     document.getElementById('botonestadisticas').classList.add('activo');
     mostrarPromedioInscriptos();
     mostrarCarreraConMasInscriptos();
-    // Aquí puedes llamar a otras funciones para mostrar estadísticas adicionales
 }
 
 //FIN DE BOTONES
@@ -183,8 +182,22 @@ function registroInscripcion() {
     }
 
     if (datosValidos) {
+        // Calcular número de cupo usando el método del sistema
+        let numeroCupo = syscall.calcularNumeroCupo(carrera);
         syscall.pushearInscripciones(inscripcion);
-        descargarInscripcionPDF(inscripcion);
+        descargarInscripcionPDF(inscripcion);// Descomentar si se quiere descargar el PDF
+        alert(
+            "¡Inscripción exitosa!\n" +
+            "Número: " + numeroCupo + "\n" +
+            "Nombre: " + corredor.nombre + " " + corredor.edad + " años, " +
+            "CI: " + corredor.cedula + " Ficha médica: " + corredor.fichamedica + "\n" +
+            corredor.tipocorredor + "\n" +
+            "Carrera: " + carrera.nombre + " Departamento: " + carrera.departamento + " El " + carrera.fecha +
+            "Cupos " + inscripcion.carrera.cupos + "\n" +
+            (inscripcion.carrera.sponsor 
+                ? (inscripcion.carrera.sponsor + " (" + inscripcion.carrera.rubro + ")\n")
+                : "")
+        );
     }
 }
 
@@ -224,23 +237,5 @@ function mostrarCarreraConMasInscriptos() {
         pCarreraa.textContent = 'Carrera con más inscriptos: ' + carrera.nombre + ' con ' + carrera.cupos + "y " + carrera.inscripciones.length + ' inscriptos';
     }
 }
-
-//MAPA
-// aquí va la lógica de mapa si la necesitas
-//FIN MAPA
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

@@ -99,35 +99,6 @@ class Corredor {
 
 }   
 
-    calcularEdad(fechaNacimiento) {
-    let partes = fechaNacimiento.split("/");
-
-    let diaNacimiento = parseInt(partes[0]);
-    let mesNacimiento = parseInt(partes[1]);
-    let anioNacimiento = parseInt(partes[2]);
-
-    let hoy = new Date();
-    let diaHoy = hoy.getDate();
-    let mesHoy = hoy.getMonth() + 1; // los meses van de 0 a 11
-    let anioHoy = hoy.getFullYear();
-
-    let edad = anioHoy - anioNacimiento;
-
-    if (mesHoy < mesNacimiento) {
-        edad = edad - 1;
-    } else {
-        if (mesHoy === mesNacimiento) {
-            if (diaHoy < diaNacimiento) {
-                edad = edad - 1;
-            }
-        }
-    }
-
-    return edad + " años";
-
-    }
-
-
 }
 
 class Inscripcion {
@@ -255,6 +226,7 @@ class Sistema {
             let inscriptos = this.listainscripciones.filter(inscripcion => inscripcion.carrera === this.listacarreras[i]).length;
             if (inscriptos === 0) {
                 carrerasSinInscriptos.push(this.listacarreras[i]);
+                sort(carrerasSinInscriptos, (a, b) => a.fecha - b.fecha);
             }
         }
         return carrerasSinInscriptos;
@@ -266,5 +238,16 @@ class Sistema {
             insc.corredor.cedula == corredor.cedula &&
             insc.carrera.nombre == carrera.nombre
         );
+    }
+
+    // Devuelve el número de cupo para la próxima inscripción en la carrera recibida
+    calcularNumeroCupo(carrera) {
+        let numeroCupo = 1;
+        for (let i = 0; i < this.listainscripciones.length; i++) {
+            if (this.listainscripciones[i].carrera.nombre == carrera.nombre) {
+                numeroCupo++;
+            }
+        }
+        return numeroCupo;
     }
 }
