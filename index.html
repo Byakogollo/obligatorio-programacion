@@ -8,10 +8,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+     
+   
+    
         <link rel="stylesheet" type="text/css" href="./css/style.css">
         <script src="./js/classes.js"></script>
         <script src="./js/app.js"></script>
-       
+   
 
         <title>Gestion Carreras</title>
     </head>
@@ -43,12 +46,12 @@
                 <form id="registrocarrera">
 
                     <label for="nomcarrera">Nombre</label>
-                    <input type="text" name="nombre" id="nomcarrera">
+                    <input type="text" name="nombre" id="nomcarrera" required>
 
 
                     <label for="depto">Departamento</label>
 
-                    <select name="depto" id="departamentocarrera">
+                    <select name="depto" id="departamentocarrera" required>
                                         <option value="null" selected>---</option>
                                         <option value="1">1 Montevideo</option>
                                         <option value="2">2 Canelones</option>
@@ -73,11 +76,11 @@
 
 
                     <label for="idfecha">Fecha</label>
-                    <input type="date" name='idfecha' id="fechacarrera">
+                    <input type="date" name='idfecha' id="fechacarrera" required>
 
 
                     <label for="idcupo">Cupos</label>
-                    <input type="number" name='idcupo' id="cuposcarrera" min="1" max="30">
+                    <input type="number" name='idcupo' id="cuposcarrera" min="1" max="1000" value="30" required>
 
                     <br>
                     <input type="button" value="Agregar carrera" id="agregarcarrera">
@@ -95,14 +98,14 @@
                     <form id="registrosponsor">
 
                     <label for="nombresponsor">Nombre</label>
-                    <input type="text" name="sponsor" id="nombresponsor">
+                    <input type="text" name="sponsor" id="nombresponsor" required>
 
 
                     <label for="rubrosponsor">Rubro</label>
                     
-                        <select name="rubro" id="rubrosponsor">
+                        <select name="rubro" id="rubrosponsor" required>
 
-                                <option value="null" selected>---</option>
+                                <option value="null" selected>Seleccione el rubro</option>
                                 <option value="alimenticio">Alimenticio</option>
                                 <option value="bancario">Bancario</option>
                                 <option value="bebidas">Bebidas</option>
@@ -114,7 +117,7 @@
                         </select>
 
                     <label for="listacarreras">Carreras:</label>
-                    <select name="listacarreras" id="idcarrera" multiple>
+                    <select name="listacarreras" id="idcarrera" multiple required>
                         
                     </select>
 
@@ -131,23 +134,23 @@
                     <h3>Corredores</h3>
 
                     <label for="nombrecorredor">Nombre</label>
-                    <input type="text" id="nombrecorredor">
+                    <input type="text" id="nombrecorredor" required>
 
                     <label for="edadcorredor">Edad</label>
-                    <input type="number" id="edadcorredor">
+                    <input type="number" id="edadcorredor" min="18" required>
 
                     <label for="idcorredor">Cedula</label>
-                    <input type="number" id="idcorredor">
+                    <input type="number" id="idcorredor" required>
 
                     <label for="fechamedica">Fecha de vencimiento de ficha médica</label>
-                    <input type="date" id="fechamedica">
+                    <input type="date" id="fechamedica" required>
 
                     <div class="radioselector">
                     
-                        <label for="corredorelite">Deportista de élite</label>
+                        <label for="corredorelite">Corredor común</label>
                         <input type="radio" name="typecorredor" id="corredorelite" checked>
 
-                        <label for="corredorcomun">Corredor común</label>
+                        <label for="corredorcomun">Deportista de élite</label>
                         <input type="radio" name="typecorredor" id="corredorcomun">
 
                 
@@ -269,6 +272,9 @@
                   <input type="radio" name="mapa" value="1" id="mapainscripcion">
                
                 </div>
+
+                <div id="map"></div>
+
 
 
           </article> <!--FIN MAPA-->

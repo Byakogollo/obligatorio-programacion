@@ -35,42 +35,82 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
 
     let carrera = new Carrera(); 
     
+    let formulario = document.getElementById('registrocarrera');
 
+    if (formulario.reportValidity()){
     carrera.nombre = document.getElementById('nomcarrera').value;
     carrera.departamento = document.getElementById('departamentocarrera').value;
     carrera.fecha = document.getElementById('fechacarrera').value;
     carrera.cupos = document.getElementById('cuposcarrera').value;
-    
-    syscall.pushearCarrera(carrera);
-    carrera.actualizarListaSponsor(); 
-    carrera.actualizarListaInscripciones();
-    document.getElementById('registrocarrera').reset();
+   
+        if(!syscall.checkearCarreraRepetida(carrera)){
+              syscall.pushearCarrera(carrera);
+               
+                    carrera.actualizarListaSponsor(); 
+                        carrera.actualizarListaInscripciones();
+                            formulario.reset();
+         }else{
+        alert('La carrera ya ha sido ingresada.');
+    }
 }
+        }
 
 function registroSponsor(){
 
 let sponsor = new Sponsor(); 
+formulario = document.getElementById('registrosponsor');
 
-sponsor.nombre = document.getElementById('nombresponsor').value;
-sponsor.rubro = document.getElementById('rubrosponsor').value;
-sponsor.carrera = document.getElementById('idcarrera').value;
+if(formulario.reportValidity()){
+
+    sponsor.nombre = document.getElementById('nombresponsor').value;
+
+    sponsor.rubro = document.getElementById('rubrosponsor').value;
+
+    sponsor.carrera = document.getElementById('idcarrera').value;
         
-syscall.pushearSponsors(sponsor);
-        
+        if(syscall.checkearSponsorRepetido(sponsor) && syscall.listasponsors.length > 0 ){
+
+            sponsor = syscall.buscaSponsor(sponsor);
+
+            sponsor.rubro = document.getElementById('rubrosponsor').value;
+           
+            sponsor.carrera = document.getElementById('idcarrera').value;
+           
+            alert('El sponsor fue actualizado correctamente');
+            console.log(syscall.listasponsors);
+            
+        }else{
+                    syscall.pushearSponsors(sponsor);
+                }      
+                formulario.reset();
+            }
 }
+
 
 function registroCorredor(){
 
     let corredor = new Corredor();
+    let formulario = document.getElementById('registrocorredores');
 
+    if (formulario.reportValidity()){
     corredor.nombre= document.getElementById('nombrecorredor').value;
     corredor.edad=document.getElementById('edadcorredor').value;
     corredor.cedula=document.getElementById('idcorredor').value;
     corredor.fichamedica=document.getElementById('fechamedica').value;
     corredor.tipocorredor=document.getElementsByName('typecorredor').value;
 
-    syscall.pushearCorredores(corredor);
-    corredor.actualizarListaCorredoresInscripciones();
+    
+        if (!syscall.checkearCorredorRepetido(corredor)){
+            
+            syscall.pushearCorredores(corredor);
+            corredor.actualizarListaCorredoresInscripciones();
+            formulario.reset();
+        }else{
+            alert('El corredor ya fue ingresado');
+        }
+}
+
+    
 
   
 }
@@ -81,16 +121,19 @@ function registroInscripcion(){
 
     inscripcion.corredor = document.getElementById('selectorcorredor').value;
     inscripcion.carrera = document.getElementById('selectorcarrera').value;
-
+    
     syscall.pushearInscripciones(inscripcion);
 
 }
 
 //FIN REGISTROS
 
+//MAPA
 
 
+   
 
+//FIN MAPA
 
 
 

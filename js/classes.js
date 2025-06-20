@@ -7,6 +7,7 @@ class Carrera {
         this.cupos = cupos;
     }
 
+ 
      actualizarListaSponsor(){
 
     let lista = document.getElementById('idcarrera');
@@ -18,6 +19,12 @@ class Carrera {
     lista.appendChild(nodo);
 
 }   
+
+toString(){
+    let datos = this.nombre+this.departamento+this.fecha+this.cupos;
+
+    return datos;
+}
 
 
 
@@ -32,9 +39,10 @@ class Carrera {
     lista.appendChild(nodo);
 
 }   
-
   
 }
+
+
 
 class Sponsor {
     constructor(nombre, rubro, carrera) {
@@ -68,7 +76,7 @@ class Corredor {
     let lista = document.getElementById('selectorcorredor');
 
     let nodo = document.createElement('option');
-    let nodoT = document.createTextNode(this.nombre);
+    let nodoT = document.createTextNode('Nombre: '+this.nombre+' Cedula: '+this.cedula);
 
     nodo.appendChild(nodoT)
     lista.appendChild(nodo);
@@ -95,41 +103,99 @@ class Inscripcion {
 
 class Sistema {
     constructor() {
-        this.carreras = [];
-        this.corredores = [];
-        this.sponsors = [];
-        this.inscripciones = [];
+        this.listacarreras = [];
+        this.listacorredores = [];
+        this.listasponsors = [];
+        this.listainscripciones = [];
     }
 
 
+
+
+
+
   pushearCarrera(carrera){
-    this.carreras.push(carrera);
-    console.log(this.carreras);
+
+    this.listacarreras.push(carrera);
+    console.log(this.listacarreras);
   }
 
   pushearCorredores(corredor){
       
-        this.corredores.push(corredor);
-        console.log(this.corredores);
+        this.listacorredores.push(corredor);
+        console.log(this.listacorredores);
     
   }
 
   pushearSponsors(sponsor) {
 
-        this.sponsors.push(sponsor);
-        console.log(this.sponsors);
-    
-
-  }
+        this.listasponsors.push(sponsor);
+        console.log(this.listasponsors);
+    }
 
   pushearInscripciones(inscripcion){
 
-    this.inscripciones.push(inscripcion);
+    this.listainscripciones.push(inscripcion);
     console.log(this.inscripciones);
 
   }
 
-  
+  checkearCarreraRepetida(carrera){
+     let aux = false;
+
+    for (let i = 0; i < this.listacarreras.length && aux==false; i++){
+       
+        if (this.listacarreras[i].nombre == carrera.nombre){
+            aux = true;
+        }
+    }
+
+    return aux;
+
+}
+
+checkearSponsorRepetido(sponsor){
+     let aux = false;
+
+    for (let i = 0; i < this.listasponsors.length && aux==false; i++){
+       
+        if (this.listasponsors[i].nombre == sponsor.nombre){
+            aux = true;
+        }
+    }
+
+    return aux;
+
+}
+
+buscaSponsor(sponsor){
+        let aux = false;
+        let pos = 0;
+   
+        for (let i = 0; i < this.listasponsors.length && aux==false; i++){
+       
+        if (this.listasponsors[i].nombre == sponsor.nombre){
+            aux = true;
+            pos = this.listasponsors[i];
+        }
+    }
+
+    return pos;
+}
+
+checkearCorredorRepetido(corredor){
+     let aux = false;
+
+    for (let i = 0; i < this.listacorredores.length && aux==false; i++){
+       
+        if (this.listacorredores[i].cedula == corredor.cedula){
+            aux = true;
+        }
+    }
+
+    return aux;
+
+}
   
 
 
