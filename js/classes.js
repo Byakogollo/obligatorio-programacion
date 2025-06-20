@@ -147,10 +147,10 @@ inscripcionFechaValida() {
 
 class Sistema {
     constructor() {
-        this.listaCarreras = [];
-        this.listaCorredores = [];
-        this.listaSponsors = [];
-        this.listaInscripciones = [];
+        this.carreras = [];
+        this.corredores = [];
+        this.sponsors = [];
+        this.inscripciones = [];
     }
 
     pushearCarrera(carrera){
@@ -182,3 +182,7 @@ class Sistema {
         return totalInscriptos / totalCarreras;
     }
 }
+
+
+
+
