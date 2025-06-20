@@ -7,6 +7,7 @@ class Carrera {
         this.cupos = cupos;
     }
 
+ 
      actualizarListaSponsor(){
 
     let lista = document.getElementById('idcarrera');
@@ -18,6 +19,12 @@ class Carrera {
     lista.appendChild(nodo);
 
 }   
+
+toString(){
+    let datos = this.nombre+this.departamento+this.fecha+this.cupos;
+
+    return datos;
+}
 
 
 
@@ -31,10 +38,11 @@ class Carrera {
     nodo.appendChild(nodoT)
     lista.appendChild(nodo);
 
-}   
-
-  
+    }
+    
 }
+
+
 
 class Sponsor {
     constructor(nombre, rubro, carrera) {
@@ -86,7 +94,7 @@ class Corredor {
     let lista = document.getElementById('selectorcorredor');
 
     let nodo = document.createElement('option');
-    let nodoT = document.createTextNode(this.nombre);
+    let nodoT = document.createTextNode('Nombre: '+this.nombre+' Cedula: '+this.cedula);
 
     nodo.appendChild(nodoT)
     lista.appendChild(nodo);
@@ -147,42 +155,118 @@ inscripcionFechaValida() {
 
 class Sistema {
     constructor() {
-        this.carreras = [];
-        this.corredores = [];
-        this.sponsors = [];
-        this.inscripciones = [];
+        this.listacarreras = [];
+        this.listacorredores = [];
+        this.listasponsors = [];
+        this.listainscripciones = [];
     }
 
-    pushearCarrera(carrera){
-        this.carreras.push(carrera);
-        console.log(this.carreras);
+    pushearCarrera(carrera) {
+        this.listacarreras.push(carrera);
+        console.log(this.listacarreras);
     }
 
-    pushearCorredores(corredor){
-        this.corredores.push(corredor);
-        console.log(this.corredores);
+    pushearCorredores(corredor) {
+        this.listacorredores.push(corredor);
+        console.log(this.listacorredores);
     }
 
     pushearSponsors(sponsor) {
-        this.sponsors.push(sponsor);
-        console.log(this.sponsors);
+        this.listasponsors.push(sponsor);
+        console.log(this.listasponsors);
     }
 
-    pushearInscripciones(inscripcion){
-        this.inscripciones.push(inscripcion);
-        console.log(this.inscripciones);
+    pushearInscripciones(inscripcion) {
+        this.listainscripciones.push(inscripcion);
+        console.log(this.listainscripciones);
+    }
+
+    checkearCarreraRepetida(carrera) {
+        let aux = false;
+        for (let i = 0; i < this.listacarreras.length && aux == false; i++) {
+            if (this.listacarreras[i].nombre == carrera.nombre) {
+                aux = true;
+            }
+        }
+        return aux;
+    }
+
+    checkearSponsorRepetido(sponsor) {
+        let aux = false;
+        for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
+            if (this.listasponsors[i].nombre == sponsor.nombre) {
+                aux = true;
+            }
+        }
+        return aux;
+    }
+
+    buscaSponsor(sponsor) {
+        let aux = false;
+        let pos = 0;
+        for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
+            if (this.listasponsors[i].nombre == sponsor.nombre) {
+                aux = true;
+                pos = this.listasponsors[i];
+            }
+        }
+        return pos;
+    }
+
+    checkearCorredorRepetido(corredor) {
+        let aux = false;
+        for (let i = 0; i < this.listacorredores.length && aux == false; i++) {
+            if (this.listacorredores[i].cedula == corredor.cedula) {
+                aux = true;
+            }
+        }
+        return aux;
     }
 
     calcularPromedioInscriptos() {
-        if (this.carreras.length === 0) {
+        if (this.listacarreras.length === 0) {
             return 0;
         }
-        let totalInscriptos = this.inscripciones.length;
-        let totalCarreras = this.carreras.length;
+        let totalInscriptos = this.listainscripciones.length;
+        let totalCarreras = this.listacarreras.length;
         return totalInscriptos / totalCarreras;
     }
+
+    calcularCarreraconMasInscriptos() {
+        if (this.listacarreras.length === 0) {
+            return null;
+        }
+        let carreraMax = this.listacarreras[0];
+        let maxInscriptos = 0;
+
+        for (let i = 0; i < this.listacarreras.length; i++) {
+            let inscriptos = this.listainscripciones.filter(inscripcion => inscripcion.carrera === this.listacarreras[i]).length;
+            if (inscriptos > maxInscriptos) {
+                maxInscriptos = inscriptos;
+                carreraMax = this.listacarreras[i];
+            } else if (inscriptos === maxInscriptos) {
+                carreraMax.push(this.listacarreras[i]);
+            }
+        }
+        return carreraMax;
+    }
+
+    carrerasConNingunoInscripto() { 
+        let carrerasSinInscriptos = [];
+        for (let i = 0; i < this.listacarreras.length; i++) {
+            let inscriptos = this.listainscripciones.filter(inscripcion => inscripcion.carrera === this.listacarreras[i]).length;
+            if (inscriptos === 0) {
+                carrerasSinInscriptos.push(this.listacarreras[i]);
+            }
+        }
+        return carrerasSinInscriptos;
+    }
+
+    // Nuevo método: verifica si un corredor ya está inscripto en una carrera
+    corredorYaInscripto(corredor, carrera) {
+        return this.listainscripciones.some(insc =>
+            insc.corredor.cedula == corredor.cedula &&
+            insc.carrera.nombre == carrera.nombre
+        );
+    }
 }
-
-
-
-
