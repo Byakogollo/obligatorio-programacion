@@ -145,10 +145,10 @@
                     <div class="radioselector">
                     
                         <label for="corredorelite">Corredor común</label>
-                        <input type="radio" name="typecorredor" id="corredorelite" checked>
+                        <input type="radio" name="typecorredor" id="corredorcomun" value="comun" checked>
 
                         <label for="corredorcomun">Deportista de élite</label>
-                        <input type="radio" name="typecorredor" id="corredorcomun">
+                        <input type="radio" name="typecorredor" id="corredorelite" value="elite">
 
                 
                     </div>
@@ -167,14 +167,10 @@
                     <form id="inscripcioncarrera" method="get">
                    
                     <label for="selectorcarrera">Carrera</label>
-                    <select name="carreras" id="selectorcarrera">
-                        <option value="null" selected>----</option>
-                    </select>
+                    <select name="carreras" id="selectorcarrera" required></select>
 
                     <label for="selectorcorredor">Corredor</label>
-                    <select name="corredores" id="selectorcorredor">
-                        <option value="null" selected>----</option>
-                    </select>
+                    <select name="corredores" id="selectorcorredor" required></select>
                     
                     <br>
 

@@ -21,7 +21,10 @@ class Carrera {
 }   
 
 toString(){
-    let datos = this.nombre+this.departamento+this.fecha+this.cupos;
+let datos = 'Carrera: ' + this.nombre + 
+            '\nDepartamento: ' + this.departamento + 
+            '\nFecha: ' + this.fecha + 
+            '\nCupos: ' + this.cupos;
 
     return datos;
 }
@@ -49,6 +52,14 @@ class Sponsor {
         this.rubro = rubro;
         this.carrera = carrera;
     }
+
+    toString(){
+let datos = 'Nombre: ' + this.nombre + 
+            '\nRubro: ' + this.rubro + 
+            '\nCarrera: ' + this.carrera;
+
+    return datos;
+}
 
     // Verifica si el sponsor ya existe en la lista de sponsors del sistema
     static sponsorRepetido(sponsor, sponsorsList) {
@@ -87,6 +98,16 @@ class Corredor {
         this.tipocorredor = tipocorredor;
     }
 
+    toString(){
+let datos = 'Nombre: ' + this.nombre + 
+            '\nEdad: ' + this.departamento + 
+            '\nCedula: ' + this.fecha + 
+            '\nFecha de Ficha Medica: ' + this.cupos +
+            '\nTipo de Corredor: '+this.tipocorredor;
+
+    return datos;
+}
+
 
      actualizarListaCorredoresInscripciones(){
 
@@ -102,11 +123,14 @@ class Corredor {
 }
 
 class Inscripcion {
-    constructor(corredor, carrera) {
+    constructor(corredor, carrera, cupo) {
 
         this.corredor = corredor;
         this.carrera = carrera;
+        this.cupo = cupo;
     }
+
+ 
 
 inscripcionFechaValida() {
     let esValida = false;
@@ -117,7 +141,6 @@ inscripcionFechaValida() {
     }
         return esValida;
 }
-
 
 
 }
@@ -182,6 +205,30 @@ class Sistema {
         return pos;
     }
 
+    buscaCarrera(carrera) {
+        let aux = false;
+        let pos = 0;
+        for (let i = 0; i < this.listacarreras.length && aux == false; i++) {
+            if (this.listacarreras[i].nombre == carrera) {
+                aux = true;
+                pos = this.listacarreras[i];
+            }
+        }
+        return pos;
+    }
+     
+    buscaCorredor(corredor) {
+        let aux = false;
+        let pos = 0;
+        for (let i = 0; i < this.listacorredores.length && aux == false; i++) {
+            if (this.listacorredores[i].cedula == corredor) {
+                aux = true;
+                pos = this.listacorredores[i];
+            }
+        }
+        return pos;
+    }
+    
     checkearCorredorRepetido(corredor) {
         let aux = false;
         for (let i = 0; i < this.listacorredores.length && aux == false; i++) {
@@ -192,6 +239,46 @@ class Sistema {
         return aux;
     }
 
+    generarCupo(carrera){
+        
+        let cont = syscall.buscaCarrera(carrera).cupos;
+               
+        return cont;
+    }
+
+    validarCupos(carrera){
+        let aux = false;
+
+            if (syscall.buscaCarrera(carrera).cupos <= 0){
+                alert('No hay mas cupos');
+                   aux = true;
+            }
+
+            return aux;
+    }
+
+    actualizarCupos(carrera){
+        
+        syscall.buscaCarrera(carrera).cupos -= 1;
+    }
+
+    corredorYaInscripto(inscripcion) {
+        let aux = false;
+        for (let i = 0; i<this.listainscripciones.length && aux == false; i++){
+
+                if (inscripcion.corredor.cedula == this.listainscripciones[i].corredor.cedula && inscripcion.carrera.nombre == this.listainscripciones[i].carrera.nombre){
+                    aux = true;
+                }
+        }
+
+        return aux;
+        
+    }
+
+    
+
+
+
     calcularPromedioInscriptos() {
         if (this.listacarreras.length === 0) {
             return 0;
@@ -201,7 +288,7 @@ class Sistema {
         return totalInscriptos / totalCarreras;
     }
 
-    calcularCarreraconMasInscriptos() {
+    calcularCarreraConMasInscriptos() {
         if (this.listacarreras.length === 0) {
             return null;
         }
@@ -232,22 +319,6 @@ class Sistema {
         return carrerasSinInscriptos;
     }
 
-    // Nuevo método: verifica si un corredor ya está inscripto en una carrera
-    corredorYaInscripto(corredor, carrera) {
-        return this.listainscripciones.some(insc =>
-            insc.corredor.cedula == corredor.cedula &&
-            insc.carrera.nombre == carrera.nombre
-        );
-    }
+   
 
-    // Devuelve el número de cupo para la próxima inscripción en la carrera recibida
-    calcularNumeroCupo(carrera) {
-        let numeroCupo = 1;
-        for (let i = 0; i < this.listainscripciones.length; i++) {
-            if (this.listainscripciones[i].carrera.nombre == carrera.nombre) {
-                numeroCupo++;
-            }
-        }
-        return numeroCupo;
-    }
 }
