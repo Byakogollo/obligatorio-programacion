@@ -33,6 +33,8 @@ let datos = 'Carrera: ' + this.nombre +
 
  actualizarListaInscripciones(){
 
+
+
     let lista = document.getElementById('selectorcarrera');
 
     let nodo = document.createElement('option');
@@ -125,12 +127,31 @@ let datos = 'Nombre: ' + this.nombre +
 class Inscripcion {
     constructor(corredor, carrera, cupo) {
 
-        this.corredor = corredor;
+        this.corredor = corredor;       
         this.carrera = carrera;
         this.cupo = cupo;
     }
 
- 
+  
+        toString(inscripcion){
+        let mensaje = `Inscripción confirmada:
+
+                Corredor:
+                Nombre: ${inscripcion.corredor.nombre}
+                Edad: ${inscripcion.corredor.edad}
+                Cédula: ${inscripcion.corredor.cedula}
+                Vigencia Ficha Medica: ${inscripcion.corredor.fichamedica}
+                Tipo Corredor: ${inscripcion.corredor.tipocorredor}
+
+                Carrera:
+                Nombre: ${inscripcion.carrera.nombre}
+                Departamento: ${inscripcion.carrera.departamento}
+                Fecha: ${inscripcion.carrera.fecha}
+                Cupos restantes: ${inscripcion.carrera.cupos}
+                `;
+
+                return mensaje;
+                    }
 
 inscripcionFechaValida() {
     let esValida = false;
@@ -193,11 +214,36 @@ class Sistema {
         return aux;
     }
 
+    validoSponsors(carrera){
+        let aux = false;
+        
+
+        for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
+            if (this.listasponsors[i].carrera == carrera) {
+                aux = true;
+                
+            }
+        }
+        return aux;
+    }
+
     buscaSponsor(sponsor) {
         let aux = false;
         let pos = 0;
         for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
             if (this.listasponsors[i].nombre == sponsor.nombre) {
+                aux = true;
+                pos = this.listasponsors[i];
+            }
+        }
+        return pos;
+    }
+
+    buscaSponsorCarrera(carrera){
+        let aux = false;
+        let pos = 0;
+        for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
+            if (this.listasponsors[i].carrera == carrera) {
                 aux = true;
                 pos = this.listasponsors[i];
             }

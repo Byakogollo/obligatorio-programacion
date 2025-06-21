@@ -152,6 +152,9 @@ function registroInscripcion() {
         alert('El corredor ya está inscripto en esa carrera.');
 
     }else{
+        if(!syscall.validoSponsors(inscripcion.carrera.nombre)){
+            alert('No se puede inscribir en una carrera sin Sponsor');
+        }else{
         if (!syscall.validarCupos(carrera)) {
             
             inscripcion.cupo = syscall.generarCupo(carrera); 
@@ -159,7 +162,13 @@ function registroInscripcion() {
             
        
             syscall.pushearInscripciones(inscripcion);
-            alert(inscripcion.toString());
+
+            let sponsor = syscall.buscaSponsorCarrera(inscripcion.carrera.nombre);
+            let mensaje = [inscripcion.toString(inscripcion),     
+                            `\nDatos del Sponsor:\n${sponsor.toString()}`
+                           ].join('\n');
+            alert(mensaje);
+            descargarInscripcionPDF(inscripcion);
             formulario.reset();
 
         }else{
@@ -171,20 +180,10 @@ function registroInscripcion() {
         }
     }
 
-
 }
 }
+}
 
-
-
-    
-
-   
-        
-
-    
-    
- 
 
 //FIN REGISTROS
 
@@ -198,14 +197,14 @@ function descargarInscripcionPDF(inscripcion) {
     doc.text(`Carrera: ${inscripcion.carrera.nombre}`, 10, 30);
     doc.text(`Departamento: ${inscripcion.carrera.departamento}`, 10, 40);
     doc.text(`Fecha de la carrera: ${inscripcion.carrera.fecha}`, 10, 50);
-    doc.text(`Cupo: ${inscripcion.carrera.cupos}`, 10, 60);
+    doc.text(`Cupo: ${inscripcion.corredor.cupo}`, 10, 60);
     doc.save("inscripcion" + inscripcion.corredor.nombre + ".pdf");
 }
 
 
 
 //ESTADISTICAS
-
+/*
 function mostrarPromedioInscriptos() {
     // Llama al método del sistema y lo muestra en la interfaz
     let promedio = syscall.calcularPromedioInscriptos();
@@ -228,4 +227,4 @@ function mostrarCarreraConMasInscriptos() {
     }
 }
 
-
+*/
