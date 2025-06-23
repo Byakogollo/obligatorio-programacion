@@ -144,11 +144,11 @@
 
                     <div class="radioselector">
                     
-                        <label for="corredorelite">Corredor común</label>
-                        <input type="radio" name="typecorredor" id="corredorelite" checked>
+                        <label for="corredorcomun">Corredor común</label>
+                        <input type="radio" name="typecorredor" id="corredorcomun" value="comun" checked>
 
-                        <label for="corredorcomun">Deportista de élite</label>
-                        <input type="radio" name="typecorredor" id="corredorcomun">
+                        <label for="corredorelite">Deportista de élite</label>
+                        <input type="radio" name="typecorredor" id="corredorelite" value="elite">
 
                 
                     </div>
@@ -167,14 +167,10 @@
                     <form id="inscripcioncarrera" method="get">
                    
                     <label for="selectorcarrera">Carrera</label>
-                    <select name="carreras" id="selectorcarrera">
-                        <option value="null" selected>----</option>
-                    </select>
+                    <select name="carreras" id="selectorcarrera" required></select>
 
                     <label for="selectorcorredor">Corredor</label>
-                    <select name="corredores" id="selectorcorredor">
-                        <option value="null" selected>----</option>
-                    </select>
+                    <select name="corredores" id="selectorcorredor" required></select>
                     
                     <br>
 
@@ -199,18 +195,21 @@
 
                 <h3>Datos Generales</h3>
 
-                <p>Promedio de inscriptos por carrera: </p>
+                <p>Promedio de inscriptos por carrera: <a id="idPromedio"></a></p> 
 
                 <p>Carrera/s con más incriptos: </p>
-                <ul>
-                    <li>Sin datos</li>
+               
+                <ul id="idCarreraMasInscriptos">
+                    
                 </ul>
 
                 <p>Carrera/s sin inscriptos ordenadas por fechas</p>
-                <ul>
-                    <li>Sin datos</li>
+                
+                <ul id="idCarreraSininscriptos">
+                
                 </ul>
-                <p>Procentaje de corredores de élite: </p>
+
+                <p id="idPorcentajeElite">Procentaje de corredores de élite: </p>
 
                 </article> <!--FIN DATOS GENERALES-->  
 

@@ -34,8 +34,11 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
     document.getElementById('estadisticas').style.display = "block";
     document.getElementById('botondatos').classList.remove('activo');
     document.getElementById('botonestadisticas').classList.add('activo');
-    mostrarPromedioInscriptos();
-    mostrarCarreraConMasInscriptos();
+
+    document.getElementById('idPromedio').innerHTML = syscall.calcularPromedioInscriptos();
+    document.getElementById('idPorcentajeElite').innerHTML = calcularElites();
+    listarCarreraMasInscriptos();
+    listarCarrerasSinInscriptos();
 }
 //FIN DE BOTONES
 
@@ -54,6 +57,7 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
     carrera.departamento = document.getElementById('departamentocarrera').value;
     carrera.fecha = document.getElementById('fechacarrera').value;
     carrera.cupos = document.getElementById('cuposcarrera').value;
+    carrera.cont = 0;
    
         if(!syscall.checkearCarreraRepetida(carrera)){
               syscall.pushearCarrera(carrera);
@@ -98,6 +102,18 @@ if(formulario.reportValidity()){
             }
 }
 
+function leerRadioCorredor(){
+    let radios = document.getElementsByName('typecorredor');
+    let resultado;
+    let aux = false;
+    for (let i = 0; i <radios.length && !aux; i++){
+        if (radios[i].checked){
+            resultado = radios[i].value;
+            aux = true;
+        }
+    }
+    return resultado;
+}
 
 function registroCorredor(){
 
@@ -109,7 +125,7 @@ function registroCorredor(){
     corredor.edad=document.getElementById('edadcorredor').value;
     corredor.cedula=document.getElementById('idcorredor').value;
     corredor.fichamedica=document.getElementById('fechamedica').value;
-    corredor.tipocorredor=document.getElementsByName('typecorredor').value;
+    corredor.tipocorredor = leerRadioCorredor();
 
     
         if (!syscall.checkearCorredorRepetido(corredor)){
@@ -126,81 +142,59 @@ function registroCorredor(){
 }
 
 function registroInscripcion() {
-    let cedulaCorredor = document.getElementById('selectorcorredor').value;
-    let nombreCarrera = document.getElementById('selectorcarrera').value;
+   
+    let inscripcion = new Inscripcion();
+    let formulario = document.getElementById('inscripcioncarrera');
+  
+       if (formulario.reportValidity()) {
+        
+        let carrera = document.getElementById('selectorcarrera').value;  
+        inscripcion.carrera = syscall.buscaCarrera(carrera);
+        let corredor = document.getElementById('selectorcorredor').value;
+        inscripcion.corredor = syscall.buscaCorredor(corredor);
+               
 
-    // Buscar corredor
-    let corredor = null;
-    for (let i = 0; i < syscall.listacorredores.length; i++) {
-        if (syscall.listacorredores[i].cedula == cedulaCorredor) {
-            corredor = syscall.listacorredores[i];
-            break;
-        }
-    }
-    // Buscar carrera
-    let carrera = null;
-    for (let i = 0; i < syscall.listacarreras.length; i++) {
-        if (syscall.listacarreras[i].nombre == nombreCarrera) {
-            carrera = syscall.listacarreras[i];
-            break;
-        }
-    }
-
-    let datosValidos = true;
-    if (!corredor || !carrera) {
-        alert('Debes seleccionar un corredor y una carrera válidos.');
-        datosValidos = false;
-    }
-
-    // Validar que no esté ya inscripto usando el método de Sistema
-    if (datosValidos && syscall.corredorYaInscripto(corredor, carrera)) {
+    if (syscall.corredorYaInscripto(inscripcion)) {
         alert('El corredor ya está inscripto en esa carrera.');
-        datosValidos = false;
-    }
 
-    // Validar ficha médica
-    let inscripcion = null;
-    if (datosValidos) {
-        inscripcion = new Inscripcion(corredor, carrera);
-        if (!inscripcion.inscripcionFechaValida()) {
+    }else{
+        if(!syscall.validoSponsors(inscripcion.carrera.nombre)){
+            alert('No se puede inscribir en una carrera sin Sponsor');
+        }else{
+        if (!syscall.validarCupos(carrera)) {
+            
+            inscripcion.cupo = syscall.generarCupo(carrera); 
+            syscall.actualizarCupos(carrera);        
+            
+       
+            syscall.pushearInscripciones(inscripcion);
+
+            let sponsor = syscall.buscaSponsorCarrera(inscripcion.carrera.nombre);
+            let mensaje = [inscripcion.toString(inscripcion),     
+                            `\nDatos del Sponsor:\n${sponsor.toString()}`
+                           ].join('\n');
+            alert(mensaje);
+            descargarInscripcionPDF(inscripcion);
+            formulario.reset();
+
+        }else{
+            if(!inscripcion.inscripcionFechaValida()){
             alert('La ficha médica no está vigente para la fecha de la carrera.');
-            datosValidos = false;
-        }
-    }
-
-    // Validar cupo
-    if (datosValidos) {
-        let inscriptosEnCarrera = 0;
-        for (let i = 0; i < syscall.listainscripciones.length; i++) {
-            if (syscall.listainscripciones[i].carrera.nombre == carrera.nombre) {
-                inscriptosEnCarrera++;
+            
             }
-        }
-        if (inscriptosEnCarrera >= carrera.cupos) {
-            alert('No hay cupos disponibles en la carrera.');
-            datosValidos = false;
+    
         }
     }
 
-    if (datosValidos) {
-        // Calcular número de cupo usando el método del sistema
-        let numeroCupo = syscall.calcularNumeroCupo(carrera);
-        syscall.pushearInscripciones(inscripcion);
-        descargarInscripcionPDF(inscripcion);// Descomentar si se quiere descargar el PDF
-        alert(
-            "¡Inscripción exitosa!\n" +
-            "Número: " + numeroCupo + "\n" +
-            "Nombre: " + corredor.nombre + " " + corredor.edad + " años, " +
-            "CI: " + corredor.cedula + " Ficha médica: " + corredor.fichamedica + "\n" +
-            corredor.tipocorredor + "\n" +
-            "Carrera: " + carrera.nombre + " Departamento: " + carrera.departamento + " El " + carrera.fecha +
-            "Cupos " + inscripcion.carrera.cupos + "\n" +
-            (inscripcion.carrera.sponsor 
-                ? (inscripcion.carrera.sponsor + " (" + inscripcion.carrera.rubro + ")\n")
-                : "")
-        );
-    }
 }
+}
+}
+
+
+//FIN REGISTROS
+
+
+//FUNCION GENERAR PDF
 
 function descargarInscripcionPDF(inscripcion) {
     const doc = new window.jspdf.jsPDF();
@@ -209,34 +203,75 @@ function descargarInscripcionPDF(inscripcion) {
     doc.text(`Carrera: ${inscripcion.carrera.nombre}`, 10, 30);
     doc.text(`Departamento: ${inscripcion.carrera.departamento}`, 10, 40);
     doc.text(`Fecha de la carrera: ${inscripcion.carrera.fecha}`, 10, 50);
-    doc.text(`Cupo: ${inscripcion.carrera.cupos}`, 10, 60);
+    doc.text(`Cupo: ${inscripcion.cupo}`, 10, 60);
     doc.save("inscripcion" + inscripcion.corredor.nombre + ".pdf");
 }
 
-//FIN REGISTROS
+
 
 //ESTADISTICAS
 
-function mostrarPromedioInscriptos() {
-    // Llama al método del sistema y lo muestra en la interfaz
-    let promedio = syscall.calcularPromedioInscriptos();
-    // Redondea a 2 decimales
-    promedio = promedio.toFixed(2);
-    // Busca el elemento donde mostrar el promedio
-    let pPromedio = document.querySelector('#estadisticas p');
-    if (pPromedio) {
-        pPromedio.textContent = 'Promedio de inscriptos por carrera: ' + promedio;
+
+
+function listarCarreraMasInscriptos(){
+    
+    let lista = document.getElementById('idCarreraMasInscriptos');
+    let info = syscall.calcularCarreraConMasInscriptos();
+    
+    lista.innerHTML = '';
+    
+    for (elem of info){
+    
+    let nodo = document.createElement('li');
+    let nodoT = document.createTextNode(elem);
+
+    nodo.appendChild(nodoT);
+    lista.appendChild(nodo);
+}
+  
+}
+
+function listarCarrerasSinInscriptos() {
+         let lista = document.getElementById('idCarreraSininscriptos');
+        
+         for (let i = 0; i < syscall.listacarreras.length; i++) {
+      
+            if (syscall.listacarreras[i].cont == 0){
+
+                let nombre=syscall.listacarreras[i].nombre;
+
+                let nodo = document.createElement('li');
+                let nodoT = document.createTextNode(nombre);
+
+                nodo.appendChild(nodoT);
+                lista.appendChild(nodo);
+       
+       
     }
 }
 
-function mostrarCarreraConMasInscriptos() {
-    // Llama al método del sistema y lo muestra en la interfaz
-    let carrera = syscall.carreraConMasInscriptos();
-    // Busca el elemento donde mostrar la carrera
-    let pCarreraa = document.querySelector('#estadisticas p')[1];
-    if (pCarreraa) {
-        pCarreraa.textContent = 'Carrera con más inscriptos: ' + carrera.nombre + ' con ' + carrera.cupos + "y " + carrera.inscripciones.length + ' inscriptos';
-    }
 }
+
+function calcularElites(){
+    let elites =0;
+    
+    for (elem of syscall.listacorredores){
+
+        if (elem.tipocorredor == 'elite'){
+            elites++;
+        }
+    }
+
+    let resultado = elites / syscall.listacorredores.length *100;
+
+    return resultado;
+}
+
+
+
+
+
+
+
 
 
