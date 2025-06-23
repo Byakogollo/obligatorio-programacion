@@ -2,8 +2,10 @@ window.addEventListener('load', inicio) //cargo todos los elementos
 let syscall = new Sistema ();
 
 function inicio(){
-    document.getElementById('botondatos').addEventListener('click', cambiodatos); //boton datos
-    document.getElementById('botonestadisticas').addEventListener('click', cambioestadisticas); //boton estadisticas
+    const btnDatos = document.getElementById('botondatos');
+    const btnEstadisticas = document.getElementById('botonestadisticas');
+    btnDatos.addEventListener('click', cambiodatos); //boton datos
+    btnEstadisticas.addEventListener('click', cambioestadisticas); //boton estadisticas
     
     
     document.getElementById('agregarcarrera').addEventListener('click', registrocarrera); //boton registrar carrera
@@ -11,6 +13,9 @@ function inicio(){
     document.getElementById('agregarcorredor').addEventListener('click', registroCorredor); //boton registrar corredor
     document.getElementById('botonregistro').addEventListener('click', registroInscripcion); //boton registrar inscripcion
 
+    // Inicializar el estado visual
+    btnDatos.classList.add('activo');
+    btnEstadisticas.classList.remove('activo');
 }
 
 //BOTONES
@@ -19,14 +24,21 @@ function cambiodatos(){ //funcion para mostrar datos
 
     document.getElementById('datos').style.display = "block";
     document.getElementById('estadisticas').style.display = "none";
+    document.getElementById('botondatos').classList.add('activo');
+    document.getElementById('botonestadisticas').classList.remove('activo');
 }
 
 function cambioestadisticas(){ //funcion para mostrar estadisticas
 
     document.getElementById('datos').style.display = "none";
     document.getElementById('estadisticas').style.display = "block";
-
+    document.getElementById('botondatos').classList.remove('activo');
+    document.getElementById('botonestadisticas').classList.add('activo');
+    mostrarPromedioInscriptos();
+    mostrarCarreraConMasInscriptos();
 }
+//FIN DE BOTONES
+
 //FIN DE BOTONES
 
 //REGISTROS
@@ -35,75 +47,196 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
 
     let carrera = new Carrera(); 
     
+    let formulario = document.getElementById('registrocarrera');
 
+    if (formulario.reportValidity()){
     carrera.nombre = document.getElementById('nomcarrera').value;
     carrera.departamento = document.getElementById('departamentocarrera').value;
     carrera.fecha = document.getElementById('fechacarrera').value;
     carrera.cupos = document.getElementById('cuposcarrera').value;
-    
-    syscall.pushearCarrera(carrera);
-    carrera.actualizarListaSponsor(); 
-    carrera.actualizarListaInscripciones();
-    document.getElementById('registrocarrera').reset();
+   
+        if(!syscall.checkearCarreraRepetida(carrera)){
+              syscall.pushearCarrera(carrera);
+               
+                    carrera.actualizarListaSponsor(); 
+                        carrera.actualizarListaInscripciones();
+                            formulario.reset();
+         }else{
+        alert('La carrera ya ha sido ingresada.');
+    }
 }
+        }
 
 function registroSponsor(){
 
 let sponsor = new Sponsor(); 
+formulario = document.getElementById('registrosponsor');
 
-sponsor.nombre = document.getElementById('nombresponsor').value;
-sponsor.rubro = document.getElementById('rubrosponsor').value;
-sponsor.carrera = document.getElementById('idcarrera').value;
+if(formulario.reportValidity()){
+
+    sponsor.nombre = document.getElementById('nombresponsor').value;
+
+    sponsor.rubro = document.getElementById('rubrosponsor').value;
+
+    sponsor.carrera = document.getElementById('idcarrera').value;
         
-syscall.pushearSponsors(sponsor);
-        
+        if(syscall.checkearSponsorRepetido(sponsor) && syscall.listasponsors.length > 0 ){
+
+            sponsor = syscall.buscaSponsor(sponsor);
+
+            sponsor.rubro = document.getElementById('rubrosponsor').value;
+           
+            sponsor.carrera = document.getElementById('idcarrera').value;
+           
+            alert('El sponsor fue actualizado correctamente');
+            console.log(syscall.listasponsors);
+            
+        }else{
+                    syscall.pushearSponsors(sponsor);
+                }      
+                formulario.reset();
+            }
 }
+
 
 function registroCorredor(){
 
     let corredor = new Corredor();
+    let formulario = document.getElementById('registrocorredores');
 
+    if (formulario.reportValidity()){
     corredor.nombre= document.getElementById('nombrecorredor').value;
     corredor.edad=document.getElementById('edadcorredor').value;
     corredor.cedula=document.getElementById('idcorredor').value;
     corredor.fichamedica=document.getElementById('fechamedica').value;
     corredor.tipocorredor=document.getElementsByName('typecorredor').value;
 
-    syscall.pushearCorredores(corredor);
-    corredor.actualizarListaCorredoresInscripciones();
+    
+        if (!syscall.checkearCorredorRepetido(corredor)){
+            
+            syscall.pushearCorredores(corredor);
+            corredor.actualizarListaCorredoresInscripciones();
+            formulario.reset();
+        }else{
+            alert('El corredor ya fue ingresado');
+        }
+}
 
   
 }
 
-function registroInscripcion(){
+function registroInscripcion() {
+    let cedulaCorredor = document.getElementById('selectorcorredor').value;
+    let nombreCarrera = document.getElementById('selectorcarrera').value;
 
-    let inscripcion = new Inscripcion();
+    // Buscar corredor
+    let corredor = null;
+    for (let i = 0; i < syscall.listacorredores.length; i++) {
+        if (syscall.listacorredores[i].cedula == cedulaCorredor) {
+            corredor = syscall.listacorredores[i];
+            break;
+        }
+    }
+    // Buscar carrera
+    let carrera = null;
+    for (let i = 0; i < syscall.listacarreras.length; i++) {
+        if (syscall.listacarreras[i].nombre == nombreCarrera) {
+            carrera = syscall.listacarreras[i];
+            break;
+        }
+    }
 
-    inscripcion.corredor = document.getElementById('selectorcorredor').value;
-    inscripcion.carrera = document.getElementById('selectorcarrera').value;
+    let datosValidos = true;
+    if (!corredor || !carrera) {
+        alert('Debes seleccionar un corredor y una carrera válidos.');
+        datosValidos = false;
+    }
 
-    syscall.pushearInscripciones(inscripcion);
+    // Validar que no esté ya inscripto usando el método de Sistema
+    if (datosValidos && syscall.corredorYaInscripto(corredor, carrera)) {
+        alert('El corredor ya está inscripto en esa carrera.');
+        datosValidos = false;
+    }
 
+    // Validar ficha médica
+    let inscripcion = null;
+    if (datosValidos) {
+        inscripcion = new Inscripcion(corredor, carrera);
+        if (!inscripcion.inscripcionFechaValida()) {
+            alert('La ficha médica no está vigente para la fecha de la carrera.');
+            datosValidos = false;
+        }
+    }
+
+    // Validar cupo
+    if (datosValidos) {
+        let inscriptosEnCarrera = 0;
+        for (let i = 0; i < syscall.listainscripciones.length; i++) {
+            if (syscall.listainscripciones[i].carrera.nombre == carrera.nombre) {
+                inscriptosEnCarrera++;
+            }
+        }
+        if (inscriptosEnCarrera >= carrera.cupos) {
+            alert('No hay cupos disponibles en la carrera.');
+            datosValidos = false;
+        }
+    }
+
+    if (datosValidos) {
+        // Calcular número de cupo usando el método del sistema
+        let numeroCupo = syscall.calcularNumeroCupo(carrera);
+        syscall.pushearInscripciones(inscripcion);
+        descargarInscripcionPDF(inscripcion);// Descomentar si se quiere descargar el PDF
+        alert(
+            "¡Inscripción exitosa!\n" +
+            "Número: " + numeroCupo + "\n" +
+            "Nombre: " + corredor.nombre + " " + corredor.edad + " años, " +
+            "CI: " + corredor.cedula + " Ficha médica: " + corredor.fichamedica + "\n" +
+            corredor.tipocorredor + "\n" +
+            "Carrera: " + carrera.nombre + " Departamento: " + carrera.departamento + " El " + carrera.fecha +
+            "Cupos " + inscripcion.carrera.cupos + "\n" +
+            (inscripcion.carrera.sponsor 
+                ? (inscripcion.carrera.sponsor + " (" + inscripcion.carrera.rubro + ")\n")
+                : "")
+        );
+    }
+}
+
+function descargarInscripcionPDF(inscripcion) {
+    const doc = new window.jspdf.jsPDF();
+    doc.text("Datos de la Inscripción", 10, 10);
+    doc.text(`Corredor: ${inscripcion.corredor.nombre} (Cédula: ${inscripcion.corredor.cedula})`, 10, 20);
+    doc.text(`Carrera: ${inscripcion.carrera.nombre}`, 10, 30);
+    doc.text(`Departamento: ${inscripcion.carrera.departamento}`, 10, 40);
+    doc.text(`Fecha de la carrera: ${inscripcion.carrera.fecha}`, 10, 50);
+    doc.text(`Cupo: ${inscripcion.carrera.cupos}`, 10, 60);
+    doc.save("inscripcion" + inscripcion.corredor.nombre + ".pdf");
 }
 
 //FIN REGISTROS
 
+//ESTADISTICAS
 
+function mostrarPromedioInscriptos() {
+    // Llama al método del sistema y lo muestra en la interfaz
+    let promedio = syscall.calcularPromedioInscriptos();
+    // Redondea a 2 decimales
+    promedio = promedio.toFixed(2);
+    // Busca el elemento donde mostrar el promedio
+    let pPromedio = document.querySelector('#estadisticas p');
+    if (pPromedio) {
+        pPromedio.textContent = 'Promedio de inscriptos por carrera: ' + promedio;
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function mostrarCarreraConMasInscriptos() {
+    // Llama al método del sistema y lo muestra en la interfaz
+    let carrera = syscall.carreraConMasInscriptos();
+    // Busca el elemento donde mostrar la carrera
+    let pCarreraa = document.querySelector('#estadisticas p')[1];
+    if (pCarreraa) {
+        pCarreraa.textContent = 'Carrera con más inscriptos: ' + carrera.nombre + ' con ' + carrera.cupos + "y " + carrera.inscripciones.length + ' inscriptos';
+    }
+}
 
 

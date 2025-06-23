@@ -15,6 +15,12 @@ section{
     display: none;
 }
  
+.activo {
+    background-color: #4da6ff !important;
+    color: white !important;
+    border: 2px solid #005fa3;
+}
+
 footer{
     background-color: #F0F4D4;
     border-radius: 25px;

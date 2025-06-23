@@ -5,14 +5,9 @@ class Carrera {
         this.departamento = departamento;
         this.fecha = fecha;
         this.cupos = cupos;
-       
-    }
-  
-    agregarCarrera(carrera){
-        this.listacarreras.push(carrera);
-        console.log(carrera.listacarreras);
     }
 
+ 
      actualizarListaSponsor(){
 
     let lista = document.getElementById('idcarrera');
@@ -25,6 +20,12 @@ class Carrera {
 
 }   
 
+toString(){
+    let datos = this.nombre+this.departamento+this.fecha+this.cupos;
+
+    return datos;
+}
+
 
 
  actualizarListaInscripciones(){
@@ -32,28 +33,32 @@ class Carrera {
     let lista = document.getElementById('selectorcarrera');
 
     let nodo = document.createElement('option');
-    let nodoT = document.createTextNode(this.nombre);
-
-    nodo.appendChild(nodoT)
+    nodo.value = this.nombre; // El value es el nombre
+    nodo.textContent = this.nombre;
     lista.appendChild(nodo);
 
-}   
-
-  
+    }
+    
 }
+
+
 
 class Sponsor {
     constructor(nombre, rubro, carrera) {
-
         this.nombre = nombre;
         this.rubro = rubro;
         this.carrera = carrera;
-       
-    }              
+    }
 
-   agregarSponsor(sponsor){
-        this.listasponsors.push(sponsor);
-        console.log(sponsor.listasponsors);
+    // Verifica si el sponsor ya existe en la lista de sponsors del sistema
+    static sponsorRepetido(sponsor, sponsorsList) {
+        return sponsorsList.some(s => s.nombre === sponsor.nombre);
+    }
+
+    // Actualiza los datos del sponsor actual
+    actualizarSponsor(rubro, carrera) {
+        this.rubro = rubro;
+        this.carrera = carrera;
     }
 
     SponsorRepetido(sponsor){
@@ -86,10 +91,7 @@ class Corredor {
         this.cedula = cedula;
         this.fichamedica = fichamedica;
         this.tipocorredor = tipocorredor;
-       
     }
-
-   
 
 
      actualizarListaCorredoresInscripciones(){
@@ -97,12 +99,11 @@ class Corredor {
     let lista = document.getElementById('selectorcorredor');
 
     let nodo = document.createElement('option');
-    let nodoT = document.createTextNode(this.nombre);
-
-    nodo.appendChild(nodoT)
+    nodo.value = this.cedula; // El value es la cédula
+    nodo.textContent = 'Nombre: ' + this.nombre + ' Cedula: ' + this.cedula;
     lista.appendChild(nodo);
 
-    }   
+}   
 
 }
 
@@ -111,32 +112,17 @@ class Inscripcion {
 
         this.corredor = corredor;
         this.carrera = carrera;
-        this.fechaInscripcion = fechaInscripcion;
-}
-    inscripcionFechaValida() {
-        let esValida = false;
+    }
 
-        if (this.fechaInscripcion < this.corredor.fichamedica) {
-            esValida = true;
-        }
+inscripcionFechaValida() {
+    let esValida = false;
 
+    if (this.carrera.fecha <= this.corredor.fichamedica) {
+        esValida = true;
+
+    }
         return esValida;
 }
-
-
-consultaDeInscriptos(carrera){ //metodo para cantidad de corredores por carrera, estadisticas en proceso falta tabla
-        let cantDeCorredores = 0
-        let corredoresPorCarrera = []
-        for (let i = 0; i < listacorredores.length; i++) {
-            if(this.Inscripcion.carrera[i] == carrera){
-                cantDeCorredores = cantDeCorredores + 1;
-                corredoresPorCarrera.push(this.inscripcion.nombre[i])
-            }
-        }
-    }
-    }
-
-
 
 
 
@@ -144,46 +130,130 @@ consultaDeInscriptos(carrera){ //metodo para cantidad de corredores por carrera,
 
 class Sistema {
     constructor() {
-        this.listaCarreras = [];
-        this.listaCorredores = [];
-        this.listaSponsors = [];
-        this.listaInscripciones = [];
+        this.listacarreras = [];
+        this.listacorredores = [];
+        this.listasponsors = [];
+        this.listainscripciones = [];
     }
 
+    pushearCarrera(carrera) {
+        this.listacarreras.push(carrera);
+        console.log(this.listacarreras);
+    }
 
-  pushearCarrera(carrera){
-    this.carreras.push(carrera);
-    console.log(this.carreras);
-  }
+    pushearCorredores(corredor) {
+        this.listacorredores.push(corredor);
+        console.log(this.listacorredores);
+    }
 
-  pushearCorredores(corredor){
-      
-        this.corredores.push(corredor);
-        console.log(this.corredores);
-    
-  }
+    pushearSponsors(sponsor) {
+        this.listasponsors.push(sponsor);
+        console.log(this.listasponsors);
+    }
 
-  pushearSponsors(sponsor) {
+    pushearInscripciones(inscripcion) {
+        this.listainscripciones.push(inscripcion);
+        console.log(this.listainscripciones);
+    }
 
-        this.sponsors.push(sponsor);
-        console.log(this.sponsors);
-    
+    checkearCarreraRepetida(carrera) {
+        let aux = false;
+        for (let i = 0; i < this.listacarreras.length && aux == false; i++) {
+            if (this.listacarreras[i].nombre == carrera.nombre) {
+                aux = true;
+            }
+        }
+        return aux;
+    }
 
-  }
+    checkearSponsorRepetido(sponsor) {
+        let aux = false;
+        for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
+            if (this.listasponsors[i].nombre == sponsor.nombre) {
+                aux = true;
+            }
+        }
+        return aux;
+    }
 
-  pushearInscripciones(inscripcion){
+    buscaSponsor(sponsor) {
+        let aux = false;
+        let pos = 0;
+        for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
+            if (this.listasponsors[i].nombre == sponsor.nombre) {
+                aux = true;
+                pos = this.listasponsors[i];
+            }
+        }
+        return pos;
+    }
 
-    this.inscripciones.push(inscripcion);
-    console.log(this.inscripciones);
+    checkearCorredorRepetido(corredor) {
+        let aux = false;
+        for (let i = 0; i < this.listacorredores.length && aux == false; i++) {
+            if (this.listacorredores[i].cedula == corredor.cedula) {
+                aux = true;
+            }
+        }
+        return aux;
+    }
 
-  }
+    calcularPromedioInscriptos() {
+        if (this.listacarreras.length === 0) {
+            return 0;
+        }
+        let totalInscriptos = this.listainscripciones.length;
+        let totalCarreras = this.listacarreras.length;
+        return totalInscriptos / totalCarreras;
+    }
 
-  
-  
+    calcularCarreraconMasInscriptos() {
+        if (this.listacarreras.length === 0) {
+            return null;
+        }
+        let carreraMax = this.listacarreras[0];
+        let maxInscriptos = 0;
 
+        for (let i = 0; i < this.listacarreras.length; i++) {
+            let inscriptos = this.listainscripciones.filter(inscripcion => inscripcion.carrera === this.listacarreras[i]).length;
+            if (inscriptos > maxInscriptos) {
+                maxInscriptos = inscriptos;
+                carreraMax = this.listacarreras[i];
+            } else if (inscriptos === maxInscriptos) {
+                carreraMax.push(this.listacarreras[i]);
+            }
+        }
+        return carreraMax;
+    }
 
+    carrerasConNingunoInscripto() { 
+        let carrerasSinInscriptos = [];
+        for (let i = 0; i < this.listacarreras.length; i++) {
+            let inscriptos = this.listainscripciones.filter(inscripcion => inscripcion.carrera === this.listacarreras[i]).length;
+            if (inscriptos === 0) {
+                carrerasSinInscriptos.push(this.listacarreras[i]);
+                sort(carrerasSinInscriptos, (a, b) => a.fecha - b.fecha);
+            }
+        }
+        return carrerasSinInscriptos;
+    }
 
+    // Nuevo método: verifica si un corredor ya está inscripto en una carrera
+    corredorYaInscripto(corredor, carrera) {
+        return this.listainscripciones.some(insc =>
+            insc.corredor.cedula == corredor.cedula &&
+            insc.carrera.nombre == carrera.nombre
+        );
+    }
 
-
-
+    // Devuelve el número de cupo para la próxima inscripción en la carrera recibida
+    calcularNumeroCupo(carrera) {
+        let numeroCupo = 1;
+        for (let i = 0; i < this.listainscripciones.length; i++) {
+            if (this.listainscripciones[i].carrera.nombre == carrera.nombre) {
+                numeroCupo++;
+            }
+        }
+        return numeroCupo;
+    }
 }
