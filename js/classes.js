@@ -8,16 +8,58 @@ class Carrera {
         this.cont = cont;
     }
 
- 
+    fechaValida(fecha){
+    
+    let hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    let fechaingresada = new Date(fecha);
+    fechaingresada.setHours(0, 0, 0, 0);
+    let aux = false;
+
+    if (hoy > fechaingresada){
+
+        aux = true;
+        
+    }
+    return aux;
+    
+    }
+    
+    valorDepto(){
+       
+    let lista = document.getElementById('departamentocarrera');
+    let resultado;
+    let aux = false;
+
+    for (let i = 0; i <lista.length && !aux; i++){
+        if(lista.options[i].selected){
+            resultado = lista.options[i].textContent;
+            aux = true;
+        }
+    }
+    return resultado;
+
+    }
+
+
      actualizarListaSponsor(){
-
+    
     let lista = document.getElementById('idcarrera');
-
+        lista.innerHTML = '';
+   
+        for (let elem of syscall.listacarreras){
+    
+      
     let nodo = document.createElement('option');
-    let nodoT = document.createTextNode(this.nombre);
+    let nodoT = document.createTextNode(elem.nombre);
 
     nodo.appendChild(nodoT)
     lista.appendChild(nodo);
+}
+        
+    
+
+
 
 }   
 
@@ -34,14 +76,19 @@ let datos = 'Carrera: ' + this.nombre +
 
  actualizarListaInscripciones(){
 
-
-
     let lista = document.getElementById('selectorcarrera');
-
-    let nodo = document.createElement('option');
-    nodo.value = this.nombre; // El value es el nombre
-    nodo.textContent = this.nombre;
-    lista.appendChild(nodo);
+        lista.innerHTML = '';
+    
+        for (let elem of syscall.listacarreras){
+    
+            let nodo = document.createElement('option');
+    
+            nodo.value = elem.nombre; 
+    
+            nodo.textContent = elem.nombre;
+    
+            lista.appendChild(nodo);
+    }
 
     }
     
@@ -55,39 +102,28 @@ class Sponsor {
         this.rubro = rubro;
         this.carrera = carrera;
     }
+ 
+   
 
-    toString(){
-let datos = 'Nombre: ' + this.nombre + 
-            '\nRubro: ' + this.rubro + 
-            '\nCarrera: ' + this.carrera;
+    toString(objeto){
+
+        let datos;
+        
+        if (syscall.existeSponsor(objeto)){
+             datos = 'Nombre: ' + this.nombre + 
+                    '\nRubro: ' + this.rubro + 
+                    '\nCarrera: ' + this.carrera;
+            }else{
+                datos = 'Esta carrera no tiene sponsor';
+            }
+
 
     return datos;
 }
 
-    // Verifica si el sponsor ya existe en la lista de sponsors del sistema
-    static sponsorRepetido(sponsor, sponsorsList) {
-        return sponsorsList.some(s => s.nombre === sponsor.nombre);
-    }
+  
 
-    // Actualiza los datos del sponsor actual
-    actualizarSponsor(rubro, carrera) {
-        this.rubro = rubro;
-        this.carrera = carrera;
-    }
-
-    SponsorRepetido(sponsor){
-        let repetido = false;
-        for (let i = 0; i < this.listasponsors.length && !repetido; i++){
-            if(this.listasponsors[i].nombre == sponsor.nombre){
-                repetido = true
-            } 
-        } return repetido
-
-    } 
-    ActualizarSponsor(rubro, carrera){
-        this.sponsor.rubro = rubro;
-        this.sponsor.carrera = carrera;
-    }
+ 
 
         
     }
@@ -121,11 +157,18 @@ let datos = 'Nombre: ' + this.nombre +
      actualizarListaCorredoresInscripciones(){
 
     let lista = document.getElementById('selectorcorredor');
+        lista.innerHTML = '';
+        
+        for (let elem of syscall.listacorredores){
+            let nodo = document.createElement('option');
 
-    let nodo = document.createElement('option');
-    nodo.value = this.cedula; // El value es la cédula
-    nodo.textContent = 'Nombre: ' + this.nombre + ' Cedula: ' + this.cedula;
-    lista.appendChild(nodo);
+            nodo.value = elem.cedula; 
+            nodo.textContent = 'Nombre: ' + elem.nombre + ' || Cedula: ' + elem.cedula;
+    
+        lista.appendChild(nodo);
+}
+
+  
 
 }   
 
@@ -185,6 +228,8 @@ class Sistema {
         this.listainscripciones = [];
     }
 
+ // PUSHEO ITEMS
+
     pushearCarrera(carrera) {
         this.listacarreras.push(carrera);
         console.log(this.listacarreras);
@@ -205,6 +250,47 @@ class Sistema {
         console.log(this.listainscripciones);
     }
 
+//FIN PUSHEAR ITEMS
+
+
+
+//INICIO ORDENACION
+
+ordenarCarrerasNombre(){
+    
+    this.listacarreras.sort((a, b) => {
+    return a.nombre.localeCompare(b.nombre);
+});
+
+}
+
+ordenarCorredoresNombre(){
+    
+    this.listacorredores.sort((a, b) => {
+    return a.nombre.localeCompare(b.nombre);
+});
+
+}
+
+
+//FIN ORDENACION
+   
+   
+//LOGICA CARRERAS
+
+    buscaCarrera(carrera) {
+        let aux = false;
+        let pos = 0;
+        for (let i = 0; i < this.listacarreras.length && aux == false; i++) {
+            if (this.listacarreras[i].nombre == carrera) {
+                aux = true;
+                pos = this.listacarreras[i];
+            }
+        }
+        return pos;
+    }
+     
+
     checkearCarreraRepetida(carrera) {
         let aux = false;
         for (let i = 0; i < this.listacarreras.length && aux == false; i++) {
@@ -215,24 +301,17 @@ class Sistema {
         return aux;
     }
 
+//FIN LOGICA CARRERAS
+
+
+
+//INICIO LOGICA SPONSORS
+
     checkearSponsorRepetido(sponsor) {
         let aux = false;
         for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
             if (this.listasponsors[i].nombre == sponsor.nombre) {
                 aux = true;
-            }
-        }
-        return aux;
-    }
-
-    validoSponsors(carrera){
-        let aux = false;
-        
-
-        for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
-            if (this.listasponsors[i].carrera == carrera) {
-                aux = true;
-                
             }
         }
         return aux;
@@ -250,7 +329,31 @@ class Sistema {
         return pos;
     }
 
+    validoSponsors(carrera){
+        
+        let aux = false;
+        
+
+        for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
+            if (this.listasponsors[i].carrera == carrera) {
+                aux = true;
+                
+            }
+        }
+        return aux;
+    }
+
+    existeSponsor(){
+        let aux = false;
+
+        if (this.listasponsors.length == 0){
+            aux = true;}
+        
+        return aux;
+    }
+
     buscaSponsorCarrera(carrera){
+
         let aux = false;
         let pos = 0;
         for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
@@ -262,18 +365,12 @@ class Sistema {
         return pos;
     }
 
-    buscaCarrera(carrera) {
-        let aux = false;
-        let pos = 0;
-        for (let i = 0; i < this.listacarreras.length && aux == false; i++) {
-            if (this.listacarreras[i].nombre == carrera) {
-                aux = true;
-                pos = this.listacarreras[i];
-            }
-        }
-        return pos;
-    }
-     
+  //FIN LOGICA SPONSORS 
+  
+
+
+  //INICIO LOGICA CORREDORES
+
     buscaCorredor(corredor) {
         let aux = false;
         let pos = 0;
@@ -285,7 +382,7 @@ class Sistema {
         }
         return pos;
     }
-    
+
     checkearCorredorRepetido(corredor) {
         let aux = false;
         for (let i = 0; i < this.listacorredores.length && aux == false; i++) {
@@ -295,6 +392,11 @@ class Sistema {
         }
         return aux;
     }
+//FIN LOGICA CORREDORES
+
+
+
+//INICIO LOGICA INSCRIPCIONES
 
     generarCupo(carrera){
         
@@ -334,8 +436,11 @@ class Sistema {
         return aux;
         
     }
-
+//FIN LOGICA INSCRIPCIONES 
     
+
+//INICIO ESTADISTICAS
+
     calcularPromedioInscriptos() {
         let promedio;
       
@@ -359,10 +464,6 @@ class Sistema {
         return promedio;
     }
 
-
-
-     
-
     validarInscriptos(){
         let aux = false;
 
@@ -374,7 +475,6 @@ class Sistema {
         }
         return aux;
     }
-
 
     calcularCarreraConMasInscriptos() {
         let masInscriptos = [];
@@ -409,6 +509,7 @@ class Sistema {
         return masInscriptos;
     }
 
+    //FIN ESTADISTICAS
 
 
 

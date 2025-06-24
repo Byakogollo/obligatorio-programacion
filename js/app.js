@@ -53,14 +53,20 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
     let formulario = document.getElementById('registrocarrera');
 
     if (formulario.reportValidity()){
+        carrera.fecha = document.getElementById('fechacarrera').value
+    if (carrera.fechaValida(carrera.fecha)){
+        alert('La fecha ingresada no puede ser anterior a la fecha de hoy');
+    }else{
+    
     carrera.nombre = document.getElementById('nomcarrera').value;
-    carrera.departamento = document.getElementById('departamentocarrera').value;
+    carrera.departamento = carrera.valorDepto();
     carrera.fecha = document.getElementById('fechacarrera').value;
     carrera.cupos = document.getElementById('cuposcarrera').value;
     carrera.cont = 0;
    
         if(!syscall.checkearCarreraRepetida(carrera)){
               syscall.pushearCarrera(carrera);
+              syscall.ordenarCarrerasNombre();
                
                     carrera.actualizarListaSponsor(); 
                         carrera.actualizarListaInscripciones();
@@ -68,6 +74,7 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
          }else{
         alert('La carrera ya ha sido ingresada.');
     }
+}
 }
         }
 
@@ -131,6 +138,8 @@ function registroCorredor(){
         if (!syscall.checkearCorredorRepetido(corredor)){
             
             syscall.pushearCorredores(corredor);
+            syscall.ordenarCorredoresNombre();
+
             corredor.actualizarListaCorredoresInscripciones();
             formulario.reset();
         }else{
@@ -158,9 +167,9 @@ function registroInscripcion() {
         alert('El corredor ya está inscripto en esa carrera.');
 
     }else{
-        if(!syscall.validoSponsors(inscripcion.carrera.nombre)){
-            alert('No se puede inscribir en una carrera sin Sponsor');
-        }else{
+   //     if(!syscall.validoSponsors(inscripcion.carrera.nombre)){
+  //          alert('No se puede inscribir en una carrera sin Sponsor');
+    //    }else{
         if (!syscall.validarCupos(carrera)) {
             
             inscripcion.cupo = syscall.generarCupo(carrera); 
@@ -168,11 +177,22 @@ function registroInscripcion() {
             
        
             syscall.pushearInscripciones(inscripcion);
-
             let sponsor = syscall.buscaSponsorCarrera(inscripcion.carrera.nombre);
-            let mensaje = [inscripcion.toString(inscripcion),     
-                            `\nDatos del Sponsor:\n${sponsor.toString()}`
+            let mensaje;
+
+            if (syscall.existeSponsor()){
+            
+                mensaje = [inscripcion.toString(inscripcion),     
+                            `\nNo hay Sponsors registrados.`
                            ].join('\n');
+
+            }else{
+
+                mensaje = [inscripcion.toString(inscripcion),     
+                            `\nDatos del Sponsor:\n${sponsor.toString(inscripcion.carrera.nombre)}`
+                           ].join('\n');
+
+            }
             alert(mensaje);
             descargarInscripcionPDF(inscripcion);
             formulario.reset();
@@ -188,7 +208,7 @@ function registroInscripcion() {
 
 }
 }
-}
+//}
 
 
 //FIN REGISTROS
@@ -232,8 +252,20 @@ function listarCarreraMasInscriptos(){
 }
 
 function listarCarrerasSinInscriptos() {
-         let lista = document.getElementById('idCarreraSininscriptos');
         
+    let lista = document.getElementById('idCarreraSininscriptos');
+    lista.innerHTML = '';
+    if (syscall.listacarreras.length == 0){
+        
+            
+            let nodo2 = document.createElement('li');
+            let nodoT2 = document.createTextNode('No hay elementos para mostrar');
+
+            nodo2.appendChild(nodoT2);
+            lista.appendChild(nodo2);
+   
+        }else{
+            
          for (let i = 0; i < syscall.listacarreras.length; i++) {
       
             if (syscall.listacarreras[i].cont == 0){
@@ -246,7 +278,7 @@ function listarCarrerasSinInscriptos() {
                 nodo.appendChild(nodoT);
                 lista.appendChild(nodo);
        
-       
+       }
     }
 }
 
@@ -254,15 +286,24 @@ function listarCarrerasSinInscriptos() {
 
 function calcularElites(){
     let elites =0;
-    
-    for (elem of syscall.listacorredores){
+    let resultado;
 
-        if (elem.tipocorredor == 'elite'){
+    if (syscall.listacorredores.length == 0){
+        
+        resultado = 'No hay ningun corredor inscripto en ninguna carrera.'
+        
+        
+    }else{
+    
+    for (let elem of syscall.listacorredores){
+
+        if (elem[i].tipocorredor == 'elite'){
             elites++;
         }
     }
-
-    let resultado = elites / syscall.listacorredores.length *100;
+         resultado = elites / syscall.listacorredores.length *100;
+}
+     
 
     return resultado;
 }
