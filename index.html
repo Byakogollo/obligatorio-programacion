@@ -143,12 +143,15 @@
                     <input type="date" id="fechamedica" required>
 
                     <div class="radioselector">
-                    
-                        <label for="corredorcomun">Corredor común</label>
-                        <input type="radio" name="typecorredor" id="corredorcomun" value="comun" checked>
+                        
+                        <label>Tipo de corredor: </label>
 
-                        <label for="corredorelite">Deportista de élite</label>
+                        <input type="radio" name="typecorredor" id="corredorcomun" value="comun" checked>
+                        <label for="corredorcomun"> Corredor común</label>
+                        
                         <input type="radio" name="typecorredor" id="corredorelite" value="elite">
+                        <label for="corredorelite">Deportista de élite</label>
+                     
 
                 
                     </div>
@@ -225,14 +228,14 @@
                 <div class="radioselector">
                 <label>Ordenar por:</label>
 
-                <input type="radio" name="ordenador" value="1" id="ordenadornombre" checked>
+                <input type="radio" name="ordenadorCorredor" id="ordenadornombre" value="nombre" checked>
                 <label for="ordenadornombre">Nombre</label>
 
-                <input type="radio" name="ordenador" value="1" id="ordenadornumero">
+                <input type="radio" name="ordenadorCorredor" id="ordenadornumero" value="numero">
                 <label for="ordenadornumero">Numero</label>
                 </div>
 
-                  <table>
+                  <table id="tabla">
                   
                     <caption>Inscriptos</caption>
                    <thead>
