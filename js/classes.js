@@ -129,13 +129,14 @@ class Sponsor {
 }
 
 class Corredor {
-    constructor(nombre, edad, cedula, fichamedica, tipocorredor) {
+    constructor(nombre, edad, cedula, fichamedica, tipocorredor, cupo) {
 
         this.nombre = nombre;
         this.edad = edad;
         this.cedula = cedula;
         this.fichamedica = fichamedica;
         this.tipocorredor = tipocorredor;
+        this.cupo = cupo;
     }
 
     toString(){
@@ -174,14 +175,13 @@ class Inscripcion {
 
         this.corredor = corredor;       
         this.carrera = carrera;
-        this.cupo = cupo;
     }
 
   
         toString(inscripcion){
         let mensaje = `Inscripción confirmada:
 
- Cupo numero: ${inscripcion.cupo}
+ Cupo numero: ${syscall.buscaCarrera(inscripcion.carrera.nombre).cont}
 
 Corredor:
 Nombre: ${inscripcion.corredor.nombre}
@@ -194,7 +194,7 @@ Carrera:
 Nombre: ${inscripcion.carrera.nombre}
 Departamento: ${inscripcion.carrera.departamento}
 Fecha: ${inscripcion.carrera.fecha}
-Cupos restantes: ${inscripcion.cupo}`;
+Cupos Disponibles: ${syscall.buscaCarrera(inscripcion.carrera.nombre).cupos}`;
                 
 
                 return mensaje;
@@ -425,11 +425,6 @@ ordenarCorredoresNombre(){
             }
 
             return aux;
-    }
-
-    actualizarCupos(carrera){
-        
-        syscall.buscaCarrera(carrera).cupos -= 1;
     }
 
     corredorYaInscripto(inscripcion) {

@@ -43,10 +43,13 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
     listarCarreraMasInscriptos();
     syscall.ordenarCarrerasFecha(); // no mover esta linea ya que esta colocada debido a que el orden de ejecucion del codigo hace que se ordenen de la manera correcta en estadisticas 
     listarCarrerasSinInscriptos(); 
-    if (syscall.listainscripciones.length != 0){
-        generarTabla();
-    }
-     
+    
+    document.getElementById('seleccioncarrera').addEventListener('change', (event) => {
+     generarTabla();});
+
+    document.getElementsByName('ordenadorCorredor').forEach((radio) => {
+        radio.addEventListener('change', generarTabla);});
+     generarTabla();
 }
 
 //FIN DE BOTONES
@@ -84,6 +87,7 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
 }
 }
         }
+
 function leerCarrerasSponsor(){
 
     let selector = document.getElementById('idcarrera');
@@ -154,6 +158,7 @@ function registroCorredor(){
     corredor.cedula=document.getElementById('idcorredor').value;
     corredor.fichamedica=document.getElementById('fechamedica').value;
     corredor.tipocorredor = leerRadioCorredor();
+    corredor.cupo = 0;
 
     
         if (!syscall.checkearCorredorRepetido(corredor)){
@@ -190,8 +195,8 @@ function registroInscripcion() {
     }else{
             if (!syscall.validarCupos(carrera)) {
             
-            inscripcion.cupo = syscall.generarCupo(carrera); 
-            //syscall.actualizarCupos(carrera);        
+            syscall.buscaCorredor(corredor).cupo = syscall.generarCupo(carrera); 
+                 
             
        
             syscall.pushearInscripciones(inscripcion);
@@ -240,7 +245,7 @@ function descargarInscripcionPDF(inscripcion) {
     doc.text(`Carrera: ${inscripcion.carrera.nombre}`, 10, 30);
     doc.text(`Departamento: ${inscripcion.carrera.departamento}`, 10, 40);
     doc.text(`Fecha de la carrera: ${inscripcion.carrera.fecha}`, 10, 50);
-    doc.text(`Cupo: ${inscripcion.cupo}`, 10, 60);
+    doc.text(`Cupo: ${syscall.buscaCarrera(inscripcion.carrera.nombre).cont}`, 10, 60);
     doc.save("inscripcion" + inscripcion.corredor.nombre + ".pdf");
 }
 
@@ -332,7 +337,11 @@ function calcularElites(){
     return resultado;
 }
 
-function leerRadioOrdenCorredores(){
+//FIN ESTADISTICAS
+
+//INICIO CONSULTA INSCRIPTOS
+
+function leerRadioTabla(){
     let radios = document.getElementsByName('ordenadorCorredor');
     let resultado;
     let aux = false;
@@ -346,36 +355,37 @@ function leerRadioOrdenCorredores(){
     return resultado;
 }
 
-//FIN ESTADISTICAS
-
-
-
-//INICIO CONSULTA INSCRIPTOS
-
 function consultarInscriptos(){
     
     let carrera = document.getElementById('seleccioncarrera').value;
 
     let inscriptos = syscall.buscaInscriptosACarreras(carrera);
         
+        if (leerRadioTabla() == 'nombre'){
+    inscriptos.sort((a,b) => {
+        return a.nombre.localeCompare(b.nombre);
+    });}else if (leerRadioTabla() == 'numero'){
+        inscriptos.sort((a,b) =>{
+        return a.cupo-b.cupo;
+        })
+    }
+    
     return inscriptos;
 }
 
 
 function generarTabla(){
 
+if (syscall.listainscripciones.length != 0){
+    
     let tbody = tabla.getElementsByTagName("tbody")[0];
     tbody.innerHTML = '';
 
     
     let inscriptos = consultarInscriptos();
-    let cupo;
-    
-   
+
         for (let elem of inscriptos){
 
-           
-        cupo = syscall.buscaCupoInscripciones(elem.nombre) 
     
         let row = document.createElement('tr');
     
@@ -392,7 +402,7 @@ function generarTabla(){
         celdaFichaMedica.textContent = elem.fichamedica;
 
         let celdaCupo = document.createElement('td');
-        celdaCupo.textContent = parseInt(cupo);
+        celdaCupo.textContent = parseInt(elem.cupo);
 
         row.appendChild(celdaNombre);
         row.appendChild(celdaEdad);
@@ -406,6 +416,7 @@ function generarTabla(){
         }else{
             tbody.appendChild(row);
         }
+    }
     }
 }   
 
