@@ -26,6 +26,7 @@ function cambiodatos(){ //funcion para mostrar datos
     document.getElementById('estadisticas').style.display = "none";
     document.getElementById('botondatos').classList.add('activo');
     document.getElementById('botonestadisticas').classList.remove('activo');
+    syscall.ordenarCarrerasNombre();
 }
 
 function cambioestadisticas(){ //funcion para mostrar estadisticas
@@ -37,15 +38,23 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
 
     document.getElementById('idPromedio').innerHTML = syscall.calcularPromedioInscriptos();
     document.getElementById('idPorcentajeElite').innerHTML = calcularElites();
+    
+    
     listarCarreraMasInscriptos();
-    listarCarrerasSinInscriptos();
+    syscall.ordenarCarrerasFecha(); // no mover esta linea ya que esta colocada debido a que el orden de ejecucion del codigo hace que se ordenen de la manera correcta en estadisticas 
+    listarCarrerasSinInscriptos(); 
+    if (syscall.listainscripciones.length != 0){
+        generarTabla();
+    }
+     
 }
 
 //FIN DE BOTONES
 
-//REGISTROS
 
- function registrocarrera(){ //funcion registro carreras
+//INICIO REGISTROS
+
+ function registrocarrera(){ 
 
     let carrera = new Carrera(); 
     
@@ -67,8 +76,7 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
               syscall.pushearCarrera(carrera);
               syscall.ordenarCarrerasNombre();
                
-                    carrera.actualizarListaSponsor(); 
-                        carrera.actualizarListaInscripciones();
+                    carrera.actualizarCombosCarreras();
                             formulario.reset();
          }else{
         alert('La carrera ya ha sido ingresada.');
@@ -76,6 +84,20 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
 }
 }
         }
+function leerCarrerasSponsor(){
+
+    let selector = document.getElementById('idcarrera');
+    let resultado = [];
+    
+    
+    for (let i = 0; i <selector.length; i++){
+        
+        resultado.push(selector.selectedOptions[i].value);
+
+        }
+
+    return resultado;
+}
 
 function registroSponsor(){
 
@@ -88,7 +110,7 @@ if(formulario.reportValidity()){
 
     sponsor.rubro = document.getElementById('rubrosponsor').value;
 
-    sponsor.carrera = document.getElementById('idcarrera').value;
+    sponsor.carrera = leerCarrerasSponsor();
         
         if(syscall.checkearSponsorRepetido(sponsor) && syscall.listasponsors.length > 0 ){
 
@@ -166,20 +188,18 @@ function registroInscripcion() {
         alert('El corredor ya está inscripto en esa carrera.');
 
     }else{
-   //     if(!syscall.validoSponsors(inscripcion.carrera.nombre)){
-  //          alert('No se puede inscribir en una carrera sin Sponsor');
-    //    }else{
-        if (!syscall.validarCupos(carrera)) {
+            if (!syscall.validarCupos(carrera)) {
             
             inscripcion.cupo = syscall.generarCupo(carrera); 
-            syscall.actualizarCupos(carrera);        
+            //syscall.actualizarCupos(carrera);        
             
        
             syscall.pushearInscripciones(inscripcion);
+
             let sponsor = syscall.buscaSponsorCarrera(inscripcion.carrera.nombre);
             let mensaje;
 
-            if (syscall.existeSponsor()){
+            if (syscall.noExisteSponsor()){
             
                 mensaje = [inscripcion.toString(inscripcion),     
                             `\nNo hay Sponsors registrados.`
@@ -207,8 +227,6 @@ function registroInscripcion() {
 
 }
 }
-//}
-
 
 //FIN REGISTROS
 
@@ -226,10 +244,10 @@ function descargarInscripcionPDF(inscripcion) {
     doc.save("inscripcion" + inscripcion.corredor.nombre + ".pdf");
 }
 
+//FIN GENERAR PDF
 
 
 //ESTADISTICAS
-
 
 
 function listarCarreraMasInscriptos(){
@@ -239,13 +257,20 @@ function listarCarreraMasInscriptos(){
     
     lista.innerHTML = '';
     
+    if (syscall.listacarreras.length == 0 || !syscall.validarInscriptos()){
+        let nodo = document.createElement('li');
+        let nodoT = document.createTextNode('No hay datos disponibles actualmente');
+        nodo.appendChild(nodoT);
+        lista.appendChild(nodo);
+    }else{
     for (elem of info){
     
     let nodo = document.createElement('li');
-    let nodoT = document.createTextNode(elem);
+    let nodoT = document.createTextNode(elem.nombre+' en '+elem.departamento+' el '+elem.fecha+' Cupos: '+elem.cupos+' Inscriptos: '+elem.cont);
 
     nodo.appendChild(nodoT);
     lista.appendChild(nodo);
+    }
 }
   
 }
@@ -269,10 +294,10 @@ function listarCarrerasSinInscriptos() {
       
             if (syscall.listacarreras[i].cont == 0){
 
-                let nombre=syscall.listacarreras[i].nombre;
+                let carreraSinInscriptos=syscall.listacarreras[i];
 
                 let nodo = document.createElement('li');
-                let nodoT = document.createTextNode(nombre);
+                let nodoT = document.createTextNode(carreraSinInscriptos.nombre+' en '+carreraSinInscriptos.departamento+' el '+carreraSinInscriptos.fecha+' Cupos disponibles: '+carreraSinInscriptos.cupos);
 
                 nodo.appendChild(nodoT);
                 lista.appendChild(nodo);
@@ -289,26 +314,104 @@ function calcularElites(){
 
     if (syscall.listacorredores.length == 0){
         
-        resultado = 'No hay ningun corredor inscripto en ninguna carrera.'
+        resultado = 'No hay ningun corredor inscripto.'
         
         
     }else{
     
     for (let elem of syscall.listacorredores){
 
-        if (elem[i].tipocorredor == 'elite'){
+        if (elem.tipocorredor == 'elite'){
             elites++;
         }
     }
-         resultado = elites / syscall.listacorredores.length *100;
+         resultado = elites / syscall.listacorredores.length *100+'%';
 }
      
 
     return resultado;
 }
 
+function leerRadioOrdenCorredores(){
+    let radios = document.getElementsByName('ordenadorCorredor');
+    let resultado;
+    let aux = false;
+    for (let i = 0; i <radios.length && !aux; i++){
+        if (radios[i].checked){
+            resultado = radios[i].value;
+            aux = true;
+        }
+    }
+    
+    return resultado;
+}
+
+//FIN ESTADISTICAS
 
 
+
+//INICIO CONSULTA INSCRIPTOS
+
+function consultarInscriptos(){
+    
+    let carrera = document.getElementById('seleccioncarrera').value;
+
+    let inscriptos = syscall.buscaInscriptosACarreras(carrera);
+        
+    return inscriptos;
+}
+
+
+function generarTabla(){
+
+    let tbody = tabla.getElementsByTagName("tbody")[0];
+    tbody.innerHTML = '';
+
+    
+    let inscriptos = consultarInscriptos();
+    let cupo;
+    
+   
+        for (let elem of inscriptos){
+
+           
+        cupo = syscall.buscaCupoInscripciones(elem.nombre) 
+    
+        let row = document.createElement('tr');
+    
+        let celdaNombre = document.createElement('td');
+        celdaNombre.textContent = elem.nombre;
+
+        let celdaEdad = document.createElement('td');
+        celdaEdad.textContent = elem.edad;
+
+        let celdaCedula = document.createElement('td');
+        celdaCedula.textContent = elem.cedula;
+
+        let celdaFichaMedica = document.createElement('td');
+        celdaFichaMedica.textContent = elem.fichamedica;
+
+        let celdaCupo = document.createElement('td');
+        celdaCupo.textContent = parseInt(cupo);
+
+        row.appendChild(celdaNombre);
+        row.appendChild(celdaEdad);
+        row.appendChild(celdaCedula);
+        row.appendChild(celdaFichaMedica);
+        row.appendChild(celdaCupo);
+        
+         if (elem.tipocorredor == 'elite'){
+            row.style.backgroundColor='#FF0000'
+            tbody.appendChild(row);
+        }else{
+            tbody.appendChild(row);
+        }
+    }
+}   
+
+
+
+// FIN CONSULTA INSCRIPTOS
 
 
 

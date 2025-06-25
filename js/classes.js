@@ -12,11 +12,13 @@ class Carrera {
     
     let hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
+        
     let fechaingresada = new Date(fecha);
     fechaingresada.setHours(0, 0, 0, 0);
+
     let aux = false;
 
-    if (hoy > fechaingresada){
+    if (hoy < fechaingresada){
 
         aux = true;
         
@@ -42,19 +44,35 @@ class Carrera {
     }
 
 
-     actualizarListaSponsor(){
+     actualizarCombosCarreras(){
     
-    let lista = document.getElementById('idcarrera');
-        lista.innerHTML = '';
+    let listaCarrerasSponsor = document.getElementById('idcarrera');
+    let listaCarrerasInscripciones = document.getElementById('selectorcarrera');
+    let listaCarrerasEstadisticas = document.getElementById('seleccioncarrera');
+
+    listaCarrerasInscripciones.innerHTML = '';
+    listaCarrerasSponsor.innerHTML = '';
+    listaCarrerasEstadisticas.innerHTML = '';
    
         for (let elem of syscall.listacarreras){
     
       
-    let nodo = document.createElement('option');
-    let nodoT = document.createTextNode(elem.nombre);
+    let nodoSponsors = document.createElement('option');
+    let nodoTsponsors = document.createTextNode(elem.nombre);
+    nodoSponsors.appendChild(nodoTsponsors);
 
-    nodo.appendChild(nodoT)
-    lista.appendChild(nodo);
+    let nodoInscripciones = document.createElement('option');
+    let nodoTinscripciones = document.createTextNode(elem.nombre);
+    nodoInscripciones.appendChild(nodoTinscripciones);
+
+    let nodoEstadisticas = document.createElement('option');
+    let nodoTestadisticas = document.createTextNode(elem.nombre);
+    nodoEstadisticas.appendChild(nodoTestadisticas);
+
+    listaCarrerasSponsor.appendChild(nodoSponsors);
+    listaCarrerasInscripciones.appendChild(nodoInscripciones);
+    listaCarrerasEstadisticas.appendChild(nodoEstadisticas);
+
 }
         
     
@@ -74,23 +92,6 @@ let datos = 'Carrera: ' + this.nombre +
 
 
 
- actualizarListaInscripciones(){
-
-    let lista = document.getElementById('selectorcarrera');
-        lista.innerHTML = '';
-    
-        for (let elem of syscall.listacarreras){
-    
-            let nodo = document.createElement('option');
-    
-            nodo.value = elem.nombre; 
-    
-            nodo.textContent = elem.nombre;
-    
-            lista.appendChild(nodo);
-    }
-
-    }
     
 }
 
@@ -109,12 +110,12 @@ class Sponsor {
 
         let datos;
         
-        if (syscall.existeSponsor(objeto)){
+        if (!syscall.noExisteSponsor(objeto)){
              datos = 'Nombre: ' + this.nombre + 
                     '\nRubro: ' + this.rubro + 
                     '\nCarrera: ' + this.carrera;
             }else{
-                datos = 'Esta carrera no tiene sponsor';
+                datos = 'Esta carrera no tiene sponsors';
             }
 
 
@@ -258,6 +259,14 @@ ordenarCarrerasNombre(){
 
 }
 
+ordenarCarrerasFecha(){
+    
+    this.listacarreras.sort((a, b) => {
+    return new Date(a.fecha)- new Date(b.fecha);
+});
+
+}
+
 ordenarCorredoresNombre(){
     
     this.listacorredores.sort((a, b) => {
@@ -265,7 +274,6 @@ ordenarCorredoresNombre(){
 });
 
 }
-
 
 //FIN ORDENACION
    
@@ -337,11 +345,12 @@ ordenarCorredoresNombre(){
         return aux;
     }
 
-    existeSponsor(){
+    noExisteSponsor(){
         let aux = false;
 
         if (this.listasponsors.length == 0){
-            aux = true;}
+            aux = true;
+        }
         
         return aux;
     }
@@ -350,10 +359,14 @@ ordenarCorredoresNombre(){
 
         let aux = false;
         let pos = 0;
+     
         for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
-            if (this.listasponsors[i].carrera == carrera) {
-                aux = true;
-                pos = this.listasponsors[i];
+            
+            for (let j = 0; j<this.listasponsors[i].carrera.length; j++)
+              
+                if (this.listasponsors[i].carrera[j] == carrera) {
+                    aux = true;
+                     pos = this.listasponsors[i];
             }
         }
         return pos;
@@ -396,7 +409,7 @@ ordenarCorredoresNombre(){
         
         this.buscaCarrera(carrera).cont ++;
 
-        let cont = parseInt(syscall.buscaCarrera(carrera).cupos);
+        let cont = parseInt(syscall.buscaCarrera(carrera).cont);
 
                
         return cont;
@@ -404,8 +417,9 @@ ordenarCorredoresNombre(){
 
     validarCupos(carrera){
         let aux = false;
+        let current = parseInt(syscall.buscaCarrera(carrera).cont);
 
-            if (syscall.buscaCarrera(carrera).cupos <= 0){
+            if (current >= syscall.buscaCarrera(carrera).cupos){
                 alert('No hay mas cupos');
                    aux = true;
             }
@@ -430,6 +444,44 @@ ordenarCorredoresNombre(){
         return aux;
         
     }
+
+    buscaInscriptosACarreras(carrera){
+        
+        let inscriptos = [];
+        let corredorInscripto;
+        let carreraInscripta;
+
+        for (let elem of this.listainscripciones) {
+
+                corredorInscripto = elem.corredor;
+                carreraInscripta = elem.carrera;
+
+                if (carreraInscripta.nombre == carrera) {
+                
+                inscriptos.push(corredorInscripto);
+            }
+            
+        }
+        return inscriptos;
+    }
+    
+    buscaCupoInscripciones(NombreCorredor){
+        let cupo = 0;
+        let corredor;
+
+        for (let elem of this.listainscripciones){
+                 corredor = elem.corredor;
+
+            if (NombreCorredor == corredor.nombre){
+
+                cupo = elem.cupo;
+                }
+        }
+
+        return cupo;
+    }
+
+
 //FIN LOGICA INSCRIPCIONES 
     
 
@@ -472,15 +524,6 @@ ordenarCorredoresNombre(){
 
     calcularCarreraConMasInscriptos() {
         let masInscriptos = [];
-      
-        if (this.listacarreras.length == 0 || !this.validarInscriptos()) {
-
-            let mensaje = 'No hay datos disponibles actualmente';
-         
-            masInscriptos.push(mensaje);
-        
-        }else{
-
         let inscriptosant = 0;
         let inscriptos;
 
@@ -493,15 +536,17 @@ ordenarCorredoresNombre(){
                 inscriptosant = inscriptos;
 
                 masInscriptos = [];
-                masInscriptos.push(this.listacarreras[i].nombre);
+                masInscriptos.push(this.listacarreras[i]);
 
             } else if (inscriptos == inscriptosant) {
-                masInscriptos.push(this.listacarreras[i].nombre);
+                masInscriptos.push(this.listacarreras[i]);
             }
         }
-        }
+        
         return masInscriptos;
     }
+
+
 
     //FIN ESTADISTICAS
 
