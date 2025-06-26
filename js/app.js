@@ -68,7 +68,7 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
 
     if (formulario.reportValidity()){
         carrera.fecha = document.getElementById('fechacarrera').value
-    if (carrera.fechaValida(carrera.fecha)){
+    if (!carrera.fechaValida(carrera.fecha)){
         alert('La fecha ingresada no puede ser anterior a la fecha de hoy');
     }else{
     
@@ -249,7 +249,7 @@ function descargarInscripcionPDF(inscripcion) {
     doc.text(`Departamento: ${inscripcion.carrera.departamento}`, 10, 40);
     doc.text(`Fecha de la carrera: ${inscripcion.carrera.fecha}`, 10, 50);
     doc.text(`Cupo: ${syscall.buscaCarrera(inscripcion.carrera.nombre).cont}`, 10, 60);
-    doc.save("inscripcion" + inscripcion.corredor.nombre + ".pdf");
+    doc.save("Inscripcion " + inscripcion.corredor.nombre + ".pdf");
 }
 
 //FIN GENERAR PDF
