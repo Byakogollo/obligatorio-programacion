@@ -1,6 +1,7 @@
 window.addEventListener('load', inicio) //cargo todos los elementos
 let syscall = new Sistema ();
 
+
 function inicio(){
     const btnDatos = document.getElementById('botondatos');
     const btnEstadisticas = document.getElementById('botonestadisticas');
@@ -40,6 +41,7 @@ function cambioestadisticas(){ //funcion para mostrar estadisticas
     document.getElementById('idPorcentajeElite').innerHTML = calcularElites();
     
     
+    //drawRegionsMap();
     listarCarreraMasInscriptos();
     syscall.ordenarCarrerasFecha(); // no mover esta linea ya que esta colocada debido a que el orden de ejecucion del codigo hace que se ordenen de la manera correcta en estadisticas 
     listarCarrerasSinInscriptos(); 
@@ -424,8 +426,6 @@ if (syscall.listainscripciones.length != 0){
 
 // FIN CONSULTA INSCRIPTOS
 
-
-
-
+//INICIO MAPA
 
 

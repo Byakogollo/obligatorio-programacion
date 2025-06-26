@@ -1,14 +1,69 @@
-/*
-   console.log(d3.geomap);
 
-   var map = d3.geomap.choropleth()
-    .geofile('/d3-geomap/topojson/world/countries.json')
-    .draw(d3.select('#map'));
-    console.log(typeof d3.geomap.choropleth);
-
-     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://unpkg.com/topojson@3"></script>
-    <script src="https://unpkg.com/d3-geomap@3.3.0/dist/d3-geomap.min.js"></script>
-    <script src="./js/map.js"></script>
     
-*/
+
+
+
+
+
+
+google.charts.load('current', {
+        'packages':['geochart'],
+      });
+      google.charts.setOnLoadCallback(drawRegionsMap);
+
+
+      function contarCarreras(){
+      let cantidadCarreras;
+      if (syscall.listacarreras.length != 0){
+        cantidadCarreras = syscall.listacarreras.length;
+      }else{
+        cantidadCarreras=0;
+      }
+      return cantidadCarreras;
+      }
+
+
+      function drawRegionsMap() {
+        let cantidadCarreras = parseInt(contarCarreras());
+        var data = google.visualization.arrayToDataTable([
+        
+            ['Departamento', 'Carreras'],
+          
+          ['UY-MO',cantidadCarreras],
+          ['UY-CA', cantidadCarreras],
+          ['UY-MA', cantidadCarreras],
+          ['UY-RO', cantidadCarreras],
+          ['UY-TT',cantidadCarreras],
+          ['UY-CL', cantidadCarreras],
+          ['UY-RV', cantidadCarreras],
+          ['UY-AR', cantidadCarreras],
+          ['UY-SA', cantidadCarreras],
+          ['UY-PA', cantidadCarreras],
+          ['UY-RN', cantidadCarreras],
+          ['UY-SO', cantidadCarreras],
+          ['UY-CO', cantidadCarreras],
+          ['UY-SJ', cantidadCarreras],
+          ['UY-FS', cantidadCarreras],
+          ['UY-FD',cantidadCarreras ],
+          ['UY-LA',cantidadCarreras ],
+          ['UY-DU', cantidadCarreras],
+          ['UY-TA', cantidadCarreras]
+         ]);
+
+         var options = {
+          region: 'UY', 
+          resolution: 'provinces',
+          displayMode: 'regions',
+          colorAxis: {colors: ['#ffffff', '#003366'],
+            minValue: 0,
+            maxValue: cantidadCarreras
+          }, 
+          datalessRegionColor: '#f5f5f5',
+          defaultColor: '#f5f5f5'
+        };
+
+
+        var chart = new google.visualization.GeoChart(document.getElementById('mapa'));
+
+        chart.draw(data, options);
+      }

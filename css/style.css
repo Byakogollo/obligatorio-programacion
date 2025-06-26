@@ -8,11 +8,27 @@ section{
  margin: 10px;
 }
 
+html{
+    min-width: 630px;
+}
+
+
+.botonNav{
+    display: inline;
+}
+
 #datos{
     display: block;
+    margin: 0px;
 }
 #estadisticas{
     display: none;
+    margin: 0px;
+}
+
+#nav{
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
  
 .activo {
@@ -31,9 +47,11 @@ footer>p{
     text-align: center;
 
 }
-table, th, td{
+th, td{
     border: 1px solid;
-    
+}
+table{
+    border-collapse: collapse;
 }
 #titulo{
        display: flex;
@@ -41,7 +59,6 @@ table, th, td{
         flex-direction: column;
         
 }
-
 
 .articulos{
     background-color: #00FF7F;
@@ -55,6 +72,20 @@ label{
 
 display: block;
 
+}
+
+.campo{
+    width: 170px;
+}
+
+.radio{
+    width: 50px;
+}
+.camposInscripcion{
+    width: 80px;
+}
+#idcarrera{
+    width: 80px;
 }
 
 .radioselector{
