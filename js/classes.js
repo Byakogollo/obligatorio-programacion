@@ -9,16 +9,17 @@ class Carrera {
     }
 
     fechaValida(fecha){
-    
+    let aux = false;
+
     let hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
         
-    let fechaingresada = new Date(fecha);
+    let [anio, mes, dia] = fecha.split('-');
+    let fechaingresada = new Date(anio, mes - 1, dia);
     fechaingresada.setHours(0, 0, 0, 0);
 
-    let aux = false;
-
-    if (hoy < fechaingresada){
+    
+    if (fechaingresada < hoy){
 
         aux = true;
         
@@ -44,6 +45,36 @@ class Carrera {
     }
 
 
+resetearAnchoCombos() {
+    let selects = [
+        document.getElementById('idcarrera'),
+        document.getElementById('selectorcarrera'),
+        document.getElementById('seleccioncarrera')
+    ];
+
+    selects.forEach(select => {
+        if (select && select.options && select.options.length > 0) {
+            let temp = document.createElement('span');
+            temp.style.visibility = 'hidden';
+            temp.style.position = 'absolute';
+            temp.style.whiteSpace = 'nowrap';
+            temp.style.font = getComputedStyle(select).font;
+            document.body.appendChild(temp);
+
+            const ajustarAncho = () => {
+                let selectedOption = select.options[select.selectedIndex];
+                if (selectedOption) {
+                    temp.textContent = selectedOption.text;
+                    let newWidth = temp.getBoundingClientRect().width + 40;
+                    select.style.width = `${newWidth}px`;
+                }
+            };
+
+            ajustarAncho();
+            select.addEventListener('change', ajustarAncho);
+        }
+    });
+}
      actualizarCombosCarreras(){
     
     let listaCarrerasSponsor = document.getElementById('idcarrera');
@@ -53,7 +84,7 @@ class Carrera {
     listaCarrerasInscripciones.innerHTML = '';
     listaCarrerasSponsor.innerHTML = '';
     listaCarrerasEstadisticas.innerHTML = '';
-   
+    
         for (let elem of syscall.listacarreras){
     
       
@@ -129,14 +160,13 @@ class Sponsor {
 }
 
 class Corredor {
-    constructor(nombre, edad, cedula, fichamedica, tipocorredor, cupo) {
+    constructor(nombre, edad, cedula, fichamedica, tipocorredor) {
 
         this.nombre = nombre;
         this.edad = edad;
         this.cedula = cedula;
         this.fichamedica = fichamedica;
         this.tipocorredor = tipocorredor;
-        this.cupo = cupo;
     }
 
     toString(){
@@ -164,9 +194,41 @@ let datos = 'Nombre: ' + this.nombre +
         lista.appendChild(nodo);
 }
 
-  
+}
 
-}   
+resetearAnchoCorredores() {
+    const select = document.getElementById('selectorcorredor');
+
+    if (select && select.options.length > 0) {
+        const ajustarAncho = () => {
+            const selectedOption = select.options[select.selectedIndex];
+
+            if (selectedOption) {
+                const temp = document.createElement('span');
+                const styles = getComputedStyle(select);
+
+                Object.assign(temp.style, {
+                    visibility: 'hidden',
+                    position: 'absolute',
+                    whiteSpace: 'nowrap',
+                    font: styles.font
+                });
+
+                temp.textContent = selectedOption.text;
+                document.body.appendChild(temp);
+
+                const newWidth = temp.getBoundingClientRect().width + 40;
+                select.style.width = `${newWidth}px`;
+
+                document.body.removeChild(temp);
+            }
+        };
+
+        ajustarAncho();
+        select.addEventListener('change', ajustarAncho);
+    }
+}
+
 
 }
 
@@ -175,6 +237,8 @@ class Inscripcion {
 
         this.corredor = corredor;       
         this.carrera = carrera;
+        this.cupo = cupo;
+
     }
 
   
@@ -443,17 +507,14 @@ ordenarCorredoresNombre(){
     buscaInscriptosACarreras(carrera){
         
         let inscriptos = [];
-        let corredorInscripto;
-        let carreraInscripta;
+        
+        
 
         for (let elem of this.listainscripciones) {
 
-                corredorInscripto = elem.corredor;
-                carreraInscripta = elem.carrera;
-
-                if (carreraInscripta.nombre == carrera) {
-                
-                inscriptos.push(corredorInscripto);
+                if (elem.carrera.nombre == carrera) {
+                    let cupoInscripcion = parseInt(elem.cupo);
+                inscriptos.push([elem.corredor, cupoInscripcion]);
             }
             
         }

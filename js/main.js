@@ -23,7 +23,7 @@ function inicio() {
 
 //BOTONES
 
-function cambiodatos() { //funcion para mostrar datos
+function cambiodatos() { 
 
     document.getElementById('datos').style.display = "block";
     document.getElementById('estadisticas').style.display = "none";
@@ -32,8 +32,7 @@ function cambiodatos() { //funcion para mostrar datos
     syscall.ordenarCarrerasNombre();
 }
 
-function cambioestadisticas() { //funcion para mostrar estadisticas
-
+function cambioestadisticas() { 
     document.getElementById('datos').style.display = "none";
     document.getElementById('estadisticas').style.display = "block";
     document.getElementById('botondatos').classList.remove('activo');
@@ -44,10 +43,9 @@ function cambioestadisticas() { //funcion para mostrar estadisticas
 
 
     listarCarreraMasInscriptos();
-    syscall.ordenarCarrerasFecha(); // no mover esta linea ya que esta colocada debido a que el orden de ejecucion del codigo hace que se ordenen de la manera correcta en estadisticas 
+    syscall.ordenarCarrerasFecha(); 
     listarCarrerasSinInscriptos();
 
-    //google.charts.setOnLoadCallback(() => {DibujarMapaCarreras()});
    
     document.getElementById('mapacarrera').checked = true;
     dibujarMapaCarreras();
@@ -101,6 +99,7 @@ function registrocarrera() {
                 syscall.ordenarCarrerasNombre();
 
                 carrera.actualizarCombosCarreras();
+                carrera.resetearAnchoCombos();
                 formulario.reset();
             } else {
                 alert('La carrera ya ha sido ingresada.');
@@ -179,7 +178,6 @@ function registroCorredor() {
         corredor.cedula = document.getElementById('idcorredor').value;
         corredor.fichamedica = document.getElementById('fechamedica').value;
         corredor.tipocorredor = leerRadioCorredor();
-        corredor.cupo = 0;
 
 
         if (!syscall.checkearCorredorRepetido(corredor)) {
@@ -188,6 +186,7 @@ function registroCorredor() {
             syscall.ordenarCorredoresNombre();
 
             corredor.actualizarListaCorredoresInscripciones();
+            corredor.resetearAnchoCorredores();
             formulario.reset();
         } else {
             alert('El corredor ya fue ingresado');
@@ -216,7 +215,7 @@ function registroInscripcion() {
         } else {
             if (!syscall.validarCupos(carrera)) {
 
-                syscall.buscaCorredor(corredor).cupo = syscall.generarCupo(carrera);
+                inscripcion.cupo = syscall.generarCupo(carrera);
 
 
 
@@ -266,7 +265,7 @@ function descargarInscripcionPDF(inscripcion) {
     doc.text(`Carrera: ${inscripcion.carrera.nombre}`, 10, 30);
     doc.text(`Departamento: ${inscripcion.carrera.departamento}`, 10, 40);
     doc.text(`Fecha de la carrera: ${inscripcion.carrera.fecha}`, 10, 50);
-    doc.text(`Cupo: ${syscall.buscaCarrera(inscripcion.carrera.nombre).cont}`, 10, 60);
+    doc.text(`Cupo: ${inscripcion.cupo}`, 10, 60);
     doc.save("inscripcion" + inscripcion.corredor.nombre + ".pdf");
 }
 
@@ -384,47 +383,42 @@ function consultarInscriptos() {
 
     if (leerRadioTabla() == 'nombre') {
         inscriptos.sort((a, b) => {
-            return a.nombre.localeCompare(b.nombre);
+            return a[0].nombre.localeCompare(b[0].nombre);
         });
     } else if (leerRadioTabla() == 'numero') {
         inscriptos.sort((a, b) => {
-            return a.cupo - b.cupo;
+            return a[1] - b[1];
         })
-    }
+    }   
 
     return inscriptos;
 }
 
 
 function generarTabla() {
-
-    if (syscall.listainscripciones.length != 0) {
-
+    if (syscall.listainscripciones.length !== 0) {
         let tbody = tabla.getElementsByTagName("tbody")[0];
         tbody.innerHTML = '';
 
-
         let inscriptos = consultarInscriptos();
 
-        for (let elem of inscriptos) {
-
-
+        for (let [corredor, cupo] of inscriptos) {
             let row = document.createElement('tr');
 
             let celdaNombre = document.createElement('td');
-            celdaNombre.textContent = elem.nombre;
+            celdaNombre.textContent = corredor.nombre;
 
             let celdaEdad = document.createElement('td');
-            celdaEdad.textContent = elem.edad;
+            celdaEdad.textContent = corredor.edad;
 
             let celdaCedula = document.createElement('td');
-            celdaCedula.textContent = elem.cedula;
+            celdaCedula.textContent = corredor.cedula;
 
             let celdaFichaMedica = document.createElement('td');
-            celdaFichaMedica.textContent = elem.fichamedica;
+            celdaFichaMedica.textContent = corredor.fichamedica;
 
             let celdaCupo = document.createElement('td');
-            celdaCupo.textContent = parseInt(elem.cupo);
+            celdaCupo.textContent = cupo;
 
             row.appendChild(celdaNombre);
             row.appendChild(celdaEdad);
@@ -432,19 +426,20 @@ function generarTabla() {
             row.appendChild(celdaFichaMedica);
             row.appendChild(celdaCupo);
 
-            if (elem.tipocorredor == 'elite') {
-                row.style.backgroundColor = '#FF0000'
-                tbody.appendChild(row);
-            } else {
-                tbody.appendChild(row);
+            if (corredor.tipocorredor === 'elite') {
+                row.style.backgroundColor = '#FF0000';
             }
+
+            tbody.appendChild(row);
         }
     }
 }
 
 
 
-// FIN CONSULTA INSCRIPTOS
+
+//FIN CONSULTA INSCRIPTOS
+
 
 //INICIO MAPA
 
