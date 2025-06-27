@@ -248,7 +248,7 @@ function descargarInscripcionPDF(inscripcion) {
     doc.text(`Carrera: ${inscripcion.carrera.nombre}`, 10, 30);
     doc.text(`Departamento: ${inscripcion.carrera.departamento}`, 10, 40);
     doc.text(`Fecha de la carrera: ${inscripcion.carrera.fecha}`, 10, 50);
-    doc.text(`Cupo: ${syscall.buscaCarrera(inscripcion.carrera.nombre).cont}`, 10, 60);
+    doc.text(`Cupo: ${syscall.buscaCarrera(inscripcion.carrera.nombre).cont}`, 10, 70);
     doc.save("Inscripcion " + inscripcion.corredor.nombre + ".pdf");
 }
 
