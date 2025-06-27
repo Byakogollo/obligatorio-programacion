@@ -541,9 +541,50 @@ ordenarCorredoresNombre(){
         return masInscriptos;
     }
 
+//FIN ESTADISTICAS
+
+//INICIO MAPA
+
+contarInscripcionesPorDepto(departamento){
+    let cont =0;
+
+    for (let elem of this.listainscripciones){
+        
+        if (elem.carrera.departamento == departamento){
+                
+            cont++
+
+        }
+
+    }
+
+    return cont;
+}
+
+contarCarrerasPorDepto(departamento){
+    let cont =0;
+
+    for (let elem of this.listacarreras){
+        
+        if (elem.departamento == departamento){
+                
+            cont++
+
+        }
+
+    }
+
+    return cont;
+}
 
 
-    //FIN ESTADISTICAS
+
+
+
+
+
+
+//FIN MAPA
 
 
 

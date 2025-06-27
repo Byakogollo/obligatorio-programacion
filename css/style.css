@@ -9,7 +9,7 @@ section{
 }
 
 html{
-    min-width: 630px;
+    min-width: 1000px;
 }
 
 
@@ -103,5 +103,10 @@ header>button{
 
 h2{
     padding: 10px;
+}
+
+#mapa{
+    width: 900px;
+    height: 500px;
 }
 
