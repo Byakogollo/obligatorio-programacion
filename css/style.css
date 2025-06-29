@@ -1,113 +1,107 @@
 /*Marcos Medina - N1B ID: 365070
 Santiago Diron - N1B ID: 359644-->*/
 
-section{
- background-color: #D5F4D4;
- padding: 10px;
- border-radius: 25px;
- margin: 10px;
+section {
+  background-color: #d5f4d4;
+  padding: 10px;
+  border-radius: 25px;
+  margin: 10px;
 }
 
-html{
-    min-width: 1000px;
+html {
+  min-width: 1000px;
 }
 
-
-.botonNav{
-    display: inline;
+.botonNav {
+  display: inline;
 }
 
-#datos{
-    display: block;
-    margin: 0px;
+#datos {
+  display: block;
+  margin: 0px;
 }
-#estadisticas{
-    display: none;
-    margin: 0px;
+#estadisticas {
+  display: none;
+  margin: 0px;
 }
 
-#nav{
-    margin-top: 10px;
-    margin-bottom: 10px;
+#nav {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
- 
+
 .activo {
-    background-color: #4da6ff !important;
-    color: white !important;
-    border: 2px solid #005fa3;
+  background-color: #4da6ff !important;
+  color: white !important;
+  border: 2px solid #005fa3;
 }
 
-footer{
-    background-color: #F0F4D4;
-    border-radius: 25px;
-    font-size: small;
-    padding: 10px;
+footer {
+  background-color: #f0f4d4;
+  border-radius: 25px;
+  font-size: small;
+  padding: 10px;
 }
-footer>p{
-    text-align: center;
-
+footer > p {
+  text-align: center;
 }
-th, td{
-    border: 1px solid;
+th,
+td {
+  border: 1px solid;
 }
-table{
-    border-collapse: collapse;
+table {
+  border-collapse: collapse;
 }
-#titulo{
-       display: flex;
-        align-items: center;
-        flex-direction: column;
-        
-}
-
-.articulos{
-    background-color: #00FF7F;
-    display: block;
-    margin: 10px;
-    border-radius: 25px;
-    padding: 10px;
+#titulo {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
-label{
-
-display: block;
-
+.articulos {
+  background-color: #00ff7f;
+  display: block;
+  margin: 10px;
+  border-radius: 25px;
+  padding: 10px;
 }
 
-.campo{
-    width: 170px;
+label {
+  display: block;
 }
 
-.radio{
-    width: 50px;
-}
-.camposInscripcion{
-    width: 80px;
+.campo {
+  width: 170px;
 }
 
-#idcarrera{
-    width: 80px;
+.radio {
+  width: 50px;
+}
+.camposInscripcion {
+  width: 140px;
 }
 
-.radioselector{
-    display: flex;
-    
+#idcarrera {
+  width: 80px;
 }
 
-button{
-    display: block;
+.radioselector {
+  display: flex;
 }
 
-header>button{
-    display: inline;
+button {
+  display: block;
 }
 
-h2{
-    padding: 10px;
+header > button {
+  display: inline;
 }
 
-#mapa{
-    width: 900px;
-    height: 500px;
+h2 {
+  padding: 10px;
 }
 
+#mapa {
+  width: 900px;
+  height: 500px;
+}

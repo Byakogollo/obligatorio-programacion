@@ -3,286 +3,360 @@
 <!--Santiago Diron - N1B ID: 359644-->
 
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="./js/classes.js"></script>
 
     <script src="./js/main.js"></script>
 
-
     <title>Gestion Carreras</title>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <header>
+      <div id="titulo">
+        <h1>Sitio de corredores</h1>
+        <img
+          src="./img/Corredores_del_uruguay.jpeg"
+          alt="foto de encabezado"
+          width="400"
+        />
+      </div>
 
-        <div id="titulo">
-            <h1>Sitio de corredores</h1>
-            <img src="./img/Corredores_del_uruguay.jpeg" alt="foto de encabezado" width="400">
-        </div>
-
-        <nav id="nav">
-            <button class="botonNav" id="botondatos">Datos</button>
-            <button class="botonNav" id="botonestadisticas">Estadísticas</button>
-        </nav>
-
+      <nav id="nav">
+        <button class="botonNav" id="botondatos">Datos</button>
+        <button class="botonNav" id="botonestadisticas">Estadísticas</button>
+      </nav>
     </header>
 
     <main>
-
-        <section id="datos"> <!--INICIO DE DATOS-->
-
-            <h2>Datos</h2>
-
-            <article class="articulos"> <!--REGISTRO DE CARRERAS-->
-
-
-                <h3>Carreras</h3>
-
-                <form id="registrocarrera">
-
-                    <label for="nomcarrera" class="campo">Nombre:</label>
-                    <input type="text" id="nomcarrera" class="campo" required>
-
-
-                    <label for="departamentocarrera">Departamento:</label>
-
-                    <select id="departamentocarrera" required>
-                        <option value="1" selected>Montevideo</option>
-                        <option value="2">Canelones</option>
-                        <option value="3">Maldonado</option>
-                        <option value="4">Rocha</option>
-                        <option value="5">Treinta y Tres</option>
-                        <option value="6">Cerro Largo</option>
-                        <option value="7">Rivera</option>
-                        <option value="8">Artigas</option>
-                        <option value="9">Salto</option>
-                        <option value="10">Paysandu</option>
-                        <option value="11">Rio Negro</option>
-                        <option value="12">Soriano</option>
-                        <option value="13">Colonia</option>
-                        <option value="14">San Jose</option>
-                        <option value="15">Flores</option>
-                        <option value="16">Florida</option>
-                        <option value="17">La Valleja</option>
-                        <option value="18">Durazno</option>
-                        <option value="19">Tacuarembo</option>
-                    </select>
-
-                    <label for="fechacarrera">Fecha:</label>
-                    <input type="date" id="fechacarrera" class="campo" required>
-
-
-                    <label for="cuposcarrera">Cupo:</label>
-                    <input type="number" id="cuposcarrera" min="1" max="1000" value="30" class="campo" required>
-
-                    <br>
-                    <input type="button" value="Agregar carrera" class="campo" id="agregarcarrera">
-
-                </form>
-            </article> <!--FIN REGISTRO CARRERAS-->
-
-
-
-            <article class="articulos"> <!--REGISTRO SPONSORS-->
-
-
-                <h3>Patrocinadores</h3>
-
-                <form id="registrosponsor">
-
-                    <label for="nombresponsor">Nombre:</label>
-                    <input type="text" name="sponsor" id="nombresponsor" class="campo" required>
-
-
-                    <label for="rubrosponsor">Rubro:</label>
-                    <select name="rubro" id="rubrosponsor" required>
-                        <option value="alimenticio" selected>Alimenticio</option>
-                        <option value="bancario">Bancario</option>
-                        <option value="bebidas">Bebidas</option>
-                        <option value="farmaceutico">Farmaceutico</option>
-                        <option value="ropa">Ropa Deportiva</option>
-                        <option value="estatal">Estatal</option>
-                        <option value="general">General Y Otros</option>
-                    </select>
-
-                    <label for="idcarrera">Carreras:</label>
-                    <select name="listacarreras" id="idcarrera" multiple required></select>
-
-                    <br>
-
-                    <input type="button" value="Agregar/Actualizar patrocinador" id="agregarsponsor">
-                </form>
-            </article> <!--FIN REGISTRO SPONSORS-->
-
-
-            <article class="articulos"><!--REGISTRO DE CORREDORES-->
-
-                <h3>Corredores</h3>
-
-                <form id="registrocorredores">
-
-                    <label for="nombrecorredor">Nombre:</label>
-                    <input type="text" id="nombrecorredor" class="campo" required>
-
-                    <label for="edadcorredor">Edad:</label>
-                    <input type="number" id="edadcorredor" class="campo" min="18" required>
-
-                    <label for="idcorredor">Cedula:</label>
-                    <input type="number" id="idcorredor" class="campo" required>
-
-                    <label for="fechamedica">Fecha de vencimiento de ficha médica:</label>
-                    <input type="date" id="fechamedica" class="campo" required>
-
-                    <div class="radioselector">
-
-                        <label>Tipo de corredor: </label>
-
-                        <input type="radio" name="typecorredor" id="corredorcomun" value="comun" class="radio" checked>
-                        <label for="corredorcomun"> Corredor común</label>
-
-                        <input type="radio" name="typecorredor" id="corredorelite" class="radio" value="elite">
-                        <label for="corredorelite">Deportista de élite</label>
-
-                    </div>
-
-
-                    <input type="button" id='agregarcorredor' value="Agregar corredor">
-
-                </form>
-            </article> <!--FIN REGISTRO CORREDORES-->
-
-            <article class="articulos"> <!--INSCRIPCION A CARRERAS-->
-
-                <h3>Inscripción</h3>
-
-                <form id="inscripcioncarrera" method="get">
-
-                    <label for="selectorcorredor">Corredores:</label>
-                    <select name="corredores" id="selectorcorredor" required class="camposInscripcion"></select>
-
-                    <label for="selectorcarrera">Carreras:</label>
-                    <select name="carreras" id="selectorcarrera" required class="camposInscripcion"></select>
-
-                    <br>
-
-                    <input type="button" id="botonregistro" value="Inscribir">
-
-                </form>
-
-            </article><!--FIN INSCRIPCION A CARRERAS-->
-
-
-
-        </section> <!--FIN DE SECCION DATOS-->
-
-
-
-        <section id="estadisticas"> <!--INICIO SECCION ESTADISTICAS -->
-
-            <h2>Estadísticas</h2>
-
-            <article class="articulos"> <!--INICIO DATOS GENERALES-->
-
-                <h3>Datos Generales</h3>
-
-                <p>Promedio de inscriptos por carrera: <a id="idPromedio"></a></p>
-
-                <p>Carrera/s con más incriptos: </p>
-
-                <ul id="idCarreraMasInscriptos"></ul>
-
-                <p>Carrera/s sin inscriptos ordenadas por fechas</p>
-
-                <ul id="idCarreraSininscriptos"></ul>
-
-                <p>Procentaje de corredores de élite: <a id="idPorcentajeElite"></a></p>
-
-            </article> <!--FIN DATOS GENERALES-->
-
-            <article class="articulos"> <!--INICIO CONSULTA INSCRIPCIONES-->
-
-                <h3>Consulta inscriptos</h3>
-
-                <label for="seleccioncarrera">Carrera</label>
-                <select name="carreraseleccionada" id="seleccioncarrera" class="camposInscripcion"></select>
-
-
-                <div class="radioselector">
-                    <label>Ordenar por:</label>
-
-                    <input type="radio" name="ordenadorCorredor" class="radio" id="ordenadornombre" value="nombre"
-                        checked>
-                    <label for="ordenadornombre">Nombre</label>
-
-                    <input type="radio" name="ordenadorCorredor" class="radio" id="ordenadornumero" value="numero">
-                    <label for="ordenadornumero">Numero</label>
-                </div>
-
-                <table id="tabla">
-
-                    <caption>Inscriptos</caption>
-
-                    <thead>
-
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Edad</th>
-                            <th>Cedula</th>
-                            <th>Ficha médica</th>
-                            <th>Numero</th>
-                        </tr>
-                    </thead>
-
-                    <tbody></tbody>
-
-                </table>
-
-            </article> <!--FIN CONSULTA INSCRIPCIONES-->
-
-            <article class="articulos"> <!--INICIO MAPA-->
-
-                <h3>Visualizar Mapa:</h3>
-
-                <div class="radioselector">
-
-                    
-                    <input type="radio" name="radioMapa" value="porCarreras" class="radio" id="mapacarrera" checked>
-                    <label for="mapacarrera">Por Carreras</label>
-
-                    <input type="radio" name="radioMapa" value="porInscripciones" class="radio" id="mapainscripcion">
-                    <label for="mapainscripcion">Por inscripciones</label>
-
-                </div>
-
-                <div id="mapa"></div>
-
-            </article> <!--FIN MAPA-->
-        </section><!--FIN ESTADISTICAS-->
+      <section id="datos">
+
+        <h2>Datos</h2>
+
+        <article class="articulos">
+
+          <h3>Carreras</h3>
+
+          <form id="registrocarrera">
+            <label for="nomcarrera" class="campo">Nombre:</label>
+            <input type="text" id="nomcarrera" class="campo" required />
+
+            <label for="departamentocarrera">Departamento:</label>
+
+            <select id="departamentocarrera" required>
+              <option value="" selected>Seleccione Departamento</option>  
+              <option value="1">Montevideo</option>
+              <option value="2">Canelones</option>
+              <option value="3">Maldonado</option>
+              <option value="4">Rocha</option>
+              <option value="5">Treinta y Tres</option>
+              <option value="6">Cerro Largo</option>
+              <option value="7">Rivera</option>
+              <option value="8">Artigas</option>
+              <option value="9">Salto</option>
+              <option value="10">Paysandu</option>
+              <option value="11">Rio Negro</option>
+              <option value="12">Soriano</option>
+              <option value="13">Colonia</option>
+              <option value="14">San Jose</option>
+              <option value="15">Flores</option>
+              <option value="16">Florida</option>
+              <option value="17">La Valleja</option>
+              <option value="18">Durazno</option>
+              <option value="19">Tacuarembo</option>
+            </select>
+
+            <label for="fechacarrera">Fecha:</label>
+            <input type="date" id="fechacarrera" class="campo" required />
+
+            <label for="cuposcarrera">Cupo:</label>
+            <input
+              type="number"
+              id="cuposcarrera"
+              min="1"
+              max="1000"
+              value="30"
+              class="campo"
+              required
+            />
+
+            <br />
+            <input
+              type="button"
+              value="Agregar carrera"
+              class="campo"
+              id="agregarcarrera"
+            />
+          </form>
+        </article>
+        
+
+        <article class="articulos">
+        
+
+          <h3>Patrocinadores</h3>
+
+          <form id="registrosponsor">
+            <label for="nombresponsor">Nombre:</label>
+            <input
+              type="text"
+              name="sponsor"
+              id="nombresponsor"
+              class="campo"
+              required
+            />
+
+            <label for="rubrosponsor">Rubro:</label>
+            <select name="rubro" id="rubrosponsor" required>
+              <option value="" selected>Seleccione Rubro</option>
+              <option value="Alimenticio">Alimenticio</option>
+              <option value="bancario">Bancario</option>
+              <option value="bebidas">Bebidas</option>
+              <option value="farmaceutico">Farmaceutico</option>
+              <option value="ropa">Ropa Deportiva</option>
+              <option value="estatal">Estatal</option>
+              <option value="general">General Y Otros</option>
+            </select>
+
+            <label for="idcarrera">Carreras:</label>
+            <select
+              name="listacarreras"
+              id="idcarrera"
+              multiple
+              required
+            ></select>
+
+            <br />
+
+            <input
+              type="button"
+              value="Agregar/Actualizar patrocinador"
+              id="agregarsponsor"
+            />
+          </form>
+        </article>
+
+        <article class="articulos">
+
+          <h3>Corredores</h3>
+
+          <form id="registrocorredores">
+            <label for="nombrecorredor">Nombre:</label>
+            <input type="text" id="nombrecorredor" class="campo" required />
+
+            <label for="edadcorredor">Edad:</label>
+            <input
+              type="number"
+              id="edadcorredor"
+              class="campo"
+              min="18"
+              required
+            />
+
+            <label for="idcorredor">Cedula:</label>
+            <input type="number" id="idcorredor" class="campo" required />
+
+            <label for="fechamedica"
+              >Fecha de vencimiento de ficha médica:</label
+            >
+            <input type="date" id="fechamedica" class="campo" required />
+
+            <div class="radioselector">
+              <label>Tipo de corredor: </label>
+
+              <input
+                type="radio"
+                name="typecorredor"
+                id="corredorcomun"
+                value="comun"
+                class="radio"
+                checked
+              />
+              <label for="corredorcomun"> Corredor común</label>
+
+              <input
+                type="radio"
+                name="typecorredor"
+                id="corredorelite"
+                class="radio"
+                value="elite"
+              />
+              <label for="corredorelite">Deportista de élite</label>
+            </div>
+
+            <input
+              type="button"
+              id="agregarcorredor"
+              value="Agregar corredor"
+            />
+          </form>
+        </article>
+
+        <article class="articulos">
+
+          <h3>Inscripción</h3>
+
+          <form id="inscripcioncarrera" method="get">
+            <label for="selectorcorredor">Corredores:</label>
+            <select
+              name="corredores"
+              id="selectorcorredor"
+              required
+              class="camposInscripcion"
+            >
+            <option value="">No Hay Corredores</option>
+        </select>
+
+            <label for="selectorcarrera">Carreras:</label>
+            <select
+              name="carreras"
+              id="selectorcarrera"
+              required
+              class="camposInscripcion"
+            >
+            <option value="">No Hay Carreras</option>
+        </select>
+
+            <br />
+
+            <input type="button" id="botonregistro" value="Inscribir" />
+          </form>
+        </article>
+      </section>
+
+      <section id="estadisticas">
+
+        <h2>Estadísticas</h2>
+
+        <article class="articulos">
+
+          <h3>Datos Generales</h3>
+
+          <p>Promedio de inscriptos por carrera: <a id="idPromedio"></a></p>
+
+          <p>Carrera/s con más incriptos:</p>
+
+          <ul id="idCarreraMasInscriptos"></ul>
+
+          <p>Carrera/s sin inscriptos ordenadas por fechas</p>
+
+          <ul id="idCarreraSininscriptos"></ul>
+
+          <p>
+            Procentaje de corredores de élite: <a id="idPorcentajeElite"></a>
+          </p>
+        </article>
+
+        <article class="articulos">
+
+          <h3>Consulta inscriptos</h3>
+
+          <label for="seleccioncarrera">Carrera</label>
+          <select
+            name="carreraseleccionada"
+            id="seleccioncarrera"
+            class="camposInscripcion"
+          >
+          <option value="">No Hay Carreras</option>
+        </select>
+
+          <div class="radioselector">
+            <label>Ordenar por:</label>
+
+            <input
+              type="radio"
+              name="ordenadorCorredor"
+              class="radio"
+              id="ordenadornombre"
+              value="nombre"
+              checked
+            />
+            <label for="ordenadornombre">Nombre</label>
+
+            <input
+              type="radio"
+              name="ordenadorCorredor"
+              class="radio"
+              id="ordenadornumero"
+              value="numero"
+            />
+            <label for="ordenadornumero">Numero</label>
+          </div>
+
+          <table id="tabla">
+            <caption>
+              Inscriptos
+            </caption>
+
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Edad</th>
+                <th>Cedula</th>
+                <th>Ficha médica</th>
+                <th>Numero</th>
+              </tr>
+            </thead>
+
+            <tbody></tbody>
+          </table>
+        </article>
+
+        <article class="articulos">
+
+          <h3>Visualizar Mapa:</h3>
+
+          <div class="radioselector">
+            <input
+              type="radio"
+              name="radioMapa"
+              value="porCarreras"
+              class="radio"
+              id="mapacarrera"
+              checked
+            />
+            <label for="mapacarrera">Por Carreras</label>
+
+            <input
+              type="radio"
+              name="radioMapa"
+              value="porInscripciones"
+              class="radio"
+              id="mapainscripcion"
+            />
+            <label for="mapainscripcion">Por inscripciones</label>
+          </div>
+
+          <div id="mapa"></div>
+        </article>
+      </section>
     </main>
 
     <footer>
+      <p>Programación 1 - Obligatorio 1er semestre 2025 - Autores</p>
 
-        <p>Programación 1 - Obligatorio 1er semestre 2025 - Autores</p>
+      <p>
+        Grupo N1B - Marcos Medina (Numero estudiante: 365070)
+        <a href="https://www.linkedin.com/in/marcosmcv/" target="_blank"
+          >Link</a
+        >
+      </p>
 
-        <p>Grupo N1B - Marcos Medina (Numero estudiante: 365070) <a href="https://www.linkedin.com/in/marcosmcv/"
-                target="_blank">Link</a></p>
-
-        <p>Grupo N1B - Santiago Diron (Numero estudiante: 359644) <a
-                href="https://www.linkedin.com/in/santiago-dir%C3%B3n-a3a977285/" target="_blank">Link</a></p>
-
+      <p>
+        Grupo N1B - Santiago Diron (Numero estudiante: 359644)
+        <a
+          href="https://www.linkedin.com/in/santiago-dir%C3%B3n-a3a977285/"
+          target="_blank"
+          >Link</a
+        >
+      </p>
     </footer>
-
-</body>
-
+  </body>
 </html>

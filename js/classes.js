@@ -1,247 +1,233 @@
 class Carrera {
-    constructor(nombre, departamento, fecha, cupos, cont) {
+  constructor(nombre, departamento, fecha, cupos, cont) {
+    this.nombre = nombre;
+    this.departamento = departamento;
+    this.fecha = fecha;
+    this.cupos = cupos;
+    this.cont = cont;
+  }
 
-        this.nombre = nombre;
-        this.departamento = departamento;
-        this.fecha = fecha;
-        this.cupos = cupos;
-        this.cont = cont;
-    }
-
-    fechaValida(fecha){
+  fechaValida(fecha) {
     let aux = false;
 
     let hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
-        
-    let [anio, mes, dia] = fecha.split('-');
+
+    let [anio, mes, dia] = fecha.split("-");
     let fechaingresada = new Date(anio, mes - 1, dia);
     fechaingresada.setHours(0, 0, 0, 0);
 
-    
-    if (fechaingresada < hoy){
-
-        aux = true;
-        
+    if (fechaingresada < hoy) {
+      aux = true;
     }
     return aux;
-    
-    }
-    
-    valorDepto(){
-       
-    let lista = document.getElementById('departamentocarrera');
+  }
+
+  valorDepto() {
+    let lista = document.getElementById("departamentocarrera");
     let resultado;
     let aux = false;
 
-    for (let i = 0; i <lista.length && !aux; i++){
-        if(lista.options[i].selected){
-            resultado = lista.options[i].textContent;
-            aux = true;
-        }
+    for (let i = 0; i < lista.length && !aux; i++) {
+      if (lista.options[i].selected) {
+        resultado = lista.options[i].textContent;
+        aux = true;
+      }
     }
     return resultado;
+  }
 
-    }
-
-
-resetearAnchoCombos() {
+  resetearAnchoCombos() {
     let selects = [
-        document.getElementById('idcarrera'),
-        document.getElementById('selectorcarrera'),
-        document.getElementById('seleccioncarrera')
+      document.getElementById("idcarrera"),
+      document.getElementById("selectorcarrera"),
+      document.getElementById("seleccioncarrera"),
     ];
 
-    selects.forEach(select => {
-        if (select && select.options && select.options.length > 0) {
-            let temp = document.createElement('span');
-            temp.style.visibility = 'hidden';
-            temp.style.position = 'absolute';
-            temp.style.whiteSpace = 'nowrap';
-            temp.style.font = getComputedStyle(select).font;
-            document.body.appendChild(temp);
+    selects.forEach((select) => {
+      if (select && select.options && select.options.length > 0) {
+        let temp = document.createElement("span");
+        temp.style.visibility = "hidden";
+        temp.style.position = "absolute";
+        temp.style.whiteSpace = "nowrap";
+        temp.style.font = getComputedStyle(select).font;
+        document.body.appendChild(temp);
 
-            const ajustarAncho = () => {
-                let selectedOption = select.options[select.selectedIndex];
-                if (selectedOption) {
-                    temp.textContent = selectedOption.text;
-                    let newWidth = temp.getBoundingClientRect().width + 40;
-                    select.style.width = `${newWidth}px`;
-                }
-            };
-
-            ajustarAncho();
-            select.addEventListener('change', ajustarAncho);
-        }
-    });
-}
-     actualizarCombosCarreras(){
-    
-    let listaCarrerasSponsor = document.getElementById('idcarrera');
-    let listaCarrerasInscripciones = document.getElementById('selectorcarrera');
-    let listaCarrerasEstadisticas = document.getElementById('seleccioncarrera');
-
-    listaCarrerasInscripciones.innerHTML = '';
-    listaCarrerasSponsor.innerHTML = '';
-    listaCarrerasEstadisticas.innerHTML = '';
-    
-        for (let elem of syscall.listacarreras){
-    
-      
-    let nodoSponsors = document.createElement('option');
-    let nodoTsponsors = document.createTextNode(elem.nombre);
-    nodoSponsors.appendChild(nodoTsponsors);
-
-    let nodoInscripciones = document.createElement('option');
-    let nodoTinscripciones = document.createTextNode(elem.nombre);
-    nodoInscripciones.appendChild(nodoTinscripciones);
-
-    let nodoEstadisticas = document.createElement('option');
-    let nodoTestadisticas = document.createTextNode(elem.nombre);
-    nodoEstadisticas.appendChild(nodoTestadisticas);
-
-    listaCarrerasSponsor.appendChild(nodoSponsors);
-    listaCarrerasInscripciones.appendChild(nodoInscripciones);
-    listaCarrerasEstadisticas.appendChild(nodoEstadisticas);
-
-}
-        
-    
-
-
-
-}   
-
-toString(){
-let datos = 'Carrera: ' + this.nombre + 
-            '\nDepartamento: ' + this.departamento + 
-            '\nFecha: ' + this.fecha + 
-            '\nCupos: ' + this.cupos;
-
-    return datos;
-}
-
-
-
-    
-}
-
-
-class Sponsor {
-    constructor(nombre, rubro, carrera) {
-        this.nombre = nombre;
-        this.rubro = rubro;
-        this.carrera = carrera;
-    }
- 
-   toString() {
-
-    return 'Nombre del Patrocinador: '+this.nombre+
-     '\nRubro del Patrocinador: ' + this.rubro +
-    '\nCarrera Patrocinada: ' + this.carrera;
-
-
-   }
-
-
-    aTextoSponsor(objeto){
-
-        let datos;
-        
-        if (!syscall.noExisteSponsor(objeto)){
-             datos = 'Nombre: ' + this.nombre + 
-                    '\nRubro: ' + this.rubro + 
-                    '\nCarrera: ' + this.carrera;
-            }else{
-                datos = 'Esta carrera no tiene sponsors';
-            }
-
-
-    return datos;
-}
-
-  
-
- 
-
-}
-
-class Corredor {
-    constructor(nombre, edad, cedula, fichamedica, tipocorredor) {
-
-        this.nombre = nombre;
-        this.edad = edad;
-        this.cedula = cedula;
-        this.fichamedica = fichamedica;
-        this.tipocorredor = tipocorredor;
-    }
-
- 
-
-     actualizarListaCorredoresInscripciones(){
-
-    let lista = document.getElementById('selectorcorredor');
-        lista.innerHTML = '';
-        
-        for (let elem of syscall.listacorredores){
-            let nodo = document.createElement('option');
-
-            nodo.value = elem.cedula; 
-            nodo.textContent = 'Nombre: ' + elem.nombre + ' || Cedula: ' + elem.cedula;
-    
-        lista.appendChild(nodo);
-}
-
-}
-
-resetearAnchoCorredores() {
-    const select = document.getElementById('selectorcorredor');
-
-    if (select && select.options.length > 0) {
         const ajustarAncho = () => {
-            const selectedOption = select.options[select.selectedIndex];
-
-            if (selectedOption) {
-                const temp = document.createElement('span');
-                const styles = getComputedStyle(select);
-
-                Object.assign(temp.style, {
-                    visibility: 'hidden',
-                    position: 'absolute',
-                    whiteSpace: 'nowrap',
-                    font: styles.font
-                });
-
-                temp.textContent = selectedOption.text;
-                document.body.appendChild(temp);
-
-                const newWidth = temp.getBoundingClientRect().width + 40;
-                select.style.width = `${newWidth}px`;
-
-                document.body.removeChild(temp);
-            }
+          let selectedOption = select.options[select.selectedIndex];
+          if (selectedOption) {
+            temp.textContent = selectedOption.text;
+            let newWidth = temp.getBoundingClientRect().width + 40;
+            select.style.width = `${newWidth}px`;
+          }
         };
 
         ajustarAncho();
-        select.addEventListener('change', ajustarAncho);
+        select.addEventListener("change", ajustarAncho);
+      }
+    });
+  }
+  actualizarCombosCarreras() {
+    let listaCarrerasSponsor = document.getElementById("idcarrera");
+    let listaCarrerasInscripciones = document.getElementById("selectorcarrera");
+    let listaCarrerasEstadisticas = document.getElementById("seleccioncarrera");
+
+    listaCarrerasInscripciones.innerHTML = "";
+    listaCarrerasSponsor.innerHTML = "";
+    listaCarrerasEstadisticas.innerHTML = "";
+
+    for (let elem of syscall.listacarreras) {
+      let nodoSponsors = document.createElement("option");
+      let nodoTsponsors = document.createTextNode(elem.nombre);
+      nodoSponsors.appendChild(nodoTsponsors);
+
+      let nodoInscripciones = document.createElement("option");
+      let nodoTinscripciones = document.createTextNode(elem.nombre);
+      nodoInscripciones.appendChild(nodoTinscripciones);
+
+      let nodoEstadisticas = document.createElement("option");
+      let nodoTestadisticas = document.createTextNode(elem.nombre);
+      nodoEstadisticas.appendChild(nodoTestadisticas);
+
+      listaCarrerasSponsor.appendChild(nodoSponsors);
+      listaCarrerasInscripciones.appendChild(nodoInscripciones);
+      listaCarrerasEstadisticas.appendChild(nodoEstadisticas);
     }
+  }
+
+  toString() {
+    let datos =
+      "Carrera: " +
+      this.nombre +
+      "\nDepartamento: " +
+      this.departamento +
+      "\nFecha: " +
+      this.fecha +
+      "\nCupos: " +
+      this.cupos;
+
+    return datos;
+  }
 }
 
+class Sponsor {
+  constructor(nombre, rubro, carrera) {
+    this.nombre = nombre;
+    this.rubro = rubro;
+    this.carrera = carrera;
+  }
 
+  toString() {
+    return (
+      "Nombre del Patrocinador: " +
+      this.nombre +
+      "\nRubro del Patrocinador: " +
+      this.rubro +
+      "\nCarrera(s) Patrocinada(s): " +
+      this.carrera
+    );
+  }
+
+  rubroSponsor() {
+    let lista = document.getElementById("rubrosponsor");
+    let resultado;
+    let aux = false;
+
+    for (let i = 0; i < lista.length && !aux; i++) {
+      if (lista.options[i].selected) {
+        resultado = lista.options[i].textContent;
+        aux = true;
+      }
+    }
+    return resultado;
+  }
+
+  aTextoSponsor(objeto) {
+    let datos;
+
+    if (!syscall.noExisteSponsor(objeto)) {
+      datos =
+        "Nombre: " +
+        this.nombre +
+        "\nRubro: " +
+        this.rubro +
+        "\nCarrera: " +
+        this.carrera;
+    } else {
+      datos = "Esta carrera no tiene sponsors";
+    }
+
+    return datos;
+  }
+}
+
+class Corredor {
+  constructor(nombre, edad, cedula, fichamedica, tipocorredor) {
+    this.nombre = nombre;
+    this.edad = edad;
+    this.cedula = cedula;
+    this.fichamedica = fichamedica;
+    this.tipocorredor = tipocorredor;
+  }
+
+  actualizarListaCorredoresInscripciones() {
+    let lista = document.getElementById("selectorcorredor");
+    lista.innerHTML = "";
+
+    for (let elem of syscall.listacorredores) {
+      let nodo = document.createElement("option");
+
+      nodo.value = elem.cedula;
+      nodo.textContent =
+        "Nombre: " + elem.nombre + " || Cedula: " + elem.cedula;
+
+      lista.appendChild(nodo);
+    }
+  }
+
+  resetearAnchoCorredores() {
+    const select = document.getElementById("selectorcorredor");
+
+    if (select && select.options.length > 0) {
+      const ajustarAncho = () => {
+        const selectedOption = select.options[select.selectedIndex];
+
+        if (selectedOption) {
+          const temp = document.createElement("span");
+          const styles = getComputedStyle(select);
+
+          Object.assign(temp.style, {
+            visibility: "hidden",
+            position: "absolute",
+            whiteSpace: "nowrap",
+            font: styles.font,
+          });
+
+          temp.textContent = selectedOption.text;
+          document.body.appendChild(temp);
+
+          const newWidth = temp.getBoundingClientRect().width + 40;
+          select.style.width = `${newWidth}px`;
+
+          document.body.removeChild(temp);
+        }
+      };
+
+      ajustarAncho();
+      select.addEventListener("change", ajustarAncho);
+    }
+  }
 }
 
 class Inscripcion {
-    constructor(corredor, carrera, cupo) {
+  constructor(corredor, carrera, cupo) {
+    this.corredor = corredor;
+    this.carrera = carrera;
+    this.cupo = cupo;
+  }
 
-        this.corredor = corredor;       
-        this.carrera = carrera;
-        this.cupo = cupo;
-
-    }
-
-  
-        aTextoInscripcion(inscripcion){
-        let mensaje = `Inscripción confirmada:
+  aTextoInscripcion(inscripcion) {
+    let mensaje = `Inscripción confirmada:
 
  Cupo numero: ${syscall.buscaCarrera(inscripcion.carrera.nombre).cont}
 
@@ -257,397 +243,315 @@ Nombre: ${inscripcion.carrera.nombre}
 Departamento: ${inscripcion.carrera.departamento}
 Fecha: ${inscripcion.carrera.fecha}
 Cupos Disponibles: ${syscall.buscaCarrera(inscripcion.carrera.nombre).cupos}`;
-                
 
-                return mensaje;
-                    }
+    return mensaje;
+  }
 
-inscripcionFechaValida() {
+  inscripcionFechaValida() {
     let esValida = false;
 
     if (this.carrera.fecha <= this.corredor.fichamedica) {
-        esValida = true;
-
+      esValida = true;
     }
-        return esValida;
-}
-
-
-
-
+    return esValida;
+  }
 }
 
 class Sistema {
-    constructor() {
-        this.listacarreras = [];
-        this.listacorredores = [];
-        this.listasponsors = [];
-        this.listainscripciones = [];
-    }
-
- // PUSHEO ITEMS
-
-    pushearCarrera(carrera) {
-        this.listacarreras.push(carrera);
-        console.log(this.listacarreras);
-    }
-
-    pushearCorredores(corredor) {
-        this.listacorredores.push(corredor);
-        console.log(this.listacorredores);
-    }
-
-    pushearSponsors(sponsor) {
-        this.listasponsors.push(sponsor);
-        console.log(this.listasponsors);
-    }
-
-    pushearInscripciones(inscripcion) {
-        this.listainscripciones.push(inscripcion);
-        console.log(this.listainscripciones);
-    }
-
-//FIN PUSHEAR ITEMS
+  constructor() {
+    this.listacarreras = [];
+    this.listacorredores = [];
+    this.listasponsors = [];
+    this.listainscripciones = [];
+  }
 
 
+  pushearCarrera(carrera) {
+    this.listacarreras.push(carrera);
+    console.log(this.listacarreras);
+  }
 
-//INICIO ORDENACION
+  pushearCorredores(corredor) {
+    this.listacorredores.push(corredor);
+    console.log(this.listacorredores);
+  }
 
-ordenarCarrerasNombre(){
-    
-    this.listacarreras.sort((a, b) => {
-    return a.nombre.localeCompare(b.nombre);
-});
+  pushearSponsors(sponsor) {
+    this.listasponsors.push(sponsor);
+    console.log(this.listasponsors);
+  }
 
-}
+  pushearInscripciones(inscripcion) {
+    this.listainscripciones.push(inscripcion);
+    console.log(this.listainscripciones);
+  }
 
-ordenarCarrerasFecha(){
-    
-    this.listacarreras.sort((a, b) => {
-    return new Date(a.fecha)- new Date(b.fecha);
-});
-
-}
-
-ordenarCorredoresNombre(){
-    
-    this.listacorredores.sort((a, b) => {
-    return a.nombre.localeCompare(b.nombre);
-});
-
-}
-
-//FIN ORDENACION
-   
-   
-//LOGICA CARRERAS
-
-    buscaCarrera(carrera) {
-        let aux = false;
-        let pos = 0;
-        for (let i = 0; i < this.listacarreras.length && aux == false; i++) {
-            if (this.listacarreras[i].nombre == carrera) {
-                aux = true;
-                pos = this.listacarreras[i];
-            }
-        }
-        return pos;
-    }
-     
-
-    checkearCarreraRepetida(carrera) {
-        let aux = false;
-        for (let i = 0; i < this.listacarreras.length && aux == false; i++) {
-            if (this.listacarreras[i].nombre == carrera.nombre) {
-                aux = true;
-            }
-        }
-        return aux;
-    }
-
-//FIN LOGICA CARRERAS
-
-
-
-//INICIO LOGICA SPONSORS
-
-    checkearSponsorRepetido(sponsor) {
-        let aux = false;
-        for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
-            if (this.listasponsors[i].nombre == sponsor.nombre) {
-                aux = true;
-            }
-        }
-        return aux;
-    }
-
-    buscaSponsor(sponsor) {
-        let aux = false;
-        let pos = 0;
-        for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
-            if (this.listasponsors[i].nombre == sponsor.nombre) {
-                aux = true;
-                pos = this.listasponsors[i];
-            }
-        }
-        return pos;
-    }
-
-    validoSponsors(carrera){
-        
-        let aux = false;
-        
-
-        for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
-            if (this.listasponsors[i].carrera == carrera) {
-                aux = true;
-                
-            }
-        }
-        return aux;
-    }
-
-    noExisteSponsor(){
-        let aux = false;
-
-        if (this.listasponsors.length == 0){
-            aux = true;
-        }
-        
-        return aux;
-    }
-
-    buscaSponsorCarrera(carrera){
-
-        let aux = false;
-        let pos = 0;
-     
-        for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
-            
-            for (let j = 0; j<this.listasponsors[i].carrera.length; j++){
-              
-                if (this.listasponsors[i].carrera[j] == carrera) {
-                    aux = true;
-                     pos = this.listasponsors[i];
-                     return pos;
-                }
-            }
-        
-        }
-        return false;
-
-    }
-  //FIN LOGICA SPONSORS 
   
 
+  ordenarCarrerasNombre() {
+    this.listacarreras.sort((a, b) => {
+      return a.nombre.localeCompare(b.nombre);
+    });
+  }
 
-  //INICIO LOGICA CORREDORES
+  ordenarCarrerasFecha() {
+    this.listacarreras.sort((a, b) => {
+      return new Date(a.fecha) - new Date(b.fecha);
+    });
+  }
 
-    buscaCorredor(corredor) {
-        let aux = false;
-        let pos = 0;
-        for (let i = 0; i < this.listacorredores.length && aux == false; i++) {
-            if (this.listacorredores[i].cedula == corredor) {
-                aux = true;
-                pos = this.listacorredores[i];
-            }
+  ordenarCorredoresNombre() {
+    this.listacorredores.sort((a, b) => {
+      return a.nombre.localeCompare(b.nombre);
+    });
+  }
+
+
+  buscaCarrera(carrera) {
+    let aux = false;
+    let pos = 0;
+    for (let i = 0; i < this.listacarreras.length && aux == false; i++) {
+      if (this.listacarreras[i].nombre == carrera) {
+        aux = true;
+        pos = this.listacarreras[i];
+      }
+    }
+    return pos;
+  }
+
+  checkearCarreraRepetida(carrera) {
+    let aux = false;
+    for (let i = 0; i < this.listacarreras.length && aux == false; i++) {
+      if (this.listacarreras[i].nombre == carrera.nombre) {
+        aux = true;
+      }
+    }
+    return aux;
+  }
+
+
+  checkearSponsorRepetido(sponsor) {
+    let aux = false;
+    for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
+      if (this.listasponsors[i].nombre == sponsor.nombre) {
+        aux = true;
+      }
+    }
+    return aux;
+  }
+
+  buscaSponsor(sponsor) {
+    let aux = false;
+    let pos = 0;
+    for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
+      if (this.listasponsors[i].nombre == sponsor.nombre) {
+        aux = true;
+        pos = this.listasponsors[i];
+      }
+    }
+    return pos;
+  }
+
+  validoSponsors(carrera) {
+    let aux = false;
+
+    for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
+      if (this.listasponsors[i].carrera == carrera) {
+        aux = true;
+      }
+    }
+    return aux;
+  }
+
+  noExisteSponsor() {
+    let aux = false;
+
+    if (this.listasponsors.length == 0) {
+      aux = true;
+    }
+
+    return aux;
+  }
+
+  buscaSponsorCarrera(carrera) {
+    let aux = false;
+    let pos = 0;
+
+    for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
+      for (let j = 0; j < this.listasponsors[i].carrera.length; j++) {
+        if (this.listasponsors[i].carrera[j] == carrera) {
+          aux = true;
+          pos = this.listasponsors[i];
+          return pos;
         }
-        return pos;
+      }
+    }
+    return false;
+  }
+  
+
+  buscaCorredor(corredor) {
+    let aux = false;
+    let pos = 0;
+    for (let i = 0; i < this.listacorredores.length && aux == false; i++) {
+      if (this.listacorredores[i].cedula == corredor) {
+        aux = true;
+        pos = this.listacorredores[i];
+      }
+    }
+    return pos;
+  }
+
+  checkearCorredorRepetido(corredor) {
+    let aux = false;
+    for (let i = 0; i < this.listacorredores.length && aux == false; i++) {
+      if (this.listacorredores[i].cedula == corredor.cedula) {
+        aux = true;
+      }
+    }
+    return aux;
+  }
+
+
+  generarCupo(carrera) {
+    this.buscaCarrera(carrera).cont++;
+
+    let cont = parseInt(syscall.buscaCarrera(carrera).cont);
+
+    return cont;
+  }
+
+  validarCupos(carrera) {
+    let aux = false;
+    let current = parseInt(syscall.buscaCarrera(carrera).cont);
+
+    if (current >= syscall.buscaCarrera(carrera).cupos) {
+      alert("No hay mas cupos");
+      aux = true;
     }
 
-    checkearCorredorRepetido(corredor) {
-        let aux = false;
-        for (let i = 0; i < this.listacorredores.length && aux == false; i++) {
-            if (this.listacorredores[i].cedula == corredor.cedula) {
-                aux = true;
-            }
-        }
-        return aux;
-    }
-//FIN LOGICA CORREDORES
+    return aux;
+  }
 
-
-
-//INICIO LOGICA INSCRIPCIONES
-
-    generarCupo(carrera){
-        
-        this.buscaCarrera(carrera).cont ++;
-
-        let cont = parseInt(syscall.buscaCarrera(carrera).cont);
-
-               
-        return cont;
+  corredorYaInscripto(inscripcion) {
+    let aux = false;
+    for (let i = 0; i < this.listainscripciones.length && aux == false; i++) {
+      if (
+        inscripcion.corredor.cedula ==
+          this.listainscripciones[i].corredor.cedula &&
+        inscripcion.carrera.nombre == this.listainscripciones[i].carrera.nombre
+      ) {
+        aux = true;
+      }
     }
 
-    validarCupos(carrera){
-        let aux = false;
-        let current = parseInt(syscall.buscaCarrera(carrera).cont);
+    return aux;
+  }
 
-            if (current >= syscall.buscaCarrera(carrera).cupos){
-                alert('No hay mas cupos');
-                   aux = true;
-            }
+  buscaInscriptosACarreras(carrera) {
+    let inscriptos = [];
 
-            return aux;
+    for (let elem of this.listainscripciones) {
+      if (elem.carrera.nombre == carrera) {
+        let cupoInscripcion = parseInt(elem.cupo);
+        inscriptos.push([elem.corredor, cupoInscripcion]);
+      }
+    }
+    return inscriptos;
+  }
+
+  buscaCupoInscripciones(NombreCorredor) {
+    let cupo = 0;
+    let corredor;
+
+    for (let elem of this.listainscripciones) {
+      corredor = elem.corredor;
+
+      if (NombreCorredor == corredor.nombre) {
+        cupo = elem.cupo;
+      }
     }
 
-    corredorYaInscripto(inscripcion) {
-        let aux = false;
-        for (let i = 0; i<this.listainscripciones.length && aux == false; i++){
+    return cupo;
+  }
 
-                if (inscripcion.corredor.cedula == this.listainscripciones[i].corredor.cedula && inscripcion.carrera.nombre == this.listainscripciones[i].carrera.nombre){
-                    aux = true;
-                }
-        }
+  
 
-        return aux;
-        
+  calcularPromedioInscriptos() {
+    let promedio;
+
+    if (this.listacarreras.length === 0) {
+      promedio = "No hay datos disponibles actualmente";
+    } else {
+      let totalinscripciones = 0;
+
+      for (let i = 0; i < this.listacarreras.length; i++) {
+        totalinscripciones += this.listacarreras[i].cont;
+      }
+
+      promedio = parseFloat(
+        totalinscripciones / this.listacarreras.length
+      ).toFixed(2);
     }
 
-    buscaInscriptosACarreras(carrera){
-        
-        let inscriptos = [];
-        
-        
+    return promedio;
+  }
 
-        for (let elem of this.listainscripciones) {
+  validarInscriptos() {
+    let aux = false;
 
-                if (elem.carrera.nombre == carrera) {
-                    let cupoInscripcion = parseInt(elem.cupo);
-                inscriptos.push([elem.corredor, cupoInscripcion]);
-            }
-            
-        }
-        return inscriptos;
+    for (let i = 0; i < this.listacarreras.length && aux == false; i++) {
+      if (this.listacarreras[i].cont > 0) aux = true;
     }
-    
-    buscaCupoInscripciones(NombreCorredor){
-        let cupo = 0;
-        let corredor;
+    return aux;
+  }
 
-        for (let elem of this.listainscripciones){
-                 corredor = elem.corredor;
+  calcularCarreraConMasInscriptos() {
+    let masInscriptos = [];
+    let inscriptosant = 0;
+    let inscriptos;
 
-            if (NombreCorredor == corredor.nombre){
+    for (let i = 0; i < this.listacarreras.length; i++) {
+      inscriptos = this.listacarreras[i].cont;
 
-                cupo = elem.cupo;
-                }
-        }
+      if (inscriptos > inscriptosant) {
+        inscriptosant = inscriptos;
 
-        return cupo;
+        masInscriptos = [];
+        masInscriptos.push(this.listacarreras[i]);
+      } else if (inscriptos == inscriptosant) {
+        masInscriptos.push(this.listacarreras[i]);
+      }
     }
 
+    return masInscriptos;
+  }
 
-//FIN LOGICA INSCRIPCIONES 
-    
+  
 
-//INICIO ESTADISTICAS
+  contarInscripcionesPorDepto(departamento) {
+    let cont = 0;
 
-    calcularPromedioInscriptos() {
-        let promedio;
-      
-        if (this.listacarreras.length === 0) {
-          promedio = 'No hay datos disponibles actualmente';
-        }else{
-
-            let totalinscripciones = 0;
-            
-            for (let i=0; i < this.listacarreras.length; i++){
-
-                totalinscripciones += this.listacarreras[i].cont;
-
-            }
-
-
-            promedio = parseFloat(totalinscripciones / this.listacarreras.length).toFixed(2);
-         
-        }
-
-        return promedio;
-    }
-
-    validarInscriptos(){
-        let aux = false;
-
-        for (let i = 0; i < this.listacarreras.length && aux==false; i++){
-
-            if (this.listacarreras[i].cont > 0)
-                aux = true;
-
-        }
-        return aux;
-    }
-
-    calcularCarreraConMasInscriptos() {
-        let masInscriptos = [];
-        let inscriptosant = 0;
-        let inscriptos;
-
-        for (let i = 0; i < this.listacarreras.length; i++) {
-      
-            inscriptos = this.listacarreras[i].cont;
-           
-             if (inscriptos > inscriptosant) {
-
-                inscriptosant = inscriptos;
-
-                masInscriptos = [];
-                masInscriptos.push(this.listacarreras[i]);
-
-            } else if (inscriptos == inscriptosant) {
-                masInscriptos.push(this.listacarreras[i]);
-            }
-        }
-        
-        return masInscriptos;
-    }
-
-//FIN ESTADISTICAS
-
-//INICIO MAPA
-
-contarInscripcionesPorDepto(departamento){
-    let cont =0;
-
-    for (let elem of this.listainscripciones){
-        
-        if (elem.carrera.departamento == departamento){
-                
-            cont++
-
-        }
-
+    for (let elem of this.listainscripciones) {
+      if (elem.carrera.departamento == departamento) {
+        cont++;
+      }
     }
 
     return cont;
-}
+  }
 
-contarCarrerasPorDepto(departamento){
-    let cont =0;
+  contarCarrerasPorDepto(departamento) {
+    let cont = 0;
 
-    for (let elem of this.listacarreras){
-        
-        if (elem.departamento == departamento){
-                
-            cont++
-
-        }
-
+    for (let elem of this.listacarreras) {
+      if (elem.departamento == departamento) {
+        cont++;
+      }
     }
 
     return cont;
-}
+  }
 
-
-
-
-
-
-
-
-//FIN MAPA
-
-
-
+ 
 }
