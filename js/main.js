@@ -213,42 +213,38 @@ function registroInscripcion() {
             alert('El corredor ya está inscripto en esa carrera.');
 
         } else {
-            if (!syscall.validarCupos(carrera)) {
+            if (!inscripcion.inscripcionFechaValida()) {
+                    alert('La ficha médica no está vigente para la fecha de la carrera.');
 
-                inscripcion.cupo = syscall.generarCupo(carrera);
+                }else{
+                    if (!syscall.validarCupos(carrera)) {
 
+                    inscripcion.cupo = syscall.generarCupo(carrera);
 
+                    syscall.pushearInscripciones(inscripcion);
 
-                syscall.pushearInscripciones(inscripcion);
+                    let sponsor = syscall.buscaSponsorCarrera(inscripcion.carrera.nombre);
+                    let mensaje;
 
-                let sponsor = syscall.buscaSponsorCarrera(inscripcion.carrera.nombre);
-                let mensaje;
+                     if (syscall.noExisteSponsor()) {
 
-                if (syscall.noExisteSponsor()) {
+                      mensaje = [inscripcion.aTextoInscripcion(inscripcion),
+                           `\nNo hay Sponsors registrados.`].join('\n');
 
-                    mensaje = [inscripcion.toString(inscripcion),
-                        `\nNo hay Sponsors registrados.`
-                    ].join('\n');
+                  } else {
 
-                } else {
-
-                    mensaje = [inscripcion.toString(inscripcion),
-                    `\nDatos del Sponsor:\n${sponsor.toString(inscripcion.carrera.nombre)}`
+                    mensaje = [inscripcion.aTextoInscripcion(inscripcion),
+                    `\nDatos del Sponsor:\n${sponsor.aTextoSponsor(inscripcion.carrera.nombre)}`
                     ].join('\n');
 
                 }
                 alert(mensaje);
-                descargarInscripcionPDF(inscripcion);
+                descargarInscripcionPDF(inscripcion, sponsor);
                 formulario.reset();
 
-            } else {
-                if (!inscripcion.inscripcionFechaValida()) {
-                    alert('La ficha médica no está vigente para la fecha de la carrera.');
-
-                }
-
-            }
+            } 
         }
+    }
 
     }
 }
@@ -258,6 +254,21 @@ function registroInscripcion() {
 
 //FUNCION GENERAR PDF
 
+
+function retornoSponsor(inscripcion){
+    let sponsor = syscall.buscaSponsorCarrera(inscripcion.carrera.nombre);
+
+    let mensaje;
+
+    if(sponsor != false){
+        mensaje = sponsor.toString();
+    }else{
+        mensaje = 'No hay Sponsors registrados para esta carrera.';
+    }
+
+    return mensaje;
+}
+
 function descargarInscripcionPDF(inscripcion) {
     const doc = new window.jspdf.jsPDF();
     doc.text("Datos de la Inscripción", 10, 10);
@@ -266,6 +277,7 @@ function descargarInscripcionPDF(inscripcion) {
     doc.text(`Departamento: ${inscripcion.carrera.departamento}`, 10, 40);
     doc.text(`Fecha de la carrera: ${inscripcion.carrera.fecha}`, 10, 50);
     doc.text(`Cupo: ${inscripcion.cupo}`, 10, 60);
+    doc.text(`Datos del Sponsor: ${retornoSponsor(inscripcion)}`, 10, 70);
     doc.save("inscripcion" + inscripcion.corredor.nombre + ".pdf");
 }
 

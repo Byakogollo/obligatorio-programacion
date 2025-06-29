@@ -127,7 +127,6 @@ let datos = 'Carrera: ' + this.nombre +
 }
 
 
-
 class Sponsor {
     constructor(nombre, rubro, carrera) {
         this.nombre = nombre;
@@ -135,9 +134,17 @@ class Sponsor {
         this.carrera = carrera;
     }
  
-   
+   toString() {
 
-    toString(objeto){
+    return 'Nombre del Patrocinador: '+this.nombre+
+     '\nRubro del Patrocinador: ' + this.rubro +
+    '\nCarrera Patrocinada: ' + this.carrera;
+
+
+   }
+
+
+    aTextoSponsor(objeto){
 
         let datos;
         
@@ -169,16 +176,7 @@ class Corredor {
         this.tipocorredor = tipocorredor;
     }
 
-    toString(){
-let datos = 'Nombre: ' + this.nombre + 
-            '\nEdad: ' + this.departamento + 
-            '\nCedula: ' + this.fecha + 
-            '\nFecha de Ficha Medica: ' + this.cupos +
-            '\nTipo de Corredor: '+this.tipocorredor;
-
-    return datos;
-}
-
+ 
 
      actualizarListaCorredoresInscripciones(){
 
@@ -242,7 +240,7 @@ class Inscripcion {
     }
 
   
-        toString(inscripcion){
+        aTextoInscripcion(inscripcion){
         let mensaje = `Inscripción confirmada:
 
  Cupo numero: ${syscall.buscaCarrera(inscripcion.carrera.nombre).cont}
@@ -426,16 +424,19 @@ ordenarCorredoresNombre(){
      
         for (let i = 0; i < this.listasponsors.length && aux == false; i++) {
             
-            for (let j = 0; j<this.listasponsors[i].carrera.length; j++)
+            for (let j = 0; j<this.listasponsors[i].carrera.length; j++){
               
                 if (this.listasponsors[i].carrera[j] == carrera) {
                     aux = true;
                      pos = this.listasponsors[i];
+                     return pos;
+                }
             }
+        
         }
-        return pos;
-    }
+        return false;
 
+    }
   //FIN LOGICA SPONSORS 
   
 
